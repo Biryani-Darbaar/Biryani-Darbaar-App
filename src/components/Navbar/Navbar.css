@@ -1,0 +1,17 @@
+
+
+.bell{
+    margin-left: 10px;
+}
+
+.search{
+    max-width: 250px;
+    margin-left: 20px;  
+}
+
+
+ion-searchbar {
+    --height: 200px; /* Adjust to desired height */
+    padding: 5px 0;
+    border: 2px solid black;
+}
