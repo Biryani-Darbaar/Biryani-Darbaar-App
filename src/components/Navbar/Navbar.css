@@ -1,17 +1,26 @@
-
-
-.bell{
-    margin-left: 10px;
+nav{
+    background-color: var(--primary-color);
+    height: 60px;
+    display: flex;
+    padding-top: 10px;
 }
 
 .search{
-    max-width: 250px;
-    margin-left: 20px;  
+    margin-left: 20px;
 }
 
+.icon-left{
+    margin-left: 10px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
 
-ion-searchbar {
-    --height: 200px; /* Adjust to desired height */
-    padding: 5px 0;
-    border: 2px solid black;
+}
+
+.icon-right{
+    border: 1px solid #4B4B4B ;
+    border-radius: 80px;
+    padding: 10px;
+    margin-left: 35px;
+    margin-bottom: 5px;
 }

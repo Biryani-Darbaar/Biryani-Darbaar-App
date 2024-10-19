@@ -1,0 +1,95 @@
+.parent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    background-color: #f6f9f9;
+    
+}
+
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border:15px;
+    border-radius: 15px;
+    padding: 15px 15px 15px 15px;
+    margin-top: 40%;
+}
+
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    
+    transition: opacity 0.5s ease-in-out;
+    border: 1px;
+    border-radius: 14px;
+
+}
+
+.slider-img {
+    width: 100%;
+    height: auto;
+    border-radius: 30px;
+    padding: 15px 15px 15px 15px;
+}
+
+.content-box {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.title-text {
+    font-size: 28px;
+    color: #0c1d2e;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.subtitle-text {
+    font-size: 16px;
+    color: #748ba0;
+}
+
+.pagination-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #c01d2e;
+    border-radius: 50%;
+    margin: 0 5px;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.dot.active {
+    opacity: 1;
+    height: 12px;
+}
+
+.start-btn {
+    width: 335px;
+    padding: 13px;
+    background: #c01d2e;
+    border-radius: 10px;
+    text-align: center;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+.start-text {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: capitalize;
+}

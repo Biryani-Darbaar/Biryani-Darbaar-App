@@ -1,0 +1,18 @@
+.custom-btn {
+    --border-radius: 8px;
+    --padding: 12px 24px;
+    border-radius: var(--border-radius);
+    padding: var(--padding);
+    font-size: 16px;
+  }
+  
+  .custom-btn.primary {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+  }
+  
+  .custom-btn.secondary {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+  }
+  

@@ -1,0 +1,41 @@
+.hori-scroll-container {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.hori-scroll-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Edge */
+}
+
+.hori-scroll-item {
+    min-width: 50%; /* Two items visible at once */
+    margin-right: 20px; /* Space between cards */
+    border-radius: 10px;
+    overflow: hidden; /* Ensure border-radius affects the image */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hori-scroll-image {
+    width: 100%;
+    height: auto; /* Adjust the height as necessary */
+    object-fit: cover; /* Ensures the image covers the top part */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.hori-scroll-title {
+    font-size: 1.2rem;
+    padding: 10px;
+    margin: 0;
+    color: #333;
+}
+
+.hori-scroll-price {
+    font-size: 1rem;
+    padding: 10px;
+    margin: 0;
+    color: red; /* Price color */
+}

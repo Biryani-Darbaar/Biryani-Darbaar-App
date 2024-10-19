@@ -1,0 +1,30 @@
+.splash-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #EA1F27;
+    /* Your splash screen background color */
+}
+
+.splash-content {
+    text-align: center;
+}
+.splashImage{
+    border: 5px solid white;
+    border-radius: 150px;
+    height: 250px;
+    width:250px;
+}
+
+.splash-logo {
+    /* width: 150px; */
+    /* Adjust based on your logo size */
+    /* height: 150px; */
+    margin-bottom: 20px;
+}
+
+.splash-title {
+    font-size: 2rem;
+    color: white;
+}
