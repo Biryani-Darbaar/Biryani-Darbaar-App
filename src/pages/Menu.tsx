@@ -1,6 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './Menu.css';
+import '../assets/css/Menu.css';
 
 const Menu: React.FC = () => {
   return (

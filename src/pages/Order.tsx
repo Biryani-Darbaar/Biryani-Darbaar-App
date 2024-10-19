@@ -1,6 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './Order.css';
+import '../assets/css/Order.css';
 
 const Order: React.FC = () => {
   return (
