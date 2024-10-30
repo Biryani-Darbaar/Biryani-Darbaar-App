@@ -1,19 +1,16 @@
-import React from 'react';
-import { IonButton } from '@ionic/react';
-import './Button.css';  // Import your styles
+import React, { ReactNode } from 'react';
+import './Button.css'; // Import your styles
 
 interface ButtonProps {
-  label: string;
   onClick: () => void;
-  colorType?: 'primary' | 'secondary';  // Add types for theme-based coloring
+  colorType?: 'primary' | 'secondary'; // Add types for theme-based coloring
+  children: ReactNode; // Use children instead of label to support nested components
 }
 
-const CustomButton: React.FC<ButtonProps> = ({ label, onClick, colorType = 'primary' }) => {
+const CustomButton: React.FC<ButtonProps> = ({ children, onClick, colorType = 'primary' }) => {
   return (
-    <button 
-      onClick={onClick} 
-      className={`custom-btn ${colorType}`}>
-      {label}
+    <button onClick={onClick} className={`custom-btn ${colorType}`}>
+      {children}
     </button>
   );
 };

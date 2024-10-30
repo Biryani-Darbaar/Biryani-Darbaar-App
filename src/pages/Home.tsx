@@ -163,31 +163,28 @@ const Home: React.FC = () => {
           <IonRow>
             <IonCol>
               <CustomButton
-                label="Starters"
                 onClick={() => {}}
                 colorType="primary"
-              />
+              >Starters</CustomButton>
             </IonCol>
             <IonCol>
               <CustomButton
-                label="Kebabs"
+                
                 onClick={() => {}}
                 colorType="secondary"
-              />
+              > Kebabs</CustomButton>
             </IonCol>
             <IonCol>
               <CustomButton
-                label="Biryani's"
                 onClick={() => {}}
                 colorType="primary"
-              />
+              >Biryani's</CustomButton>
             </IonCol>
             <IonCol>
               <CustomButton
-                label="Drinks"
                 onClick={() => {}}
                 colorType="secondary"
-              />
+              >Drinks</CustomButton>
             </IonCol>
           </IonRow>
         </IonGrid>

@@ -12,6 +12,7 @@ import {
   IonIcon,
   IonToast,
   IonRouterOutlet,
+  IonCard,
 } from "@ionic/react";
 import {
   mailOutline,
