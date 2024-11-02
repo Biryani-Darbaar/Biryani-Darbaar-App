@@ -38,7 +38,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/img");
+        const response = await axios.get("https://biryani-darbar-server.vercel.app/img");
         setImages(response.data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching images:", error);
