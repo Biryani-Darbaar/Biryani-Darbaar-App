@@ -10,7 +10,6 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
-  IonIcon,
   IonImg,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,8 +17,7 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
-import { heartOutline } from "ionicons/icons";
-import "../assets/css/Home.css"; // Ensure this file imports your variables
+import "../assets/css/Home.css";
 import Navbar from "../components/Navbar/Navbar";
 import CustomButton from "../components/Button";
 import { useEffect, useState } from "react";
@@ -31,56 +29,17 @@ import vip from "../assets/images/vip.png";
 import food1 from "../assets/images/Image(3).png";
 import food2 from "../assets/images/Image(4).png";
 import HoriScroll from "../components/HoriScroll";
-import Splash from "./Splash";
-import Onboarding from "./Onboarding";
+import GameModal from "../components/GameModal"; // Import the modal
+
 const Home: React.FC = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  const [onboardingComplete, setOnboardingComplete] = useState(false);
-
-  useEffect(() => {
-    // Simulate splash screen duration
-    setTimeout(() => {
-      setShowSplash(false);
-    }, 1000); // 3 seconds splash screen
-  }, []);
-
-  useEffect(() => {
-    // Check if onboarding is already completed (from local storage)
-    const onboarding = localStorage.getItem("onboardingComplete");
-    if (onboarding) {
-      setOnboardingComplete(true);
-    }
-  }, []);
-
-  const completeOnboarding = () => {
-    localStorage.setItem("onboardingComplete", "true");
-    setOnboardingComplete(true);
-  };
-
-  if (showSplash) {
-    return (
-      <div className="splash-screen">
-        {/* Add any splash screen content or logo */}
-        <Splash />
-      </div>
-    );
-  }
-
-  if (!onboardingComplete) {
-    return (
-      <div className="onboarding">
-        <Onboarding />
-      </div>
-    );
-  }
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
+  const [isGameOpen, setGameOpen] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const response = await axios.get("http://localhost:3000/img");
         setImages(response.data.slice(0, 6));
-        console.log(images);
       } catch (error) {
         console.error("Error fetching images:", error);
       }
@@ -88,6 +47,14 @@ const Home: React.FC = () => {
 
     fetchImages();
   }, []);
+
+  function handleMiniGame(): void {
+    setGameOpen(true); // Open the modal when clicking mini-game
+  }
+
+  function closeGame(): void {
+    setGameOpen(false); // Close the modal
+  }
 
   return (
     <IonPage>
@@ -99,15 +66,14 @@ const Home: React.FC = () => {
         {/* Carousel */}
         <Swiper
           modules={[Autoplay, Pagination]}
-          autoplay={{ delay: 5000 }} // Automatically slide every 5 seconds
-          pagination={{ clickable: true }} // Pagination dots
+          autoplay={{ delay: 5000 }}
+          pagination={{ clickable: true }}
           spaceBetween={10}
           slidesPerView={1}
-          loop={true} // Enable looping
+          loop={true}
           className="carousel-custom"
         >
-          {/* Swiper slides for images */}
-          {images.slice(0, 6).map((image, index) => (
+          {images.map((image, index) => (
             <SwiperSlide key={index}>
               <img
                 src={image.url}
@@ -128,12 +94,17 @@ const Home: React.FC = () => {
               Flash deals{" "}
             </IonCol>
             <IonCol>
-              <IonImg src={wheel} alt="" className="icon-grid"></IonImg>
+              <IonImg
+                src={wheel}
+                alt=""
+                className="icon-grid"
+                onClick={handleMiniGame} // Trigger modal onClick
+              ></IonImg>
               Mini game{" "}
             </IonCol>
             <IonCol>
               <IonImg src={vip} alt="" className="icon-grid"></IonImg>
-              Memeber{" "}
+              Member{" "}
             </IonCol>
             <IonCol>
               <IonImg src={call} alt="" className="icon-grid"></IonImg>
@@ -141,8 +112,9 @@ const Home: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+
+        {/* Horizontal Scroll Section */}
         <div>
-          {/* Horizontal Scroll Section */}
           <br />
           <br />
           <HoriScroll
@@ -156,38 +128,6 @@ const Home: React.FC = () => {
             ]}
           />
         </div>
-        {/* Discount Delicious Food */}
-
-        {/* Explore our menu */}
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <CustomButton
-                onClick={() => {}}
-                colorType="primary"
-              >Starters</CustomButton>
-            </IonCol>
-            <IonCol>
-              <CustomButton
-                
-                onClick={() => {}}
-                colorType="secondary"
-              > Kebabs</CustomButton>
-            </IonCol>
-            <IonCol>
-              <CustomButton
-                onClick={() => {}}
-                colorType="primary"
-              >Biryani's</CustomButton>
-            </IonCol>
-            <IonCol>
-              <CustomButton
-                onClick={() => {}}
-                colorType="secondary"
-              >Drinks</CustomButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
 
         {/* Offer Section */}
         <IonGrid>
@@ -242,6 +182,9 @@ const Home: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+
+        {/* Mini-Game Modal */}
+        <GameModal isOpen={isGameOpen} onClose={closeGame} />
       </IonContent>
     </IonPage>
   );

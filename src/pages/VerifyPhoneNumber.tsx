@@ -11,12 +11,17 @@ import {
   IonRow,
   IonCol,
   IonToolbar,
+  IonRouterOutlet,
+  useIonRouter
 } from "@ionic/react";
 import OtpPage from "./OtpPage";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import "../assets/css/Verifcation.css"
+import { IonReactRouter } from "@ionic/react-router";
+import HomePage from "./HomePage";
 
 const VerifyPhoneNumber: React.FC = () => {
+  const router = useIonRouter()
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState([
     "",
@@ -55,13 +60,21 @@ const VerifyPhoneNumber: React.FC = () => {
 
   // Function to verify the entered code
   const verifyCode = () => {
+    alert()
+    router.push('/HomePage')
+    console.log("Mundaa moopi");
     
-
     // Add your verification logic here
   };
 
   return (
     <IonPage>
+    
+        <IonRouterOutlet>
+          <Route path="/HomePage" component={HomePage} />
+          {/* Route for phone verification */}
+        </IonRouterOutlet>
+      
       <IonToolbar color="danger"></IonToolbar>
       <IonContent className="ion-padding">
         <h1 className="text-2xl font-bold mb-4">Phone Verification</h1>
@@ -89,10 +102,8 @@ const VerifyPhoneNumber: React.FC = () => {
             <OtpPage numberOfDigits={4} />
 
             {/* Button to verify code */}
-            <div className="start-btn">
-              <Link to="/Home" className="start-text" onClick={verifyCode}>
-                Verify Code
-              </Link>
+            <div className="start-btn" onClick={verifyCode}>
+              verify Code
             </div>
           </>
         )}

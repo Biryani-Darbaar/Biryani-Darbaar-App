@@ -12,7 +12,6 @@ import {
   IonIcon,
   IonToast,
   IonRouterOutlet,
-  IonCard,
 } from "@ionic/react";
 import {
   mailOutline,
@@ -26,10 +25,10 @@ import { IonReactRouter } from "@ionic/react-router";
 import { Link, Route, useHistory } from "react-router-dom";
 import SignUp from "./SignUp";
 import VerifyPhoneNumber from "./VerifyPhoneNumber"; // Import the VerifyPhoneNumber page
-
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("pavaniatmakuri@gmail.com");
+  const [password, setPassword] = useState("pavaniatmakuri");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
@@ -43,7 +42,7 @@ const SignIn: React.FC = () => {
     return emailPattern.test(email);
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (!email || !isValidEmail(email)) {
       setErrorMessage("Please enter a valid email address.");
       setShowErrorToast(true);
@@ -57,11 +56,17 @@ const SignIn: React.FC = () => {
     }
 
     // Simulate successful sign-in
+    const auth = getAuth();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      history.push("/VerifyPhoneNumber");
+    } catch (error) {
+      setErrorMessage("Invalid email or password. Please try again.");
+      setShowErrorToast(true);
+    }
     console.log("Sign in with:", email, password);
 
-    // Navigate to VerifyPhoneNumber page after successful sign-in
-    alert("")
-    history.push("/VerifyPhoneNumber");
+    
   };
 
   const togglePasswordVisibility = () => {

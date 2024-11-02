@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Redirect, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 import {
   IonApp,
   IonRouterOutlet,
@@ -12,6 +12,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 
 import Home from "./pages/Home";
+// import HomePage from './pages/HomePage'
 import Menu from "./pages/Menu";
 import Order from "./pages/Order";
 import Profile from "./pages/Profile";
@@ -36,6 +37,10 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 import { BookOpenText, House, NotebookText, User } from "lucide-react";
+import HomePage from "./pages/HomePage";
+import { auth } from "./providers/auth/firebase";
+ // Import the auth instance
+ import { onAuthStateChanged } from 'firebase/auth';
 
 setupIonicReact();
 
@@ -45,86 +50,126 @@ const App: React.FC = () => {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Cleanup subscription on unmount
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <IonApp>
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
-          <Route exact path="/Splash">
-            <Splash />
-          </Route>
-          <Route exact path="/Home">
-            <Home />
-          </Route>
-          <Route exact path="/Menu">
-            <Menu />
-          </Route>
-          <Route path="/Order">
-            <Order />
-          </Route>
-          <Route path="/Profile">
-            <Profile />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/Home" />
-          </Route>
-          <Route path="/SignIn">
-            <SignIn />
-          </Route>
-          <Route path="/SignUp">
-            <SignUp />
-          </Route>
-          <Route path="/VerifyPhoneNumber">
-            <VerifyPhoneNumber />
-          </Route>
-        </IonRouterOutlet>
+            <Switch>
+              <Route exact path="/Splash">
+                <Splash />
+              </Route>
+              <Route exact path="/HomePage">
+                {isAuthenticated ? <Redirect to="/Home" /> : <HomePage />}
+              </Route>
+              <Route exact path="/Home">
+                {isAuthenticated ? <Home /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route exact path="/Menu">
+                {isAuthenticated ? <Menu /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/Order">
+                {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/Profile">
+                {isAuthenticated ? <Profile /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/SignIn">
+                {isAuthenticated ? <Redirect to="/Home" /> : <SignIn />}
+              </Route>
+              <Route path="/SignUp">
+                {isAuthenticated ? <Redirect to="/Home" /> : <SignUp />}
+              </Route>
+              <Redirect from="/" to="/HomePage" />
+            </Switch>
+          </IonRouterOutlet>
           <IonTabBar slot="bottom" className="custom-tab-bar">
             <IonTabButton
               tab="Home"
-              href="/Home"
-              className={`custom-tab-button ${activeTab === "Home" ? "active" : ""}`}
+              href="/HomePage"
+              className={`custom-tab-button ${
+                activeTab === "HomePage" ? "active" : ""
+              }`}
               onClick={() => handleTabChange("Home")}
             >
               <House className="tab-icon" />
-              <IonLabel className={`tab-label ${activeTab === "Home" ? "active-tab" : ""}`}>
-                Home page
+              <IonLabel
+                className={`tab-label ${
+                  activeTab === "HomePage" ? "active-tab" : ""
+                }`}
+              >
+                Home
               </IonLabel>
             </IonTabButton>
             <IonTabButton
               tab="Menu"
               href="/Menu"
-              className={`custom-tab-button ${activeTab === "Menu" ? "active" : ""}`}
+              className={`custom-tab-button ${
+                activeTab === "Menu" ? "active" : ""
+              }`}
               onClick={() => handleTabChange("Menu")}
             >
               <BookOpenText className="tab-icon" />
-              <IonLabel className={`tab-label ${activeTab === "Menu" ? "active-tab" : ""}`}>
+              <IonLabel
+                className={`tab-label ${
+                  activeTab === "Menu" ? "active-tab" : ""
+                }`}
+              >
                 Menu
               </IonLabel>
             </IonTabButton>
             <IonTabButton
               tab="Order"
               href="/Order"
-              className={`custom-tab-button ${activeTab === "Order" ? "active" : ""}`}
+              className={`custom-tab-button ${
+                activeTab === "Order" ? "active" : ""
+              }`}
               onClick={() => handleTabChange("Order")}
             >
               <NotebookText className="tab-icon" />
-              <IonLabel className={`tab-label ${activeTab === "Order" ? "active-tab" : ""}`}>
+              <IonLabel
+                className={`tab-label ${
+                  activeTab === "Order" ? "active-tab" : ""
+                }`}
+              >
                 Order
               </IonLabel>
             </IonTabButton>
             <IonTabButton
               tab="Profile"
               href="/Profile"
-              className={`custom-tab-button ${activeTab === "Profile" ? "active" : ""}`}
+              className={`custom-tab-button ${
+                activeTab === "Profile" ? "active" : ""
+              }`}
               onClick={() => handleTabChange("Profile")}
             >
               <User className="tab-icon" />
-              <IonLabel className={`tab-label ${activeTab === "Profile" ? "active-tab" : ""}`}>
+              <IonLabel
+                className={`tab-label ${
+                  activeTab === "Profile" ? "active-tab" : ""
+                }`}
+              >
                 Profile
               </IonLabel>
             </IonTabButton>
           </IonTabBar>
+
         </IonTabs>
       </IonReactRouter>
     </IonApp>
