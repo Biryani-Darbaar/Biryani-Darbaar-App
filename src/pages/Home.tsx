@@ -44,7 +44,10 @@ const Home: React.FC = () => {
         console.error("Error fetching images:", error);
       }
     };
-
+    console.log("Session Storage:");
+    
+    const userId = sessionStorage.getItem("userId");
+    console.log("User ID:", userId);
     fetchImages();
   }, []);
 

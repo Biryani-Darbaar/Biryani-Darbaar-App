@@ -26,6 +26,7 @@ import { Link, Route, useHistory } from "react-router-dom";
 import SignUp from "./SignUp";
 import VerifyPhoneNumber from "./VerifyPhoneNumber"; // Import the VerifyPhoneNumber page
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import axios from "axios";
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("pavaniatmakuri@gmail.com");
   const [password, setPassword] = useState("pavaniatmakuri");
@@ -58,10 +59,23 @@ const SignIn: React.FC = () => {
     // Simulate successful sign-in
     const auth = getAuth();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      console.log(res.user);
+      const accessToken = await res.user.getIdToken();
+      console.log("Access Token:", accessToken);
+      const endres = await axios.post("http://localhost:3000/login", {
+        idToken: accessToken
+      });
+      console.log("Endres:", endres);
+      const { sessionId, sessionUserId } = endres.data;
+      console.log("Session ID:", sessionId);
+      console.log("Session User ID:", sessionUserId);
+      // Set session ID and session user ID
+      sessionStorage.setItem("sessionId", sessionId);
+      sessionStorage.setItem("sessionUserId", sessionUserId);
       history.push("/VerifyPhoneNumber");
     } catch (error) {
-      setErrorMessage("Invalid email or password. Please try again.");
+      setErrorMessage((error as any).message);
       setShowErrorToast(true);
     }
     console.log("Sign in with:", email, password);

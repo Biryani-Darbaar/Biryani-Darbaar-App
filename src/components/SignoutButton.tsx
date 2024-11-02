@@ -2,12 +2,16 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import CustomButton from "./Button";
+import axios from "axios";
 const SignOutButton = () => {
   const history = useHistory();
 
   const handleSignOut = async () => {
     const auth = getAuth();
     await signOut(auth);
+    const res = await axios.post("http://localhost:3000/logout");
+    console.log("Sign out response:", res);
+    
     history.push("/");
   };
 
