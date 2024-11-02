@@ -1,12 +1,11 @@
-:host{
-  .content-custom{
-    background-image: url("../images/background.png");
-    background-color: aliceblue;
-  }
+
+.content-custom{
+  background-image: url("../images/background.png");
+  background-color: white;
 }
 
 .carousel-image {
-  max-width: 100vw;
+  max-width: 100%;
   height: 13.25rem;
   border-radius: 30px;
   padding: 0px 10px;
@@ -15,7 +14,8 @@
   margin-left: 50px;
 }
 
-.carousel-custom {
+.carousel-container {
+  margin-left: -0.7rem;
   margin-bottom: 20px;
 }
 
@@ -26,4 +26,14 @@
 }
 .head{  
   background-color: #EA1F27;
+}
+
+.text{
+  margin-top: 0.5rem;
+  margin-left: 1.3rem;
+  font-size: 1rem;
+}
+
+.mini{
+  margin-left: 1.5rem;
 }

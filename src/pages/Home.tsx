@@ -34,18 +34,28 @@ import GameModal from "../components/GameModal"; // Import the modal
 const Home: React.FC = () => {
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [isGameOpen, setGameOpen] = useState(false); // State for modal visibility
-
+  const [special, setSpecial] = useState<{ dishName: string; price: string; image: string }[]>([]);
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get("https://biryani-darbar-server.vercel.app/img");
+        const response = await axios.get(
+          "https://biryani-darbar-server.vercel.app/img"
+        );
         setImages(response.data.slice(0, 6));
+        const specialResponse = await axios.get(
+          "https://biryani-darbar-server.vercel.app/dishes/special"
+        );
+//        console.log("Special Response:", specialResponse);
+        
+        setSpecial(specialResponse.data);
+        console.log("Special:", special);
+        
       } catch (error) {
         console.error("Error fetching images:", error);
       }
     };
     console.log("Session Storage:");
-    
+
     const userId = sessionStorage.getItem("userId");
     console.log("User ID:", userId);
     fetchImages();
@@ -65,129 +75,130 @@ const Home: React.FC = () => {
         <Navbar />
       </IonHeader>
 
-      <IonContent fullscreen className="content-custom">
+      <IonContent fullscreen className="content">
         {/* Carousel */}
-        <Swiper
-          modules={[Autoplay, Pagination]}
-          autoplay={{ delay: 5000 }}
-          pagination={{ clickable: true }}
-          spaceBetween={10}
-          slidesPerView={1}
-          loop={true}
-          className="carousel-custom"
-        >
-          {images.map((image, index) => (
-            <SwiperSlide key={index}>
-              <img
-                src={image.url}
-                alt={`Slide ${index + 1}`}
-                className="carousel-image"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <br />
-        <br />
-
-        {/* Category Section */}
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonImg src={sale} alt="" className="icon-grid"></IonImg>
-              Flash deals{" "}
-            </IonCol>
-            <IonCol>
-              <IonImg
-                src={wheel}
-                alt=""
-                className="icon-grid"
-                onClick={handleMiniGame} // Trigger modal onClick
-              ></IonImg>
-              Mini game{" "}
-            </IonCol>
-            <IonCol>
-              <IonImg src={vip} alt="" className="icon-grid"></IonImg>
-              Member{" "}
-            </IonCol>
-            <IonCol>
-              <IonImg src={call} alt="" className="icon-grid"></IonImg>
-              Boxchat{" "}
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-
-        {/* Horizontal Scroll Section */}
-        <div>
+        <div className="content-custom">
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            autoplay={{ delay: 5000 }}
+            pagination={{ clickable: true }}
+            spaceBetween={10}
+            slidesPerView={1}
+            loop={true}
+            className="carousel-container"
+          >
+            {images.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={image.url}
+                  alt={`Slide ${index + 1}`}
+                  className="carousel-image"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
           <br />
           <br />
-          <HoriScroll
-            items={[
-              { image: food1, title: "Delicious Biryani", price: "$12.99" },
-              { image: food2, title: "Spicy Kebab", price: "$9.99" },
-              { image: food1, title: "Tasty Curry", price: "$11.99" },
-              { image: food2, title: "Fresh Salad", price: "$7.99" },
-              { image: food1, title: "Juicy Burger", price: "$8.99" },
-              { image: food2, title: "Crispy Fries", price: "$4.99" },
-            ]}
-          />
+
+          {/* Category Section */}
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonImg src={sale} alt="" className="icon-grid"></IonImg>
+                <div className="text">Flash deals </div>
+              </IonCol>
+              <IonCol >
+                <IonImg
+                  src={wheel}
+                  alt=""
+                  className="icon-grid"
+                  onClick={handleMiniGame} // Trigger modal onClick
+                ></IonImg>
+                <div className="text mini">Mini game </div>
+              </IonCol>
+              <IonCol>
+                <IonImg src={vip} alt="" className="icon-grid"></IonImg>
+                <div className="text">Member </div>
+              </IonCol>
+              <IonCol>
+                <IonImg src={call} alt="" className="icon-grid"></IonImg>
+                <div className="text">Boxchat </div>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
+          {/* Horizontal Scroll Section */}
+            <div>
+            <br />
+            <br />
+            <HoriScroll
+              items={special.map((dish) => ({
+              image: dish.image,
+              title: dish.dishName || "Chicken Biryani",
+              price: `$${dish.price}`,
+              }))}
+            />
+            </div>
+
+          {/* Offer Section */}
+          <IonGrid>
+            <IonRow>
+              <IonCol size="6">
+                <IonCard className="card-custom">
+                  <IonCardHeader>
+                    <IonCardSubtitle>Offer</IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent className="offer-content">
+                    <h2>20% Discount for bills from $50</h2>
+                    <p>Expires in 2 days</p>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+              <IonCol size="6">
+                <IonCard className="card-custom">
+                  <IonCardHeader>
+                    <IonCardSubtitle>Promo</IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent className="offer-content">
+                    <h2>Special Offer for Today!</h2>
+                    <p>Valid for 24 hours</p>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
+          {/* Store Section */}
+          <IonGrid>
+            <IonRow>
+              <IonCol size="6">
+                <IonCard className="card-custom">
+                  <IonCardHeader>
+                    <IonCardTitle className="card-title">
+                      Athol Park
+                    </IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className="card-title">
+                    Glenelg, Australia
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+              <IonCol size="6">
+                <IonCard className="card-custom">
+                  <IonCardHeader>
+                    <IonCardTitle className="card-title">Glenelg</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className="card-title">
+                    St. Morris, Adelaide
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
+          {/* Mini-Game Modal */}
+          <GameModal isOpen={isGameOpen} onClose={closeGame} />
         </div>
-
-        {/* Offer Section */}
-        <IonGrid>
-          <IonRow>
-            <IonCol size="6">
-              <IonCard className="card-custom">
-                <IonCardHeader>
-                  <IonCardSubtitle>Offer</IonCardSubtitle>
-                </IonCardHeader>
-                <IonCardContent className="offer-content">
-                  <h2>20% Discount for bills from $50</h2>
-                  <p>Expires in 2 days</p>
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
-            <IonCol size="6">
-              <IonCard className="card-custom">
-                <IonCardHeader>
-                  <IonCardSubtitle>Promo</IonCardSubtitle>
-                </IonCardHeader>
-                <IonCardContent className="offer-content">
-                  <h2>Special Offer for Today!</h2>
-                  <p>Valid for 24 hours</p>
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-
-        {/* Store Section */}
-        <IonGrid>
-          <IonRow>
-            <IonCol size="6">
-              <IonCard className="card-custom">
-                <IonCardHeader>
-                  <IonCardTitle className="card-title">Athol Park</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent className="card-title">
-                  Glenelg, Australia
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
-            <IonCol size="6">
-              <IonCard className="card-custom">
-                <IonCardHeader>
-                  <IonCardTitle className="card-title">Glenelg</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent className="card-title">
-                  St. Morris, Adelaide
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-
-        {/* Mini-Game Modal */}
-        <GameModal isOpen={isGameOpen} onClose={closeGame} />
       </IonContent>
     </IonPage>
   );
