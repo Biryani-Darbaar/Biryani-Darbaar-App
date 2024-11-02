@@ -81,7 +81,7 @@ const Menu: React.FC = () => {
             <CustomButton
               key={category}
               onClick={() => setActiveCategory(category)}
-              color={category === activeCategory ? 'primary' : 'medium'}
+              colorType={category === activeCategory ? 'primary' : 'secondary'}
             >
               <IonIcon icon={vector}></IonIcon>
             </CustomButton>
