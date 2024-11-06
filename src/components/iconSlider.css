@@ -1,0 +1,41 @@
+.icon-scroll-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    padding: 10px 0; /* Add some top and bottom padding */
+}
+
+.icon-scroll-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Edge */
+}
+
+.icon-scroll-item {
+    flex-shrink: 0; /* Prevent items from compressing */
+    width: 50px; /* Set a fixed width for each item */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px; /* Space between buttons */
+    border-radius: 10px;
+    background-color: #e4e4e4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensure border-radius affects the image */
+}
+
+.icon-scroll-image {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 50%; /* Make image circular */
+}
+
+.icon-scroll-name {
+    font-size: 0.75rem;
+    color: #333;
+    margin-top: 2px;
+    text-align: center;
+}

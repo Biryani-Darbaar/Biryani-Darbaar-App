@@ -41,6 +41,7 @@ import HomePage from "./pages/HomePage";
 import { auth } from "./providers/auth/firebase";
  // Import the auth instance
  import { onAuthStateChanged } from 'firebase/auth';
+import Item from "./pages/Item";
 
 setupIonicReact();
 
@@ -83,6 +84,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/Menu">
                 {isAuthenticated ? <Menu /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route exact path="/Item">
+                {isAuthenticated ? <Item/> : <Redirect to="/HomePage" />}
               </Route>
               <Route path="/Order">
                 {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}

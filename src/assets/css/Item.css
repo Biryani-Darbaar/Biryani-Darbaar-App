@@ -1,0 +1,136 @@
+.price-segment {
+    background-color: var(--red-color);
+    margin-top: -10px;
+    color: #fff;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 1;
+    position: relative;
+    top: -110px;
+    padding-left: 20px;
+}
+
+.image {
+    max-height: 300px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.discount {
+    text-decoration: line-through;
+    margin-left: 1.25rem;
+}
+
+.heading {
+    color: #000;
+    font-feature-settings: 'liga' off, 'clig' off;
+    /* H/H3 */
+    font-family: "Public Sans";
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 36px;
+    /* 138.462% */
+}
+
+.prices {
+    display: flex;
+    justify-content: start;
+
+}
+
+.content {
+    background-color: #fff;
+    margin-top: -80px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.description {
+    color: var(--Typography-Muted, #7F7F7F);
+    font-feature-settings: 'liga' off, 'clig' off;
+    /* Paragraph/Paragraph Medium */
+    font-family: "Public Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    height: 150px;
+    /* 146.667% */
+}
+
+.addons {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.addon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: -1rem;
+    border-radius: 8px;
+    width: 100px;
+    background: var(--Secondary-100, #EEEEEF);
+}
+
+.addon-price {
+    margin-top: -10px;
+}
+
+.images-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 50px;
+}
+
+.images-content img {
+    width: 395px;
+    height: 167px;
+    flex-shrink: 0;
+    border-radius: 20px;
+}
+
+.footer {
+    display: flex;
+    width: 430px;
+    height: 126px;
+    flex-shrink: 0;
+    background: var(--Primary-Base, #C01D2E);
+    color: #fff;
+    padding-top: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.counter button {
+    background-color: transparent;
+}
+
+.counter {
+    margin-top: -6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    color: #fff;
+}
+
+.shop-cart-container {
+    max-height: 40px;
+    border-radius: 8px;
+    background: var(--Primary-100, #F2D2D5);
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    gap: 10px;
+    color: #C01D2E;
+    margin-right: 80px;
+}

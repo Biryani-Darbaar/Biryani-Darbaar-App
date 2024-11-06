@@ -1,0 +1,70 @@
+.round-scroll-container {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    margin-top: 1.5rem;
+}
+
+.round-scroll-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Edge */
+}
+
+.round-scroll-item {
+    min-width: 30%; /* Two items visible at once */
+    height: 150px;
+    margin-right: 20px; /* Space between cards */
+    border-radius: 10px;
+    overflow: hidden; /* Ensure border-radius affects the image */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    position: relative;
+}
+
+.round-scroll-image {
+    width: 55%;
+    height: 40%; /* Adjust the height as necessary */
+    object-fit: cover; /* Ensures the image covers the top part */
+    margin-left: 20%;
+    border-radius: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.round-scroll-title,
+.round-scroll-price {
+    font-size: 1rem;
+    padding: 0 10px;
+    margin: 0;
+    color: #333;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Hides overflowed text */
+    text-overflow: ellipsis; /* Shows ellipsis if text is too long */
+    position: relative;
+    cursor: pointer;
+}
+
+.round-scroll-title:hover::after,
+.round-scroll-price:hover::after {
+    content: attr(data-full-text); /* Display full text on hover */
+    position: absolute;
+    top: -30px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.round-scroll-title::after,
+.round-scroll-price::after {
+    opacity: 0;
+    pointer-events: none;
+}

@@ -37,3 +37,17 @@
 .mini{
   margin-left: 1.5rem;
 }
+
+.round-grid-container {
+  height: 300px;
+  border: 1px solid black;
+  background-color: var(--primary-color);
+  align-items: center;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.locations{
+  margin-top: 2.5rem;
+  height: 250px;  
+}
