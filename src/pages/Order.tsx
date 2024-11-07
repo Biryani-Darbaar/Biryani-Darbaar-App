@@ -81,13 +81,21 @@ const Order: React.FC = () => {
     return { subtotal, deliveryCharge, total };
   };
 
-  const handleRemoveItem = (cartId:string) => {
-    axios.delete(`http://localhost:4200/cart/${cartId}`, {
+  const handleRemoveItem = async (cartId:string) => {
+    const response  =  await axios.delete(`http://localhost:4200/cart/${cartId}`, {
       data: {
         userId: userId
       }
     });
-    console.log("Item removed");
+    if (response.status === 200) {
+      console.log("Item removed");
+      fetchOrders();
+    }
+    else{
+      console.log("Error removing item");
+      
+    }
+    
   }
   // Destructure calculated totals for easier access
   const { subtotal, deliveryCharge, total } = calculateTotals();
