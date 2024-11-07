@@ -7,17 +7,21 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { MinusCircle, PlusCircle } from "lucide-react"; // Import icons
+import { ChevronRight, Minus, Plus, Trash2 } from "lucide-react"; // Import icons
 import ExploreContainer from "../components/ExploreContainer";
 import "../assets/css/Order.css";
 import Navbar from "../components/Navbar/Navbar";
 import axios from "axios";
 import cart from "../assets/icons/cart.png";
 import CustomButton from "../components/Button";
+import PromoCode from "../components/PromoCode";
+import AddressAndSpecifications from "../components/AddressAndSpecifications";
 
 const Order: React.FC = () => {
   const [orderValues, setOrderValues] = useState<any[]>([]);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+  const [showPromoCode, setShowPromoCode] = useState(false);
+  const [addressPop, setAddressPop] = useState(false);
   const userId = sessionStorage.getItem("sessionUserId");
   const history = useHistory();
 
@@ -30,12 +34,15 @@ const Order: React.FC = () => {
     );
     setOrderValues(response.data);
     console.log(response.data);
-    
+
     // Initialize quantities for each item based on the response data
-    const initialQuantities = response.data.reduce((acc: { [key: string]: number }, item: any) => {
-      acc[item.id] = item.quantity || 1; // Default to 1 if quantity not provided
-      return acc;
-    }, {});
+    const initialQuantities = response.data.reduce(
+      (acc: { [key: string]: number }, item: any) => {
+        acc[item.id] = item.quantity || 1; // Default to 1 if quantity not provided
+        return acc;
+      },
+      {}
+    );
     setQuantities(initialQuantities);
   };
 
@@ -52,6 +59,39 @@ const Order: React.FC = () => {
     }));
   };
 
+  const handlePromo = () => {
+    console.log("Promo code applied");
+    setShowPromoCode(true);
+  };
+  const handleAddressChange = () =>{
+    setAddressPop(true);
+  }
+  // Calculate subtotal, delivery charge, and total
+  const calculateTotals = () => {
+    const subtotal = orderValues.reduce((acc, order) => {
+      return (
+        acc +
+        order.price * (quantities[order.cartItemId] || order.quantity)
+      );
+    }, 0);
+    const deliveryCharge = 2;
+    const promoDiscount = parseFloat(sessionStorage.getItem("promoDiscount") || "0");    
+    const amount = Math.round(subtotal * (1 - promoDiscount));
+    const total = amount + deliveryCharge;
+    return { subtotal, deliveryCharge, total };
+  };
+
+  const handleRemoveItem = (cartId:string) => {
+    axios.delete(`http://localhost:4200/cart/${cartId}`, {
+      data: {
+        userId: userId
+      }
+    });
+    console.log("Item removed");
+  }
+  // Destructure calculated totals for easier access
+  const { subtotal, deliveryCharge, total } = calculateTotals();
+
   return (
     <IonPage>
       <IonHeader>
@@ -60,30 +100,72 @@ const Order: React.FC = () => {
       <IonContent fullscreen>
         <div className="content-fullscreen">
           {orderValues.length > 0 ? (
-            <div className="ordder-counter">
-            {orderValues.map((order) => (
-              <div key={order.cartItemId} className="order">
-                <img src={order.image} alt="biryani" />
-                <div className="order-details">
-                  <h3>{order.name}</h3>
-                  <p>${order.price.toFixed(2)}</p>
-                </div>
-                <div className="quantity-counter">
-                  <MinusCircle
-                    onClick={() => updateQuantity(order.cartItemId, -1)}
-                    className="quantity-icon"
+            <div className="order-counter">
+              {orderValues.map((order) => (
+                <div key={order.cartItemId} className="order">
+                  <img src={order.image} alt="biryani" />
+                  <div className="order-details">
+                    <h3>{order.name}</h3>
+                    <p>
+                      $
+                      {(
+                        order.price *
+                        (quantities[order.cartItemId] || order.quantity)
+                      ).toFixed(2)}
+                    </p>
+                  </div>
+
+                  <div className="quantity-counter">
+                    <Minus
+                      onClick={() => updateQuantity(order.cartItemId, -1)}
+                      className="quantity-icon"
+                      fill="#fff"
                     />
-                  <span>{quantities[order.cartItemId] || order.quantity}</span>
-                  <PlusCircle
-                    onClick={() => updateQuantity(order.cartItemId, 1)}
-                    className="quantity-icon"
+                    <span>
+                      {quantities[order.cartItemId] || order.quantity}
+                    </span>
+                    <Plus
+                      onClick={() => updateQuantity(order.cartItemId, 1)}
+                      className="quantity-icon"
                     />
+                    <Trash2 size={20} color="red" onClick={()=>{
+                      handleRemoveItem(order.cartItemId)}}/>
+                  </div>
                 </div>
+              ))}
+
+              <div className="apply-promo" onClick={handlePromo}>
+                Apply promocode <ChevronRight />
               </div>
-            ))}
-            <div className="total">
-                  
-            </div>
+              {showPromoCode && <PromoCode onClose={() => setShowPromoCode(false)} />}
+              <div className="total">
+                <h5 className="total-content">
+                  Subtotal:{" "}
+                  <span className="dyna-price"> ${subtotal.toFixed(2)}</span>
+                </h5>
+                <h5 className="total-content">
+                  Delivery:{" "}
+                  <span className="dyna-price"> ${deliveryCharge.toFixed(2)}</span>
+                </h5>
+                <div className="line"></div>
+                <h4 className="total-content">
+                  Total:{" "}
+                  {
+                    <span className="dyna-price total-price">  ${total.toFixed(2)}</span>}
+                </h4>
+              </div>
+              {/* <PromoCode amount={total} onClose={() => console.log("Promo code closed")} /> */}
+              <div className="">
+                <CustomButton className="checkout-button" onClick={handleAddressChange}>
+                  Add Address and Specifications
+                </CustomButton>
+                <CustomButton className="checkout-button" onClick={() => history.push("/Checkout")}>
+                  Checkout
+                </CustomButton>
+              </div>
+              {addressPop &&
+              <AddressAndSpecifications onClose={()=> setAddressPop(false)}/>
+              }
             </div>
           ) : (
             <div className="cart-no-items">
@@ -98,7 +180,7 @@ const Order: React.FC = () => {
               </div>
               <div className="btn-container">
                 <button
-                  className="button"
+                  className="menu-button"
                   onClick={() => history.push("/Menu")}
                 >
                   Shop Now

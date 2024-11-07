@@ -19,7 +19,7 @@ import menusp1 from "../assets/images/menusp1.png";
 import menusp2 from "../assets/images/menusp2.png";
 import CustomButton from "../components/Button";
 import IconScroll from "../components/iconSlider";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
 interface Addon {
   addonName: string;
@@ -107,13 +107,10 @@ const Menu: React.FC = () => {
         <IonToolbar color="danger">
           <IonTitle className="justify text-center">Menu</IonTitle>
           <IonButtons slot="start">
-            <IonButton>
-              <IonIcon icon={cart} />
-            </IonButton>
-            <IonButton>
-              <IonIcon icon={notifications} />
-              <IonBadge slot="end"></IonBadge>
-            </IonButton>
+            <div className="icon-left">
+              <Bell className="bell" size={24} />
+              <ShoppingCart size={24} />
+            </div>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -171,6 +168,7 @@ const Menu: React.FC = () => {
                 padding: "10px",
                 borderRadius: "8px",
                 gap: "8px",
+                justifyContent: "space-between",
               }}
             >
               <img
@@ -187,9 +185,8 @@ const Menu: React.FC = () => {
                 </p>
               </div>
               <div className="add-to-cart">
-                <CustomButton
-                  colorType="secondary"
-                  onClick={() => {
+                
+                  <CirclePlus color="#E50914" onClick={() => {
                     handleAddToCart({
                       name: dish.dishName || dish.name || "",
                       dishId: index,
@@ -198,10 +195,7 @@ const Menu: React.FC = () => {
                       image: dish.image,
                       description: dish.description || "",
                     });
-                  }}
-                >
-                  <CirclePlus color="#E50914" />
-                </CustomButton>
+                  }}/>
               </div>
             </div>
           ))}

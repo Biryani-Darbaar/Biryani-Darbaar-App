@@ -44,7 +44,9 @@
     position: relative;
     cursor: pointer;
 }
-
+.round-scroll-price{
+    color:red
+}
 .round-scroll-title:hover::after,
 .round-scroll-price:hover::after {
     content: attr(data-full-text); /* Display full text on hover */

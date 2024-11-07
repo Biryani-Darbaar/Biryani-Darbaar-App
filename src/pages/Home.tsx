@@ -152,7 +152,7 @@ const Home: React.FC = () => {
           </Swiper>
 
           {/* Category Section */}
-          <IonGrid>
+          <IonGrid className="game-grid">
             <IonRow>
               <IonCol>
                 <IonImg src={sale} alt="" className="icon-grid"></IonImg>

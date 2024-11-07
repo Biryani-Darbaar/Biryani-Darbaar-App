@@ -1,40 +1,51 @@
-
-.content-custom{
+.content-custom {
   background-image: url("../images/background.png");
   background-color: white;
+  padding-left: 4.5vw;
 }
 
 .carousel-image {
-  max-width: 100%;
+  width: 95vw;
   height: 13.25rem;
   border-radius: 30px;
   padding: 0px 10px;
   margin-top: 10px;
   object-fit: cover;
-  margin-left: 50px;
+  margin-left: 7.5vw;
 }
 
 .carousel-container {
-  margin-left: -0.7rem;
+  margin-top: 1rem;
+  margin-left: -2.2rem;
   margin-bottom: 20px;
+  width: 120vw;
+  height: 237px;
 }
 
-.icon-grid{
-  width: 30px;
+.game-grid {
+  display: grid;
+  grid-gap: 1rem;
+  margin-top: 1rem;
+  margin-left: -3vw;
+}
+
+.icon-grid {
+  width: 11vw;
   height: 30px;
   margin-left: 25px;
 }
-.head{  
+
+.head {
   background-color: #EA1F27;
 }
 
-.text{
+.text {
   margin-top: 0.5rem;
   margin-left: 1.3rem;
   font-size: 1rem;
 }
 
-.mini{
+.mini {
   margin-left: 1.5rem;
 }
 
@@ -47,7 +58,7 @@
   padding-top: 10px;
 }
 
-.locations{
+.locations {
   margin-top: 2.5rem;
-  height: 250px;  
+  height: 250px;
 }

@@ -11,7 +11,7 @@ const SignOutButton = () => {
     await signOut(auth);
     const res = await axios.post("https://biryani-darbar-server.vercel.app/logout");
     console.log("Sign out response:", res);
-    
+    sessionStorage.clear();
     history.push("/");
   };
 
