@@ -104,12 +104,12 @@ const Menu: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="danger">
-          <IonTitle className="justify text-center">Menu</IonTitle>
+        <IonToolbar className="menu-header" color="danger">
+          <IonTitle className="justify text-center ">Menu</IonTitle>
           <IonButtons slot="start">
             <div className="icon-left">
-              <Bell className="bell" size={24} />
-              <ShoppingCart size={24} />
+              <Bell className="bell" size={24} onClick={()=> history.push("/Profile")}/>
+              <ShoppingCart size={24} onClick={()=> history.push("/Order")}/>
             </div>
           </IonButtons>
         </IonToolbar>
@@ -185,8 +185,9 @@ const Menu: React.FC = () => {
                 </p>
               </div>
               <div className="add-to-cart">
-                
-                  <CirclePlus color="#E50914" onClick={() => {
+                <CirclePlus
+                  color="#E50914"
+                  onClick={() => {
                     handleAddToCart({
                       name: dish.dishName || dish.name || "",
                       dishId: index,
@@ -195,7 +196,8 @@ const Menu: React.FC = () => {
                       image: dish.image,
                       description: dish.description || "",
                     });
-                  }}/>
+                  }}
+                />
               </div>
             </div>
           ))}

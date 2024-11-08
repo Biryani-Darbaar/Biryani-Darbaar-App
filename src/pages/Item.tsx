@@ -60,6 +60,7 @@ const Item = () => {
   return (
     <IonPage>
       <IonHeader>
+        <IonToolbar className="toolbar-item">
         <img className="image" src={image} alt="" />
         <div className="price-segment">
           <br />
@@ -73,6 +74,7 @@ const Item = () => {
             </h3>
           </div>
         </div>
+      </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>

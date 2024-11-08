@@ -43,7 +43,6 @@
 
 .content {
     background-color: #fff;
-    margin-top: -80px;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -133,4 +132,8 @@
     gap: 10px;
     color: #C01D2E;
     margin-right: 80px;
+}
+
+.toolbar-item{
+    max-height: 37vh;
 }

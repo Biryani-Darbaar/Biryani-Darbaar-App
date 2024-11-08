@@ -14,8 +14,10 @@ import ExploreContainer from "../components/ExploreContainer";
 import "../assets/css/Profile.css";
 import SignOutButton from "../components/SignoutButton";
 import { Bell, IdCard, Power, ReceiptText, ScanQrCode, Settings, ShieldCheck, ShoppingCart, Tags } from "lucide-react";
+import { useHistory } from "react-router";
 
 const Profile: React.FC = () => {
+  const history = useHistory(); 
   return (
     <IonPage>
       <IonHeader>
@@ -23,8 +25,8 @@ const Profile: React.FC = () => {
           <IonTitle className="justify text-center">Personal</IonTitle>
           <IonButtons slot="start">
             <div className="icon-left">
-              <Bell className="bell" size={24} />
-              <ShoppingCart size={24} />
+              <Bell className="bell" size={24} onClick={()=> history.push("/Profile")}/>
+              <ShoppingCart size={24} onClick={()=> history.push("/Order")}/>
             </div>
           </IonButtons>
         </IonToolbar>
