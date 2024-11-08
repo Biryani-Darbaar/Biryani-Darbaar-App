@@ -17,6 +17,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      external: ['firebase/app', 'firebase/auth', 'firebase/analytics'],
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
