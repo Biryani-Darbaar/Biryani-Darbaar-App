@@ -1,3 +1,3 @@
 git add .
-git commit -m "CSS alignment issues"
+git commit -m "Onboarding slider automated"
 git push 
