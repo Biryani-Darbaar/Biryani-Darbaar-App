@@ -51,8 +51,7 @@
 
 .round-grid-container {
   height: 300px;
-  border: 1px solid black;
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
   align-items: center;
   padding-left: 10px;
   padding-top: 10px;

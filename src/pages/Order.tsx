@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { Redirect, Route, Switch, useHistory } from "react-router";
 import {
   IonContent,
   IonHeader,
   IonPage,
+  IonRouterOutlet,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -16,6 +17,7 @@ import cart from "../assets/icons/cart.png";
 import CustomButton from "../components/Button";
 import PromoCode from "../components/PromoCode";
 import AddressAndSpecifications from "../components/AddressAndSpecifications";
+import CheckoutPage from "./Checkout";
 
 const Order: React.FC = () => {
   const [orderValues, setOrderValues] = useState<any[]>([]);
@@ -63,40 +65,41 @@ const Order: React.FC = () => {
     console.log("Promo code applied");
     setShowPromoCode(true);
   };
-  const handleAddressChange = () =>{
+  const handleAddressChange = () => {
     setAddressPop(true);
-  }
+  };
   // Calculate subtotal, delivery charge, and total
   const calculateTotals = () => {
     const subtotal = orderValues.reduce((acc, order) => {
       return (
-        acc +
-        order.price * (quantities[order.cartItemId] || order.quantity)
+        acc + order.price * (quantities[order.cartItemId] || order.quantity)
       );
     }, 0);
     const deliveryCharge = 2;
-    const promoDiscount = parseFloat(sessionStorage.getItem("promoDiscount") || "0");    
+    const promoDiscount = parseFloat(
+      sessionStorage.getItem("promoDiscount") || "0"
+    );
     const amount = Math.round(subtotal * (1 - promoDiscount));
     const total = amount + deliveryCharge;
     return { subtotal, deliveryCharge, total };
   };
 
-  const handleRemoveItem = async (cartId:string) => {
-    const response  =  await axios.delete(`http://localhost:4200/cart/${cartId}`, {
-      data: {
-        userId: userId
+  const handleRemoveItem = async (cartId: string) => {
+    const response = await axios.delete(
+      `http://localhost:4200/cart/${cartId}`,
+      {
+        data: {
+          userId: userId,
+        },
       }
-    });
+    );
     if (response.status === 200) {
       console.log("Item removed");
       fetchOrders();
-    }
-    else{
+    } else {
       console.log("Error removing item");
-      
     }
-    
-  }
+  };
   // Destructure calculated totals for easier access
   const { subtotal, deliveryCharge, total } = calculateTotals();
 
@@ -106,6 +109,7 @@ const Order: React.FC = () => {
         <Navbar />
       </IonHeader>
       <IonContent fullscreen>
+        
         <div className="content-fullscreen">
           {orderValues.length > 0 ? (
             <div className="order-counter">
@@ -136,8 +140,13 @@ const Order: React.FC = () => {
                       onClick={() => updateQuantity(order.cartItemId, 1)}
                       className="quantity-icon"
                     />
-                    <Trash2 size={20} color="red" onClick={()=>{
-                      handleRemoveItem(order.cartItemId)}}/>
+                    <Trash2
+                      size={20}
+                      color="red"
+                      onClick={() => {
+                        handleRemoveItem(order.cartItemId);
+                      }}
+                    />
                   </div>
                 </div>
               ))}
@@ -145,7 +154,9 @@ const Order: React.FC = () => {
               <div className="apply-promo" onClick={handlePromo}>
                 Apply promocode <ChevronRight />
               </div>
-              {showPromoCode && <PromoCode onClose={() => setShowPromoCode(false)} />}
+              {showPromoCode && (
+                <PromoCode onClose={() => setShowPromoCode(false)} />
+              )}
               <div className="total">
                 <h5 className="total-content">
                   Subtotal:{" "}
@@ -153,27 +164,48 @@ const Order: React.FC = () => {
                 </h5>
                 <h5 className="total-content">
                   Delivery:{" "}
-                  <span className="dyna-price"> ${deliveryCharge.toFixed(2)}</span>
+                  <span className="dyna-price">
+                    {" "}
+                    ${deliveryCharge.toFixed(2)}
+                  </span>
                 </h5>
                 <div className="line"></div>
                 <h4 className="total-content">
                   Total:{" "}
                   {
-                    <span className="dyna-price total-price">  ${total.toFixed(2)}</span>}
+                    <span className="dyna-price total-price">
+                      {" "}
+                      ${total.toFixed(2)}
+                    </span>
+                  }
                 </h4>
               </div>
               {/* <PromoCode amount={total} onClose={() => console.log("Promo code closed")} /> */}
               <div className="">
-                <CustomButton className="checkout-button" onClick={handleAddressChange}>
+                <CustomButton
+                  className="checkout-button"
+                  onClick={handleAddressChange}
+                >
                   Add Address and Specifications
                 </CustomButton>
-                <CustomButton className="checkout-button" onClick={() => history.push("/Checkout")}>
+                <CustomButton
+                  className="checkout-button"
+                  onClick={() => {
+                    console.log("Checkout clicked");
+                    history.push({
+                      pathname: "/Checkout",
+                      state: { amount: total }
+                    })
+                  }}
+                >
                   Checkout
                 </CustomButton>
               </div>
-              {addressPop &&
-              <AddressAndSpecifications onClose={()=> setAddressPop(false)}/>
-              }
+              {addressPop && (
+                <AddressAndSpecifications
+                  onClose={() => setAddressPop(false)}
+                />
+              )}
             </div>
           ) : (
             <div className="cart-no-items">

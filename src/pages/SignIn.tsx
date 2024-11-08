@@ -28,8 +28,8 @@ import VerifyPhoneNumber from "./VerifyPhoneNumber"; // Import the VerifyPhoneNu
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import axios from "axios";
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState("kavyakalyanram@gmail.com");
-  const [password, setPassword] = useState("vishnu");
+  const [email, setEmail] = useState("pavaniatmakuri@gmail.com");
+  const [password, setPassword] = useState("pavaniatmakuri");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);

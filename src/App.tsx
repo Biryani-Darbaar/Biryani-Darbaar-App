@@ -39,9 +39,10 @@ import "@ionic/react/css/display.css";
 import { BookOpenText, House, NotebookText, User } from "lucide-react";
 import HomePage from "./pages/HomePage";
 import { auth } from "./providers/auth/firebase";
- // Import the auth instance
- import { onAuthStateChanged } from 'firebase/auth';
+// Import the auth instance
+import { onAuthStateChanged } from "firebase/auth";
 import Item from "./pages/Item";
+import CheckoutPage from "./pages/Checkout";
 
 setupIonicReact();
 
@@ -86,7 +87,10 @@ const App: React.FC = () => {
                 {isAuthenticated ? <Menu /> : <Redirect to="/HomePage" />}
               </Route>
               <Route exact path="/Item">
-                {isAuthenticated ? <Item/> : <Redirect to="/HomePage" />}
+                {isAuthenticated ? <Item /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/Checkout">
+                <CheckoutPage />
               </Route>
               <Route path="/Order">
                 {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}
@@ -173,7 +177,6 @@ const App: React.FC = () => {
               </IonLabel>
             </IonTabButton>
           </IonTabBar>
-
         </IonTabs>
       </IonReactRouter>
     </IonApp>
