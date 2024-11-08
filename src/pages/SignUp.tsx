@@ -18,22 +18,25 @@ import {
   eyeOutline,
   eyeOffOutline,
 } from "ionicons/icons";
-import "../assets/css/Signup.css"
+import "../assets/css/Signup.css";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route } from "react-router";
 import { Link } from "react-router-dom";
 import SignIn from "./SignIn";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("1234567");
+  const [phNumber, setPhNumber] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const history = useHistory();
   // Validate email format
   const isValidEmail = (email: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,13 +44,19 @@ const SignUp: React.FC = () => {
   };
 
   // Handle sign-up action
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!firstName || !lastName) {
       setErrorMessage("Please enter both first and last names.");
       setShowErrorToast(true);
       return;
     }
-
+    
+    if(!phNumber || phNumber.length < 10){
+      setErrorMessage("Please enter a valid phone number.");
+      setShowErrorToast(true);
+      return;
+    }
+    
     if (!email || !isValidEmail(email)) {
       setErrorMessage("Please enter a valid email address.");
       setShowErrorToast(true);
@@ -66,8 +75,26 @@ const SignUp: React.FC = () => {
       return;
     }
 
+    const fullName = `${firstName}${lastName}`;
+    const payload = {
+      "userName": fullName,
+      "email": email,
+      "password": password,
+      "phoneNumber": phNumber
+    }
+    console.log("Payload", payload);
+    
     // Implement sign-up logic
-    console.log("Sign up with:", firstName, lastName, email, password);
+    const response = await axios.post("http://localhost:4200/signup", payload);
+
+    if(response.status === 201){
+      history.push("/SignIn");
+      return;
+    }
+    setErrorMessage("An error occurred. Please try again.");
+    setShowErrorToast(true);
+    
+    console.log("Sign up with:", firstName, lastName, email, password, phNumber, fullName, response);
   };
 
   const togglePasswordVisibility = () => {
@@ -81,9 +108,7 @@ const SignUp: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="danger">
-          
-        </IonToolbar>
+        <IonToolbar color="danger"></IonToolbar>
       </IonHeader>
 
       <IonContent className="ion-padding">
@@ -107,7 +132,13 @@ const SignUp: React.FC = () => {
             placeholder="Last Name"
           />
         </IonItem>
-
+        <IonItem className="mb-4">
+          <IonInput
+            value={phNumber}
+            onIonChange={(e) => setPhNumber(e.detail.value!)}
+            placeholder="Phone Number"
+          />
+        </IonItem>
         <IonItem className="mb-4">
           <IonIcon icon={mailOutline} slot="start" color="danger" />
           <IonInput
@@ -164,7 +195,6 @@ const SignUp: React.FC = () => {
                 <Route path="/SignIn" component={SignIn} />
               </IonRouterOutlet>
             </IonReactRouter>
-          
           </IonButton>
           <Link to="/SignIn">Sign In</Link>
         </p>

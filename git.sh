@@ -1,3 +1,3 @@
 git add .
-git commit -m "Onboarding slider automated"
+git commit -m "Signup functionality completed with validation and routing to the login page"
 git push 
