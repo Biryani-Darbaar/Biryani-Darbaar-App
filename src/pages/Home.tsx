@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "../assets/css/Home.css";
 import Navbar from "../components/Navbar/Navbar";
 import CustomButton from "../components/Button";
@@ -31,6 +31,7 @@ import HoriScroll from "../components/HoriScroll";
 import GameModal from "../components/GameModal";
 import RoundScroll from "../components/RoundScroll";
 import IconScroll from "../components/iconSlider";
+import "swiper/css";
 
 const Home: React.FC = () => {
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
@@ -44,16 +45,41 @@ const Home: React.FC = () => {
   >([]);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await axios.get(
-          "https://biryani-darbar-server.vercel.app/img"
-        );
-        setImages(response.data.slice(0, 6));
-      } catch (error) {
-        console.error("Error fetching images:", error);
-      }
-    };
+    // const fetchImages = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       "https://biryani-darbar-server.vercel.app/img"
+    //     );
+    //     setImages(response.data.slice(0, 6));
+    //   } catch (error) {
+    //     console.error("Error fetching images:", error);
+    //   }
+    // };
+
+    const imager = [
+      {
+        name: "images/1729369562701-IMG-20241020-WA0001.jpg",
+        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369562701-IMG-20241020-WA0001.jpg",
+      },
+      {
+        name: "images/1729369563406-IMG-20241020-WA0004.jpg",
+        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369563406-IMG-20241020-WA0004.jpg",
+      },
+      {
+        name: "images/1729369563853-IMG-20241020-WA0006.jpg",
+        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369563853-IMG-20241020-WA0006.jpg",
+      },
+      {
+        name: "images/1729369564254-IMG-20241020-WA0008.jpg",
+        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369564254-IMG-20241020-WA0008.jpg",
+      },
+      {
+        name: "images/1729369564671-IMG-20241020-WA0012.jpg",
+        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369564671-IMG-20241020-WA0012.jpg",
+      },
+    ];
+
+    setImages(imager);
 
     const fetchSpecialDishes = async () => {
       try {
@@ -77,7 +103,6 @@ const Home: React.FC = () => {
       }
     };
 
-    fetchImages();
     fetchSpecialDishes();
     fetchCategories();
     console.log("Mundaa", categories);
@@ -89,7 +114,9 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await axios.get("https://biryani-darbar-server.vercel.app/locations");
+        const response = await axios.get(
+          "https://biryani-darbar-server.vercel.app/locations"
+        );
         setLocations(response.data);
       } catch (error) {
         console.error("Error fetching locations:", error);
@@ -131,14 +158,22 @@ const Home: React.FC = () => {
       <IonContent fullscreen className="content">
         <div className="content-custom">
           {/* Carousel */}
+          
           <Swiper
-            modules={[Autoplay, Pagination]}
-            autoplay={{ delay: 5000 }}
-            pagination={{ clickable: true }}
             spaceBetween={10}
             slidesPerView={1}
             loop={true}
-            className="carousel-container"
+            className="carousel-container mySwiper"
+            centeredSlides={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            modules={[Autoplay, Pagination, Navigation]}
           >
             {images.map((image, index) => (
               <SwiperSlide key={index}>
