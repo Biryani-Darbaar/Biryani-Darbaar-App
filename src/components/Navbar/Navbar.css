@@ -5,7 +5,7 @@ nav{
 }
 
 .search{
-    margin-left: 5vw;
+    margin-left: 9vw;
     margin-top: 0.3vh;
 }
 
@@ -23,17 +23,8 @@ nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #4B4B4B ;
-    border-radius: 80px;
     padding: 5px;
     margin-left: 3.5vw;
     margin-top: 0.5vh;
 }
 
-.verti-line{
-    height: 25px;
-    width: 1px;
-    background-color: #4B4B4B;
-    margin-left: 4px;
-    margin-right: 4px;
-}

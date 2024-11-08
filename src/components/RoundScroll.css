@@ -11,7 +11,8 @@
 }
 
 .round-scroll-item {
-    min-width: 30%; /* Two items visible at once */
+    min-width: 40%;
+    max-width: 70%; /* Two items visible at once */
     height: 150px;
     margin-right: 20px; /* Space between cards */
     border-radius: 10px;
@@ -24,10 +25,10 @@
 
 .round-scroll-image {
     width: 55%;
-    height: 40%; /* Adjust the height as necessary */
+    height: 55%; /* Adjust the height as necessary */
     object-fit: cover; /* Ensures the image covers the top part */
     margin-left: 20%;
-    border-radius: 100%;
+    border-radius: 9999px;
     position: relative;
     z-index: 1;
 }

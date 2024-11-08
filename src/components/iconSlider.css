@@ -13,8 +13,8 @@
 
 .icon-scroll-item {
     flex-shrink: 0; /* Prevent items from compressing */
-    width: 65px; /* Set a fixed width for each item */
-    height: 65px;
+    width: 80px; /* Set a fixed width for each item */
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;

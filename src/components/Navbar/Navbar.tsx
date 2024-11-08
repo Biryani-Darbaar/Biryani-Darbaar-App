@@ -24,9 +24,6 @@ const Navbar = () => {
           <InputSearch placeholder="Search" />
         </div>
         <div className="icon-right">
-          <Ellipsis color="#fff" />
-          <div className="verti-line"></div>
-          <X color="#fff" />
         </div>
       </nav>
     </IonToolbar>
