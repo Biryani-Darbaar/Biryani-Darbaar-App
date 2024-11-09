@@ -116,6 +116,8 @@ const Menu: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <div className="content-menu">
+          
         <img
           src={menu1}
           style={{
@@ -125,7 +127,7 @@ const Menu: React.FC = () => {
             marginLeft: "10px",
           }}
           alt="Menu"
-        />
+          />
         <p style={{ fontWeight: "bold", marginLeft: "15px" }}>Special Offers</p>
         <div
           style={{
@@ -134,48 +136,49 @@ const Menu: React.FC = () => {
             width: "45%",
             marginLeft: "10px",
           }}
-        >
+          >
           <img src={menusp1} />
           <img src={menusp2} />
         </div>
 
         <p style={{ fontWeight: "bold", marginLeft: "15px" }}>List of dishes</p>
-        <div
+        </div>
+          <div
           style={{
             display: "flex",
             gap: "10px",
             overflowX: "auto",
             marginLeft: "1.25rem",
           }}
-        >
+          >
           <IconScroll
             items={categories.map((category) => ({ name: category }))}
             onCategoryClick={setActiveCategory}
-          />
+            />
         </div>
 
         <div style={{ marginTop: "10px" }}>
           {dishes.map((dish, index) => (
             <div
-              key={index}
-              style={{
-                display: "flex",
-                marginRight: "10px",
-                marginLeft: "10px",
-                marginBottom: "15px",
-                border: "0px solid #ccc",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                padding: "10px",
-                borderRadius: "8px",
-                gap: "8px",
-                justifyContent: "space-between",
-              }}
+            key={index}
+            style={{
+              display: "flex",
+              marginRight: "10px",
+              marginLeft: "10px",
+              marginBottom: "15px",
+              border: "0px solid #ccc",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              padding: "10px",
+              borderRadius: "8px",
+              gap: "8px",
+              justifyContent: "space-between",
+            }}
             >
               <img
                 src={dish.image}
                 alt={dish.dishName || dish.name}
                 style={{ width: "100px", height: "100px", borderRadius: "8px" }}
-              />
+                />
               <div>
                 <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
                   {dish.dishName || dish.name}
@@ -197,7 +200,7 @@ const Menu: React.FC = () => {
                       description: dish.description || "",
                     });
                   }}
-                />
+                  />
               </div>
             </div>
           ))}

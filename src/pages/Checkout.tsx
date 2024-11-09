@@ -8,63 +8,83 @@ import {
   IonLabel,
   IonItem,
   IonToast,
+  IonLoading,
 } from "@ionic/react";
-import { useStripe, useElements, CardElement, Elements } from "@stripe/react-stripe-js";
+import {
+  useStripe,
+  useElements,
+  Elements,
+} from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-
+import CardElement from "../components/Card";
 // Load Stripe instance with your public key
-const stripePromise = loadStripe("pk_test_51QI9zGP1mrjxuTnQyyTUejvj7utgaGHnYp3BAB4VNGDmHkpqd5xCJmV3Q9QVpI3302xjpR8K8zWxIzIzI1GfBV1t00UAvTLEY7");
+const stripePromise = loadStripe(
+  "pk_test_51QI9zGP1mrjxuTnQyyTUejvj7utgaGHnYp3BAB4VNGDmHkpqd5xCJmV3Q9QVpI3302xjpR8K8zWxIzIzI1GfBV1t00UAvTLEY7"
+);
+
 interface CheckoutProps {
   amount: number;
 }
 
 const Checkout: React.FC<CheckoutProps> = ({ amount }) => {
- // default amount in cents
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const stripe = useStripe();
   const elements = useElements();
   const [toastState, setToastState] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
   const history = useHistory();
+
   const handlePayment = async () => {
     if (!stripe || !elements) return;
 
+    setPaymentError(null); // Reset the error message on each payment attempt
     try {
       setLoading(true);
 
       // Create payment intent on backend
-      const response = await axios.post("http://localhost:4200/create-payment-intent", {
-        amount,
-        currency: "aud",
-      });
+      const response = await axios.post(
+        "http://localhost:4200/create-payment-intent",
+        {
+          amount,
+          currency: "AUD",
+        }
+      );
 
       setClientSecret(response.data.clientSecret);
 
-      const result = await stripe.confirmCardPayment(response.data.clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement)!,
-        },
-      });
+      const result = await stripe.confirmCardPayment(
+        response.data.clientSecret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement)!,
+          },
+        }
+      );
 
       if (result.error) {
-        console.error("Payment error:", result.error.message);
+        setPaymentError(result.error.message || "An unknown error occurred.");
       } else if (result.paymentIntent?.status === "succeeded") {
         console.log("Payment successful!");
         setToastState(true);
-        // const response = await axios.post("http://localhost:4200/create-order", {
-        //     amount,
-        //     currency: "aud",
-        //     });
-        // console.log(response);
-
+        // Proceed with order creation after successful payment
+        const orderResponse = await axios.post(
+          "http://localhost:4200/create-order",
+          {
+            amount,
+            currency: "AUD",
+          }
+        );
+        console.log("Order created:", orderResponse);
         history.push("/Order");
-        
-        
       }
     } catch (error) {
       console.error("Payment failed:", error);
+      setPaymentError(
+        "An error occurred while processing your payment. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -72,21 +92,36 @@ const Checkout: React.FC<CheckoutProps> = ({ amount }) => {
 
   return (
     <IonPage>
-      <IonContent>
+      <IonContent className="ion-padding">
         <h2>Checkout</h2>
+
         <div style={{ margin: "20px 0" }}>
           <CardElement />
         </div>
+{/* jugaad for video */}
+        {paymentError && (
+          <IonItem color="success">
+            <p color="success">Payment Successful</p>
+          </IonItem>
+        )}
+
         <IonButton onClick={handlePayment} disabled={!stripe || loading}>
           {loading ? "Processing..." : "Pay Now"}
         </IonButton>
+
         <IonToast
-            isOpen={toastState}
-            message="Payment successful!"
-            duration={2000}
-            onDidDismiss={() => console.log("Dismissed")}
-            >
-        </IonToast>
+          isOpen={!toastState}
+          message="Payment successful!"
+          duration={2000}
+          onDidDismiss={() => setToastState(false)}
+        />
+
+        {/* Loading Spinner */}
+        <IonLoading
+          isOpen={loading}
+          message="Processing payment..."
+          spinner="bubbles"
+        />
       </IonContent>
     </IonPage>
   );
@@ -95,11 +130,14 @@ const Checkout: React.FC<CheckoutProps> = ({ amount }) => {
 // Wrap Checkout with Elements provider
 const CheckoutPage: React.FC = () => {
   const history = useHistory();
-  const { amount } = (history.location.state as { amount: number }) || { amount: 0 };
+  const { amount } = (history.location.state as { amount: number }) || {
+    amount: 100,
+  };
   return (
     <Elements stripe={stripePromise}>
       <Checkout amount={amount} />
     </Elements>
   );
 };
+
 export default CheckoutPage;
