@@ -7,6 +7,7 @@ import {
   IonInput,
   IonButton,
 } from "@ionic/react";
+import "./Card.css";
 
 interface CardElementProps {
   onSubmit: (cardDetails: CardDetails) => void;
@@ -34,43 +35,60 @@ const CardElement: React.FC<CardElementProps> = ({ onSubmit }) => {
   };
 
   return (
-    <IonCard>
+    <IonCard className="ioncard-payment">
       <IonCardContent>
         <IonItem>
-                  <IonLabel >Card Number</IonLabel>
-          <IonInput
+          <IonLabel>Card Number</IonLabel>
+          <input
+            className="expiry-input"
             type="text"
             placeholder="1234 5678 9012 3456"
-            maxlength={16}
+            maxLength={19}
             value={cardNumber}
-            onIonChange={(e) => setCardNumber(e.detail.value!)}
+            onChange={(e) => {
+              let value = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+              setCardNumber(value);
+            }}
           />
         </IonItem>
 
         <IonItem>
-          <IonLabel >Expiry Date</IonLabel>
-          <IonInput
+          <IonLabel>Expiry Date</IonLabel>
+          <input
+            className="expiry-input"
             type="text"
             placeholder="MM/YY"
-            maxlength={5}
+            maxLength={5}
             value={expiryDate}
-            onIonChange={(e) => setExpiryDate(e.detail.value!)}
+            onChange={(e) => {
+              let value = e.target.value;
+              if (value.length === 2 && !value.includes("/")) {
+          value = value + "/";
+              } else if (value.length === 2 && value.includes("/")) {
+          value = value.slice(0, 2);
+              } else if (value.length === 3 && value.includes("/")) {
+          value = value.slice(0, 2) + "/" + value.slice(2);
+              } else if (value.length > 5) {
+          value = value.slice(0, 5);
+              }
+              setExpiryDate(value);
+            }}
           />
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">CVC</IonLabel>
+          <IonLabel >CVC</IonLabel>
           <IonInput
             type="password"
             placeholder="123"
-            maxlength={4}
+            maxlength={3}
             value={cvc}
             onIonChange={(e) => setCvc(e.detail.value!)}
           />
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">ZIP Code</IonLabel>
+          <IonLabel >ZIP Code</IonLabel>
           <IonInput
             type="text"
             placeholder="12345"
@@ -80,9 +98,6 @@ const CardElement: React.FC<CardElementProps> = ({ onSubmit }) => {
           />
         </IonItem>
 
-        <IonButton expand="block" onClick={handleSubmit}>
-          Submit Payment
-        </IonButton>
       </IonCardContent>
     </IonCard>
   );

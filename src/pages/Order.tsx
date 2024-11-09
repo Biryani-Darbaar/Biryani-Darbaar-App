@@ -194,8 +194,14 @@ const Order: React.FC = () => {
                     console.log("Checkout clicked");
                     history.push({
                       pathname: "/Checkout",
-                      state: { amount: total }
-                    })
+                      state: { 
+                        amount: total,
+                        orderItems: orderValues.map(order => ({
+                          ...order,
+                          quantity: quantities[order.cartItemId] || order.quantity
+                        }))
+                      }
+                    });
                   }}
                 >
                   Checkout

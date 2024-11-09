@@ -37,7 +37,7 @@ interface AddToCartParams {
 
 const Menu: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>("Chicken");
+  const [activeCategory, setActiveCategory] = useState<string>("Chicken Curry");
   const [dishes, setDishes] = useState<Dish[]>([]);
   const history = useHistory();
   // Fetch categories on mount

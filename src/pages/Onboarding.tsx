@@ -84,6 +84,8 @@ const Onboarding: React.FC = () => {
               Get Started
             </Link>
           </div>
+          <br />
+          <br />
         </div>
       </IonContent>
     </div>

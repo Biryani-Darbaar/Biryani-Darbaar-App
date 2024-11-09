@@ -45,17 +45,7 @@ const Home: React.FC = () => {
   >([]);
 
   useEffect(() => {
-    // const fetchImages = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       "https://biryani-darbar-server.vercel.app/img"
-    //     );
-    //     setImages(response.data.slice(0, 6));
-    //   } catch (error) {
-    //     console.error("Error fetching images:", error);
-    //   }
-    // };
-
+    
     const imager = [
       {
         name: "images/1729369562701-IMG-20241020-WA0001.jpg",
@@ -128,7 +118,7 @@ const Home: React.FC = () => {
 
   const fetchDishesByCategory = async (name: string) => {
     try {
-      console.log(name);
+      console.log("Lanja muindaa kuna",name);
 
       const response = await axios.get(
         `https://biryani-darbar-server.vercel.app/dishes/category/${name}`
