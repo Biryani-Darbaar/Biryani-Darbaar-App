@@ -47,6 +47,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
   const [toastState, setToastState] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const history = useHistory();
+  console.log("Order mundaa:", Order);
 
   const handlePayment = async () => {
     if (!stripe || !elements) return;
@@ -78,7 +79,6 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
       if (result.error) {
         setPaymentError(result.error.message || "An unknown error occurred.");
         console.log("Micheal okadu");
-        
       } else if (result.paymentIntent?.status === "succeeded") {
         console.log("Payment successful!");
         setToastState(true);
@@ -99,21 +99,30 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
         "An error occurred while processing your payment. Please try again."
       );
       console.log("Micheal okadu kaadu iddaru");
+      const userId = { userId: sessionStorage.getItem("sessionUserId") };
       const response = await axios.post("http://localhost:4200/orders", {
-        orderData: Order,
-        userId: sessionStorage.getItem("sessionUserId")
+        ...Order,
+        ...userId,
       });
-      console.log("Order created:", response);
-      
-      if(response.status === 201) {
+
+      console.log("Order created:", {
+        orderData: Order,
+        userId: sessionStorage.getItem("sessionUserId"),
+        orderStatus: "Pending",
+      });
+
+      if (response.status === 201) {
         console.log("Order created successfully");
-        for (const item of Order) {
+        for (const item of Order["orderItems"]) {
           const cartItemId = item.cartItemId;
-          await axios.delete(`http://localhost:4200/cart/${cartItemId}/${sessionStorage.getItem("sessionUserId")}`);
+          await axios.delete(
+            `http://localhost:4200/cart/${cartItemId}/${sessionStorage.getItem(
+              "sessionUserId"
+            )}`
+          );
         }
-        history.push("/Profile");
+        history.push("/Orders");
       }
-      
     } finally {
       setLoading(false);
     }
@@ -138,28 +147,28 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
             onClick={handlePayment}
             disabled={!stripe || loading}
             className="check-btn"
-            >
+          >
             {loading ? "Processing..." : "Pay Now"}
           </IonButton>
         </div>
-                {/* Loading Spinner */}
-                <IonLoading
-                  isOpen={loading}
-                  message="Processing payment..."
-                  spinner="bubbles"
-                />
-            {paymentError && (
-              <IonToast
-              className="toast-checkout"
-              isOpen={!toastState}
-              message="Payment successful!"
-              duration={2000}
-              color="success"
-              onDidDismiss={() => setToastState(false)}
-              position="bottom"
-              cssClass="custom-toast"
-              />
-            )}
+        {/* Loading Spinner */}
+        <IonLoading
+          isOpen={loading}
+          message="Processing payment..."
+          spinner="bubbles"
+        />
+        {paymentError && (
+          <IonToast
+            className="toast-checkout"
+            isOpen={!toastState}
+            message="Payment successful!"
+            duration={2000}
+            color="success"
+            onDidDismiss={() => setToastState(false)}
+            position="bottom"
+            cssClass="custom-toast"
+          />
+        )}
       </IonContent>
     </IonPage>
   );
@@ -168,15 +177,20 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 // Wrap Checkout with Elements provider
 const CheckoutPage: React.FC = () => {
   const history = useHistory();
-  const { amount, orderItems } = (history.location.state as { amount: number, orderItems: any[] }) || {
+  const { amount, order } = (history.location.state as {
+    amount: number;
+    orderItems: any[];
+  }) || {
     amount: 100,
-    orderItems: []
+    orderItems: [],
+    user: {}, // Ensure user is initialized
   };
   console.log("Amount:", amount);
-  console.log("Order Items:", orderItems);
+  console.log("Order Items:", order);
+
   return (
     <Elements stripe={stripePromise}>
-      <Checkout amount={amount} Order={orderItems} />
+      <Checkout amount={amount} Order={order} />
     </Elements>
   );
 };

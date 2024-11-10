@@ -1,0 +1,36 @@
+.order-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    margin-left: 20px;
+    margin-top: 20px;
+    max-width: 90vw;
+    transition: transform 0.2s;
+}
+
+.order-card:hover {
+    transform: scale(1.02);
+}
+
+.order-card h4 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.order-card p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.order-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-card li {
+    margin: 5px 0;
+    color: #444;
+}

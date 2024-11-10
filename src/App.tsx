@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import VerifyPhoneNumber from "./pages/VerifyPhoneNumber";
+import Orders from "./pages/Orders";
 import Splash from "./pages/Splash";
 import "./assets/css/App.css";
 import "@ionic/react/css/core.css";
@@ -43,6 +44,7 @@ import { auth } from "./providers/auth/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import Item from "./pages/Item";
 import CheckoutPage from "./pages/Checkout";
+import Settings from "./pages/Settings";
 
 setupIonicReact();
 
@@ -94,6 +96,12 @@ const App: React.FC = () => {
               </Route>
               <Route path="/Order">
                 {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/Settings">
+                {isAuthenticated ? <Settings/> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/Orders">
+                {isAuthenticated ? <Orders /> : <Redirect to="/HomePage" />}
               </Route>
               <Route path="/Profile">
                 {isAuthenticated ? <Profile /> : <Redirect to="/HomePage" />}

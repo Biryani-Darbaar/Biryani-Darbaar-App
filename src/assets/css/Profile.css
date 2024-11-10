@@ -1,0 +1,13 @@
+.ion-item-profile{
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-profile{
+    margin-right: 5vw;
+}
+
+.profile-header{
+    margin-top: 120px;
+}
+

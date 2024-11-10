@@ -6,6 +6,7 @@ import {
   IonPage,
   IonRouterOutlet,
   IonTitle,
+  IonToast,
   IonToolbar,
 } from "@ionic/react";
 import { ChevronRight, Minus, Plus, Trash2 } from "lucide-react"; // Import icons
@@ -24,6 +25,7 @@ const Order: React.FC = () => {
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [showPromoCode, setShowPromoCode] = useState(false);
   const [addressPop, setAddressPop] = useState(false);
+  const [addressToast, setAddressToast] = useState(false);
   const userId = sessionStorage.getItem("sessionUserId");
   const history = useHistory();
 
@@ -109,7 +111,6 @@ const Order: React.FC = () => {
         <Navbar />
       </IonHeader>
       <IonContent fullscreen>
-        
         <div className="content-fullscreen">
           {orderValues.length > 0 ? (
             <div className="order-counter">
@@ -190,22 +191,49 @@ const Order: React.FC = () => {
                 </CustomButton>
                 <CustomButton
                   className="checkout-button"
-                  onClick={() => {
-                    console.log("Checkout clicked");
-                    history.push({
-                      pathname: "/Checkout",
-                      state: { 
-                        amount: total,
-                        orderItems: orderValues.map(order => ({
+                  onClick={async () => {
+                    if (sessionStorage.getItem("address") !== null) {
+                      console.log("Checkout clicked");
+                      const url = `http://localhost:4200/user/${sessionStorage.getItem("sessionUserId")}`;
+                      console.log("URL:", url);
+                      const user = await axios.get(url);
+                        const OrderData = {
+                        "customerName": user.data.userName,
+                        "customerAddress": sessionStorage.getItem("address"),
+                        "customerPhone": user.data.phoneNumber,
+                        "orderDate": new Date().toISOString(),
+                        orderStatus: "Pending",
+                        "totalPrice": total,
+                        "orderItems": orderValues.map((order) => ({
                           ...order,
-                          quantity: quantities[order.cartItemId] || order.quantity
-                        }))
-                      }
-                    });
+                          dishName: order.name,
+                          quantity: quantities[order.cartItemId] || order.quantity,
+                        })),
+                        }
+                      console.log("Order Data:", OrderData);
+                      history.push({
+                        pathname: "/Checkout",
+                        state: {
+                          order: OrderData,
+                          // Ensure user data is passed correctly
+                        },
+                      });
+                    }
+                    else{
+                      setAddressToast(true);
+                      setAddressPop(true);
+                    }
                   }}
                 >
                   Checkout
                 </CustomButton>
+                <IonToast
+                  isOpen={addressToast}
+                  onDidDismiss={() => setAddressToast(false)}
+                  message="Please add address"
+                  duration={2000}
+                  color="danger"
+                />
               </div>
               {addressPop && (
                 <AddressAndSpecifications
