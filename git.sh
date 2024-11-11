@@ -1,3 +1,3 @@
 git add .
-git commit -m "orders and profile pages"
+git commit -m "Firebase session timing fix"
 git push 
