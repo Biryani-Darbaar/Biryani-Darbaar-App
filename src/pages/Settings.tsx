@@ -134,7 +134,6 @@ const Settings = () => {
                     {renderField({ field: "fullName", label: "Full Name" })}
                     {renderField({ field: "phone", label: "Phone" })}
                     {renderField({ field: "dob", label: "Date of Birth" })}
-                    {renderField({ field: "gender", label: "Gender" })}
                     {renderField({ field: "email", label: "Email" })}
                     {renderField({ field: "address", label: "Address" })}
                     {showSaveButton && (

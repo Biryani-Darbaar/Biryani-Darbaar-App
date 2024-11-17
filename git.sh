@@ -1,3 +1,3 @@
 git add .
-git commit -m "Firebase session timing fix"
+git commit -m "Bug fixes"
 git push 

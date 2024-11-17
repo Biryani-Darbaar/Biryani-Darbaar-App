@@ -97,6 +97,7 @@ const App: React.FC = () => {
               <Route path="/Order">
                 {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}
               </Route>
+              
               <Route path="/Settings">
                 {isAuthenticated ? <Settings/> : <Redirect to="/HomePage" />}
               </Route>

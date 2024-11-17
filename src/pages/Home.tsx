@@ -74,7 +74,7 @@ const Home: React.FC = () => {
     const fetchSpecialDishes = async () => {
       try {
         const specialResponse = await axios.get(
-          "https://biryani-darbar-server.vercel.app/dishes/special"
+          "http://localhost:4200/dishes/special"
         );
         setSpecial(specialResponse.data);
       } catch (error) {
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://biryani-darbar-server.vercel.app/categories"
+          "http://localhost:4200/categories"
         );
         setCategories(response.data);
       } catch (error) {
@@ -105,7 +105,7 @@ const Home: React.FC = () => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "https://biryani-darbar-server.vercel.app/locations"
+          "http://localhost:4200/locations"
         );
         setLocations(response.data);
       } catch (error) {
@@ -119,9 +119,8 @@ const Home: React.FC = () => {
   const fetchDishesByCategory = async (name: string) => {
     try {
       console.log("Lanja muindaa kuna",name);
-
       const response = await axios.get(
-        `https://biryani-darbar-server.vercel.app/dishes/category/${name}`
+        `http://localhost:4200/dishes/category/${name}`
       );
       console.log(response.data);
 

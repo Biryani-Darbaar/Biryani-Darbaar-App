@@ -9,7 +9,7 @@ const SignOutButton = () => {
   const handleSignOut = async () => {
     const auth = getAuth();
     await signOut(auth);
-    const res = await axios.post("https://biryani-darbar-server.vercel.app/logout");
+    const res = await axios.post("http://localhost:4200/logout");
     console.log("Sign out response:", res);
     sessionStorage.clear();
     history.push("/");

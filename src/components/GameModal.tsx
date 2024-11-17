@@ -26,15 +26,6 @@ import {
       console.log(`The winner is: ${winner}`);
     };
   
-    const segments = [
-      { name: "Prize 1", color: "#f44336" },
-      { name: "Prize 2", color: "#ff9800" },
-      { name: "Prize 3", color: "#ffeb3b" },
-      { name: "Prize 4", color: "#4caf50" },
-      { name: "Prize 5", color: "#2196f3" },
-      { name: "Prize 6", color: "#9c27b0" },
-    ];
-  
     const resetGame = () => {
       setWinner(null);
       setShowToast(false);
@@ -43,19 +34,16 @@ import {
     return (
       <IonModal isOpen={isOpen} onDidDismiss={onClose}>
         <IonHeader>
-          <IonToolbar>
+          <IonToolbar color="danger" >
             <IonTitle>Mini Game</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent className="ion-padding">
-          <IonText color="primary">
-            <h2>Play the Mini-Game!</h2>
-          </IonText>
-          <p>Spin the wheel and see what you win!</p>
-  
+        <IonContent color="#980014">
+          <div style={{backgroundColor: "#980014", height: '100vh', width: '100vw'}}>
+  <br />
           <Spinner
              // Callback for when the spin finishes
-          />
+             />
   
           {/* Show winner once the game ends */}
           {winner && (
@@ -65,9 +53,7 @@ import {
           )}
   
           {/* Buttons to close or reset the game */}
-          <IonButton expand="block" onClick={resetGame} disabled={!winner}>
-            Play Again
-          </IonButton>
+          
           <IonButton expand="block" color="danger" onClick={onClose}>
             Close Game
           </IonButton>
@@ -78,7 +64,8 @@ import {
             message={`Congratulations! You won ${winner}`}
             duration={3000}
             onDidDismiss={() => setShowToast(false)}
-          />
+            />
+            </div>
         </IonContent>
       </IonModal>
     );

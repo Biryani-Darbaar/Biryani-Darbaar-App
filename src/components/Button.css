@@ -16,10 +16,10 @@
     color: var(--primary-color);
   }
 
-  .custom-btn.secondary:hover {
+  /* .custom-btn.secondary:hover {
     background-color: var(--primary-color);
     color: var(--secondary-color);
-  }
+  } */
 
   .custom-btn.popup{
     width: 80%;

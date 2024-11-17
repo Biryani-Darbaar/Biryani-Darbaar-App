@@ -45,7 +45,7 @@ const Menu: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://biryani-darbar-server.vercel.app/categories"
+          "http://localhost:4200/categories"
         );
         setCategories(response.data);
       } catch (error) {
@@ -60,7 +60,7 @@ const Menu: React.FC = () => {
     const fetchDishes = async () => {
       try {
         const response = await axios.get(
-          `https://biryani-darbar-server.vercel.app/dishes/category/${activeCategory}`
+          `http://localhost:4200/dishes/category/${activeCategory}`
         );
         setDishes(response.data);
       } catch (error) {

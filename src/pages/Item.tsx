@@ -41,7 +41,7 @@ const Item = () => {
   const cartClicked = async () => {
     
     const userId = sessionStorage.getItem("sessionUserId");
-    const response  = await axios.post("https://biryani-darbar-server.vercel.app/cart", {
+    const response  = await axios.post("http://localhost:4200/cart", {
         "userId": userId,
         "dishId": dishId,
         "name": name,

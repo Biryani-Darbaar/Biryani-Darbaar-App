@@ -31,7 +31,7 @@ const Order: React.FC = () => {
 
   const fetchOrders = async () => {
     const response = await axios.post(
-      "https://biryani-darbar-server.vercel.app/getCart",
+      "http://localhost:4200/getCart",
       {
         userId: userId,
       }
