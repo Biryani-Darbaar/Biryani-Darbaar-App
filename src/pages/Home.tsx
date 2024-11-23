@@ -74,7 +74,7 @@ const Home: React.FC = () => {
     const fetchSpecialDishes = async () => {
       try {
         const specialResponse = await axios.get(
-          "http://localhost:4200/dishes/special"
+          "http://localhost:4200/specialOffers"
         );
         setSpecial(specialResponse.data);
       } catch (error) {

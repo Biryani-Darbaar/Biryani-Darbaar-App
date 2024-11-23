@@ -45,6 +45,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import Item from "./pages/Item";
 import CheckoutPage from "./pages/Checkout";
 import Settings from "./pages/Settings";
+import Offers from "./pages/Offers";
+import Personal from "./pages/Personal";
 
 setupIonicReact();
 
@@ -112,6 +114,12 @@ const App: React.FC = () => {
               </Route>
               <Route path="/SignUp">
                 {isAuthenticated ? <Redirect to="/Home" /> : <SignUp />}
+              </Route>
+              <Route path="/Offer">
+                {isAuthenticated ? <Offers /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/Personal">
+                {isAuthenticated ? <Personal /> : <Redirect to="/HomePage" />}
               </Route>
               <Redirect from="/" to="/HomePage" />
             </Switch>

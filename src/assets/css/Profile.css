@@ -11,3 +11,13 @@
     margin-top: 120px;
 }
 
+.profile-name{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.profile-edit-icon{
+    margin-left: 4vw;
+    margin-top: 0.5vh;
+}

@@ -11,7 +11,19 @@ import {
   IonItem,
   IonLabel,
 } from "@ionic/react";
-import { Bell, IdCard, Power, ReceiptText, ScanQrCode, Settings, ShieldCheck, ShoppingCart, Tags } from "lucide-react";
+import {
+  Bell,
+  IdCard,
+  Power,
+  ReceiptText,
+  ScanQrCode,
+  Settings,
+  ShieldCheck,
+  ShoppingCart,
+  Tags,
+  ChevronRight,
+  Pencil,
+} from "lucide-react";
 import "../assets/css/Profile.css";
 import { useHistory } from "react-router";
 import { getAuth, signOut } from "firebase/auth";
@@ -27,7 +39,6 @@ const Profile: React.FC = () => {
       const response = await axios.get(`http://localhost:4200/user/${userId}`);
       setUserName(response.data.userName);
       console.log("User name:", response.data);
-      
     };
     fetchUserName();
   }, []);
@@ -40,7 +51,7 @@ const Profile: React.FC = () => {
     sessionStorage.clear();
     history.push("/");
   };
-  
+
   return (
     <IonPage>
       <IonHeader>
@@ -48,7 +59,11 @@ const Profile: React.FC = () => {
           <IonTitle className="justify text-center">Personal</IonTitle>
           <IonButtons slot="start">
             <div className="icon-left">
-              <Bell className="bell" size={24} onClick={() => history.push("/Profile")} />
+              <Bell
+                className="bell"
+                size={24}
+                onClick={() => history.push("/Profile")}
+              />
               <ShoppingCart size={24} onClick={() => history.push("/Order")} />
             </div>
           </IonButtons>
@@ -57,65 +72,59 @@ const Profile: React.FC = () => {
       <IonContent fullscreen>
         {/* User profile picture and name */}
         <div className="profile-header">
-          <img src="path_to_profile_image" alt="Profile" className="profile-image" />
-          <h2>{userName}</h2>
+          <img
+            src="path_to_profile_image"
+            alt="Profile"
+            className="profile-image"
+          />
+          <div className="profile-name">
+            <h2>{userName}</h2>
+            <Pencil
+              size={16}
+              color="red"
+              className="profile-edit-icon"
+              onClick={() => history.push("/Personal")}
+            />
+          </div>
         </div>
 
         {/* Menu items */}
-        <IonItem  button onClick={() => history.push("/Orders")}>
-          <div className="ion-item-profile">
-
-          <ReceiptText color="#EA1F27" className="icon-profile"/>
+        <IonItem button onClick={() => history.push("/Orders")}>
+          <ReceiptText color="#EA1F27" className="icon-profile" />
           <IonLabel>My order</IonLabel>
-          </div>
+          <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem  button onClick={() => history.push("/Offer")}>
-          <div className="ion-item-profile">
-
-          <Tags color="#EA1F27" className="icon-profile"/>
+        <IonItem button onClick={() => history.push("/Offer")}>
+          <Tags color="#EA1F27" className="icon-profile" />
           <IonLabel>My offer</IonLabel>
-          </div>
+          <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem  button onClick={() => history.push("/Member")}>
-          <div className="ion-item-profile">
-
+        <IonItem button onClick={() => history.push("/Member")}>
           <IdCard color="#EA1F27" className="icon-profile" />
           <IonLabel>Member</IonLabel>
-          </div>
+          <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem  button onClick={() => history.push("/Referral")}>
-          <div className="ion-item-profile">
-
-          <ScanQrCode color="#EA1F27" className="icon-profile" />
-          <IonLabel>Referral code</IonLabel>
-          </div>
-        </IonItem>
-        <IonItem  button onClick={() => history.push("/Settings")}>
-          <div className="ion-item-profile">
-
+        <IonItem button onClick={() => history.push("/Settings")}>
           <Settings color="#EA1F27" className="icon-profile" />
           <IonLabel>Setting</IonLabel>
-          </div>
+          <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem  button onClick={() => history.push("/Terms")}>
-          <div className="ion-item-profile">
-
+        <IonItem button onClick={() => history.push("/Terms")}>
           <ShieldCheck color="#EA1F27" className="icon-profile" />
           <IonLabel>Terms of use</IonLabel>
-          </div>
+          <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem  button onClick={() => history.push("/Privacy")}>
-          <div className="ion-item-profile">
-
+        <IonItem button onClick={() => history.push("/Privacy")}>
           <ShieldCheck color="#EA1F27" className="icon-profile" />
           <IonLabel>Privacy policy</IonLabel>
-          </div>
+          <ChevronRight color="#252525" />
         </IonItem>
-        
+
         {/* Sign out */}
         <IonItem button onClick={handleSignOut}>
-          <Power color="#EA1F27" className="icon-profile"/>
+          <Power color="#EA1F27" className="icon-profile" />
           <IonLabel>Sign out</IonLabel>
+          <ChevronRight color="#252525" />
         </IonItem>
       </IonContent>
     </IonPage>
