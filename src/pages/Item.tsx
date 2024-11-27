@@ -39,8 +39,44 @@ const Item = () => {
   const [count, setCount] = useState(1);
   console.log(count);
   const cartClicked = async () => {
-    
     const userId = sessionStorage.getItem("sessionUserId");
+    console.log(userId);
+    const cartResponse = await axios.post(`http://localhost:4200/getCart`, userId);
+
+    if (cartResponse.data.length > 0) {
+      // const existingItem = cartResponse.data[0];
+      // const newQuantity = existingItem.quantity + count;
+      // await axios.put(`http://localhost:4200/cart/${existingItem.id}`, {
+      //   ...existingItem,
+      //   quantity: newQuantity,
+      //   price: price * newQuantity,
+      for (const cartItem of cartResponse.data) {
+        if (cartItem.dishId === dishId) {
+          const newQuantity = cartItem.quantity + count;
+          console.log(cartItem.cartItemId);
+          const response = await axios.put(`http://localhost:4200/cart/${cartItem.cartItemId}`, {
+        quantity: newQuantity,
+        price: price * newQuantity,
+          });
+          if(response.status === 200) {
+            history.push("/Order");
+        }
+          return;
+        }
+      }
+    } else {
+      await axios.post("http://localhost:4200/cart", {
+        userId: userId,
+        dishId: dishId,
+        name: name,
+        addons: addons,
+        price: price * count,
+        image: image,
+        description: description,
+        quantity: count,
+      });
+    }
+    
     const response  = await axios.post("http://localhost:4200/cart", {
         "userId": userId,
         "dishId": dishId,

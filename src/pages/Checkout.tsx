@@ -113,14 +113,16 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       if (response.status === 201) {
         console.log("Order created successfully");
-        for (const item of Order["orderItems"]) {
+        for (const item of ((Order as unknown) as { orderItems: any[] }).orderItems) {
           const cartItemId = item.cartItemId;
-          await axios.delete(
-            `http://localhost:4200/cart/${cartItemId}/${sessionStorage.getItem(
-              "sessionUserId"
-            )}`
+          console.log("Cart Item ID:", cartItemId);
+          
+          const response = await axios.delete(
+            `http://localhost:4200/cart/${cartItemId}}`
           );
+          console.log("Cart Item deleted:", response);
         }
+
         history.push("/Orders");
       }
     } finally {

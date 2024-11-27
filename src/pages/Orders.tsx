@@ -31,14 +31,17 @@ const Orders = () => {
     const fetchOrders = async () => {
       const userId = sessionStorage.getItem("sessionUserId");
       if (userId) {
-        try {
-          const response = await axios.get(
-            `http://localhost:4200/ordersByUser/${userId}`
-          );
-          setOrders(response.data);
-        } catch (error) {
-          console.error("Error fetching orders:", error);
-        }
+      try {
+        const response = await axios.get(
+        `http://localhost:4200/ordersByUser/${userId}`
+        );
+        const sortedOrders = response.data.sort(
+        (a: Order, b: Order) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+        );
+        setOrders(sortedOrders);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
       }
     };
 
