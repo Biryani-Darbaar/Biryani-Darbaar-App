@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   IonContent,
   IonHeader,
@@ -28,17 +28,17 @@ import "../assets/css/Profile.css";
 import { useHistory } from "react-router";
 import { getAuth, signOut } from "firebase/auth";
 import axios from "axios";
-import { useEffect } from "react";
 
 const Profile: React.FC = () => {
   const history = useHistory();
   const [userName, setUserName] = useState("User");
+  const [userImage, setUserImage] = useState("");
   useEffect(() => {
     const fetchUserName = async () => {
       const userId = sessionStorage.getItem("sessionUserId");
       const response = await axios.get(`http://localhost:4200/user/${userId}`);
       setUserName(response.data.userName);
-      console.log("User name:", response.data);
+      setUserImage(response.data.imageUrl);
     };
     fetchUserName();
   }, []);
@@ -72,11 +72,43 @@ const Profile: React.FC = () => {
       <IonContent fullscreen>
         {/* User profile picture and name */}
         <div className="profile-header">
-          <img
-            src="path_to_profile_image"
-            alt="Profile"
-            className="profile-image"
-          />
+          {userImage ? (
+            <img src={userImage} alt="Profile" className="profile-image" />
+          ) : (
+            <div className="profile-image-placeholder">
+              <div className="profile-container">
+                <h4>Please upload profile picture &#128073;</h4>
+                <Pencil
+                  size={16}
+                  color="red"
+                  onClick={() => document.getElementById("imageInput")?.click()}
+                  className="profile-edit-icon"
+                />
+              </div>
+              <input
+                type="file"
+                id="imageInput"
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={async (e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    const formData = new FormData();
+                    formData.append("image", e.target.files[0]);
+                    const response = await axios.post(
+                      "http://localhost:4200/userImg",
+                      formData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                        },
+                      }
+                    );
+                    setUserImage(response.data.imageUrl);
+                  }
+                }}
+              />
+            </div>
+          )}
           <div className="profile-name">
             <h2>{userName}</h2>
             <Pencil

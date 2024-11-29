@@ -56,3 +56,8 @@
 .settings-button:hover {
     background-color: #0056b3;
 }
+
+
+.settings-hand-gesture{
+    font-size: 20px;
+}

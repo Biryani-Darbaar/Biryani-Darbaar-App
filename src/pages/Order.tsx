@@ -51,6 +51,8 @@ const Order: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log(userId);
+    
     if (userId) {
       fetchOrders();
     }

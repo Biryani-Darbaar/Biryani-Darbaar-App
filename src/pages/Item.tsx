@@ -31,7 +31,7 @@ interface LocationState {
 }
 
 const Item = () => {
-    const history = useHistory();
+  const history = useHistory();
   const location = useLocation<LocationState>();
   const { name, dishId, addons, price, image, description } = location.state;
   console.log(name, dishId, addons, price, image, description);
@@ -41,46 +41,22 @@ const Item = () => {
   const cartClicked = async () => {
     const userId = sessionStorage.getItem("sessionUserId");
     console.log(userId);
-    const cartResponse = await axios.post(`http://localhost:4200/getCart`, userId);
 
-    if (cartResponse.data.length > 0) {
-      // const existingItem = cartResponse.data[0];
-      // const newQuantity = existingItem.quantity + count;
-      // await axios.put(`http://localhost:4200/cart/${existingItem.id}`, {
-      //   ...existingItem,
-      //   quantity: newQuantity,
-      //   price: price * newQuantity,
-      for (const cartItem of cartResponse.data) {
-        if (cartItem.dishId === dishId) {
-          const newQuantity = cartItem.quantity + count;
-          console.log(cartItem.cartItemId);
-          const response = await axios.put(`http://localhost:4200/cart/${cartItem.cartItemId}`, {
-        quantity: newQuantity,
-        price: price * newQuantity,
-          });
-          if(response.status === 200) {
-            history.push("/Order");
-        }
-          return;
-        }
-      }
-    } else {
-      const response = await axios.post("http://localhost:4200/cart", {
-        userId: userId,
-        dishId: dishId,
-        name: name,
-        addons: addons,
-        price: price * count,
-        image: image,
-        description: description,
-        quantity: count,
-      });
-      console.log(response.status);
-      if(response.status === 201) {
-          history.push("/Order");
-      }
+    const response = await axios.post("http://localhost:4200/cart", {
+      userId: userId,
+      dishId: dishId,
+      name: name,
+      addons: addons,
+      price: price * count,
+      image: image,
+      description: description,
+      quantity: count,
+    });
+    console.log(response.status);
+    if (response.status === 201) {
+      history.push("/Order");
     }
-    
+
     // const response  = await axios.post("http://localhost:4200/cart", {
     //     "userId": userId,
     //     "dishId": dishId,
@@ -91,26 +67,25 @@ const Item = () => {
     //     "description": description,
     //     "quantity": count
     // });
-
   };
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar className="toolbar-item">
-        <img className="image" src={image} alt="" />
-        <div className="price-segment">
-          <br />
-          <h5>Delicious good food</h5>
-          <div className="prices">
-            <h3>{price.toString().startsWith("$") ? price : `$${price}`}</h3>
-            <h3 className="discount">
-              {(price + 3).toFixed(2).startsWith("$")
-                ? (price + 3).toFixed(2)
-                : `$${(price + 3).toFixed(2)}`}
-            </h3>
+          <img className="image" src={image} alt="" />
+          <div className="price-segment">
+            <br />
+            <h5>Delicious good food</h5>
+            <div className="prices">
+              <h3>{price.toString().startsWith("$") ? price : `$${price}`}</h3>
+              <h3 className="discount">
+                {(price + 3).toFixed(2).startsWith("$")
+                  ? (price + 3).toFixed(2)
+                  : `$${(price + 3).toFixed(2)}`}
+              </h3>
+            </div>
           </div>
-        </div>
-      </IonToolbar>
+        </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>

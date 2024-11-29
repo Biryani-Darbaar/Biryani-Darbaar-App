@@ -118,7 +118,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
           console.log("Cart Item ID:", cartItemId);
           
           const response = await axios.delete(
-            `http://localhost:4200/cart/${cartItemId}}`
+            `http://localhost:4200/cart/${cartItemId}`
           );
           console.log("Cart Item deleted:", response);
         }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./iconSlider.css";
 import cream from "../assets/icons/cream.png";
 import grill from "../assets/icons/grill.png";
@@ -12,6 +12,12 @@ interface IconSliderProps {
 }
 
 const IconScroll: React.FC<IconSliderProps> = ({ items, onCategoryClick }) => {
+  useEffect(() => {
+    if (items.length > 0) {
+      onCategoryClick(items[0].name);
+    }
+  }, [items, onCategoryClick]);
+
   return (
     <div className="icon-scroll-container">
       {items.map((item, index) => (

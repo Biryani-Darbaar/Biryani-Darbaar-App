@@ -88,6 +88,9 @@ const Home: React.FC = () => {
           "http://localhost:4200/categories"
         );
         setCategories(response.data);
+        if (response.data.length > 0) {
+          fetchDishesByCategory(response.data[0]);
+        }
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
