@@ -65,7 +65,7 @@ const Item = () => {
         }
       }
     } else {
-      await axios.post("http://localhost:4200/cart", {
+      const response = await axios.post("http://localhost:4200/cart", {
         userId: userId,
         dishId: dishId,
         name: name,
@@ -75,23 +75,23 @@ const Item = () => {
         description: description,
         quantity: count,
       });
+      console.log(response.status);
+      if(response.status === 201) {
+          history.push("/Order");
+      }
     }
     
-    const response  = await axios.post("http://localhost:4200/cart", {
-        "userId": userId,
-        "dishId": dishId,
-        "name": name,
-        "addons": addons,
-        "price": price * count,
-        "image": image,
-        "description": description,
-        "quantity": count
-    });
+    // const response  = await axios.post("http://localhost:4200/cart", {
+    //     "userId": userId,
+    //     "dishId": dishId,
+    //     "name": name,
+    //     "addons": addons,
+    //     "price": price * count,
+    //     "image": image,
+    //     "description": description,
+    //     "quantity": count
+    // });
 
-    console.log(response.status);
-    if(response.status === 201) {
-        history.push("/Order");
-    }
   };
   return (
     <IonPage>
