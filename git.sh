@@ -1,3 +1,3 @@
 git add .
-git commit -m "Migration from local server to aws server"
+git commit -m "Bug fixes for the iconscroll component"
 git push 

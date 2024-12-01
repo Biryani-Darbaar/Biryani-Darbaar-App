@@ -52,10 +52,6 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Home");
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
-  };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -99,9 +95,8 @@ const App: React.FC = () => {
               <Route path="/Order">
                 {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}
               </Route>
-              
               <Route path="/Settings">
-                {isAuthenticated ? <Settings/> : <Redirect to="/HomePage" />}
+                {isAuthenticated ? <Settings /> : <Redirect to="/HomePage" />}
               </Route>
               <Route path="/Orders">
                 {isAuthenticated ? <Orders /> : <Redirect to="/HomePage" />}
@@ -127,16 +122,16 @@ const App: React.FC = () => {
           <IonTabBar slot="bottom" className="custom-tab-bar">
             <IonTabButton
               tab="Home"
-              href="/HomePage"
+              href="/Home"
               className={`custom-tab-button ${
-                activeTab === "HomePage" ? "active" : ""
+                activeTab === "Home" ? "active" : ""
               }`}
-              onClick={() => handleTabChange("Home")}
+              onClick={() => setActiveTab("Home")}
             >
               <House className="tab-icon" />
               <IonLabel
                 className={`tab-label ${
-                  activeTab === "HomePage" ? "active-tab" : ""
+                  activeTab === "Home" ? "active-tab" : ""
                 }`}
               >
                 Home
@@ -148,7 +143,7 @@ const App: React.FC = () => {
               className={`custom-tab-button ${
                 activeTab === "Menu" ? "active" : ""
               }`}
-              onClick={() => handleTabChange("Menu")}
+              onClick={() => setActiveTab("Menu")}
             >
               <BookOpenText className="tab-icon" />
               <IonLabel
@@ -165,7 +160,7 @@ const App: React.FC = () => {
               className={`custom-tab-button ${
                 activeTab === "Order" ? "active" : ""
               }`}
-              onClick={() => handleTabChange("Order")}
+              onClick={() => setActiveTab("Order")}
             >
               <NotebookText className="tab-icon" />
               <IonLabel
@@ -182,7 +177,7 @@ const App: React.FC = () => {
               className={`custom-tab-button ${
                 activeTab === "Profile" ? "active" : ""
               }`}
-              onClick={() => handleTabChange("Profile")}
+              onClick={() => setActiveTab("Profile")}
             >
               <User className="tab-icon" />
               <IonLabel
