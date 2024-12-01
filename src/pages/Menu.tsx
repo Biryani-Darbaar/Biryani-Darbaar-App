@@ -45,7 +45,7 @@ const Menu: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4200/categories"
+          "https://api.darbaarkitchen.com/categories"
         );
         setCategories(response.data);
       } catch (error) {
@@ -60,7 +60,7 @@ const Menu: React.FC = () => {
     const fetchDishes = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4200/dishes/category/${activeCategory}`
+          `https://api.darbaarkitchen.com/dishes/category/${activeCategory}`
         );
         setDishes(response.data);
       } catch (error) {

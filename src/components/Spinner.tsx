@@ -16,7 +16,7 @@ const Spinner: React.FC = () => {
   useEffect(() => {
     const fetchMiniGames = async () => {
       try {
-        const response = await axios.get("http://localhost:4200/miniGames");
+        const response = await axios.get("https://api.darbaarkitchen.com/miniGames");
         setOffers(response.data);
       } catch (error) {
         console.error("Error fetching miniGames data:", error);

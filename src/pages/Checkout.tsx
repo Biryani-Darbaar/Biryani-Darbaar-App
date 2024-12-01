@@ -58,7 +58,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       // Create payment intent on backend
       const response = await axios.post(
-        "http://localhost:4200/create-payment-intent",
+        "https://api.darbaarkitchen.com/create-payment-intent",
         {
           amount,
           currency: "AUD",
@@ -84,7 +84,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
         setToastState(true);
         // Proceed with order creation after successful payment
         const orderResponse = await axios.post(
-          "http://localhost:4200/create-order",
+          "https://api.darbaarkitchen.com/create-order",
           {
             amount,
             currency: "AUD",
@@ -100,7 +100,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
       );
       console.log("Micheal okadu kaadu iddaru");
       const userId = { userId: sessionStorage.getItem("sessionUserId") };
-      const response = await axios.post("http://localhost:4200/orders", {
+      const response = await axios.post("https://api.darbaarkitchen.com/orders", {
         ...Order,
         ...userId,
       });
@@ -118,7 +118,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
           console.log("Cart Item ID:", cartItemId);
           
           const response = await axios.delete(
-            `http://localhost:4200/cart/${cartItemId}`
+            `https://api.darbaarkitchen.com/cart/${cartItemId}`
           );
           console.log("Cart Item deleted:", response);
         }

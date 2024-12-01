@@ -34,7 +34,7 @@ const Orders = () => {
       if (userId) {
       try {
         const response = await axios.get(
-        `http://localhost:4200/ordersByUser/${userId}`
+        `https://api.darbaarkitchen.com/ordersByUser/${userId}`
         );
         const sortedOrders = response.data.sort(
         (a: Order, b: Order) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()

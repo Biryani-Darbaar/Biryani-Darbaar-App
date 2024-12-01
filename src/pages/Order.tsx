@@ -31,7 +31,7 @@ const Order: React.FC = () => {
 
   const fetchOrders = async () => {
     const response = await axios.post(
-      "http://localhost:4200/getCart",
+      "https://api.darbaarkitchen.com/getCart",
       {
         userId: userId,
       }
@@ -90,7 +90,7 @@ const Order: React.FC = () => {
 
   const handleRemoveItem = async (cartId: string) => {
     const response = await axios.delete(
-      `http://localhost:4200/cart/${cartId}`,
+      `https://api.darbaarkitchen.com/cart/${cartId}`,
       {
         data: {
           userId: userId,
@@ -196,7 +196,7 @@ const Order: React.FC = () => {
                   onClick={async () => {
                     if (sessionStorage.getItem("address") !== null) {
                       console.log("Checkout clicked");
-                      const url = `http://localhost:4200/user/${sessionStorage.getItem("sessionUserId")}`;
+                      const url = `https://api.darbaarkitchen.com/user/${sessionStorage.getItem("sessionUserId")}`;
                       console.log("URL:", url);
                       const user = await axios.get(url);
                         const OrderData = {

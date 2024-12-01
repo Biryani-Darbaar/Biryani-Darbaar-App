@@ -42,7 +42,7 @@ const Item = () => {
     const userId = sessionStorage.getItem("sessionUserId");
     console.log(userId);
 
-    const response = await axios.post("http://localhost:4200/cart", {
+    const response = await axios.post("https://api.darbaarkitchen.com/cart", {
       userId: userId,
       dishId: dishId,
       name: name,
@@ -57,7 +57,7 @@ const Item = () => {
       history.push("/Order");
     }
 
-    // const response  = await axios.post("http://localhost:4200/cart", {
+    // const response  = await axios.post("https://api.darbaarkitchen.com/cart", {
     //     "userId": userId,
     //     "dishId": dishId,
     //     "name": name,

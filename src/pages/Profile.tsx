@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchUserName = async () => {
       const userId = sessionStorage.getItem("sessionUserId");
-      const response = await axios.get(`http://localhost:4200/user/${userId}`);
+      const response = await axios.get(`https://api.darbaarkitchen.com/user/${userId}`);
       setUserName(response.data.userName);
       setUserImage(response.data.imageUrl);
     };
@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
   const handleSignOut = async () => {
     const auth = getAuth();
     await signOut(auth);
-    const res = await axios.post("http://localhost:4200/logout");
+    const res = await axios.post("https://api.darbaarkitchen.com/logout");
     console.log("Sign out response:", res);
     sessionStorage.clear();
     history.push("/");
@@ -95,7 +95,7 @@ const Profile: React.FC = () => {
                     const formData = new FormData();
                     formData.append("image", e.target.files[0]);
                     const response = await axios.post(
-                      "http://localhost:4200/userImg",
+                      "https://api.darbaarkitchen.com/userImg",
                       formData,
                       {
                         headers: {

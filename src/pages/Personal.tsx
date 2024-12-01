@@ -32,7 +32,7 @@ const Personal = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4200/user/${sessionUserId}`
+          `https://api.darbaarkitchen.com/user/${sessionUserId}`
         );
         const userData = response.data;
         const mappedUser: User = {
@@ -65,7 +65,7 @@ const Personal = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`http://localhost:4200/user/${sessionUserId}`, user);
+      await axios.put(`https://api.darbaarkitchen.com/user/${sessionUserId}`, user);
       setEditingField(null);
       setShowSaveButton(false);
     } catch (error) {
