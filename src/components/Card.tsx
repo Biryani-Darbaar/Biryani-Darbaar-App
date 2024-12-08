@@ -14,10 +14,10 @@ interface CardElementProps {
 }
 
 interface CardDetails {
-  cardNumber: string;
-  expiryDate: string;
-  cvc: string;
-  zip: string;
+    cardNumber: string;
+    expiryDate: string;
+    cvc: string;
+    zip: string;
 }
 
 const CardElement: React.FC<CardElementProps> = ({ onSubmit }) => {

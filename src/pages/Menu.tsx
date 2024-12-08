@@ -28,9 +28,9 @@ interface Addon {
 
 interface AddToCartParams {
   name: string;
-  dishId: number;
   addons: Addon[];
   price: number;
+  dishId: number;
   image: string;
   description: string;
 }
@@ -99,6 +99,7 @@ const Menu: React.FC = () => {
     description?: string;
     price: number;
     addons: { addonName: string; price: number }[];
+    dishId: number;
   }
 
   return (
@@ -193,7 +194,7 @@ const Menu: React.FC = () => {
                   onClick={() => {
                     handleAddToCart({
                       name: dish.dishName || dish.name || "",
-                      dishId: index,
+                      dishId: dish.dishId,
                       addons: dish.addons,
                       price: dish.price,
                       image: dish.image,
