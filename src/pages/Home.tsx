@@ -74,7 +74,7 @@ const Home: React.FC = () => {
     const fetchSpecialDishes = async () => {
       try {
         const specialResponse = await axios.get(
-          "http://13.55.199.5:3000/specialOffers"
+          "https://api.darbaarkitchen.com/specialOffers"
         );
         setSpecial(specialResponse.data);
       } catch (error) {
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://13.55.199.5:3000/categories"
+          "https://api.darbaarkitchen.com/categories"
         );
         setCategories(response.data);
         if (response.data.length > 0) {
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "http://13.55.199.5:3000/locations"
+          "https://api.darbaarkitchen.com/locations"
         );
         setLocations(response.data);
       } catch (error) {
@@ -121,7 +121,7 @@ const Home: React.FC = () => {
     try {
       console.log("Lanja muindaa kuna",name);
       const response = await axios.get(
-        `http://13.55.199.5:3000/dishes/category/${name}`
+        `https://api.darbaarkitchen.com/dishes/category/${name}`
       );
       console.log(response.data);
 
