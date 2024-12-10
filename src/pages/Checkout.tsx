@@ -18,6 +18,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import CardElement from "../components/Card";
 import "../assets/css/Checkout.css";
+import { MoveLeft } from "lucide-react";
 // Load Stripe instance with your public key
 const stripePromise = loadStripe(
   "pk_test_51QI9zGP1mrjxuTnQyyTUejvj7utgaGHnYp3BAB4VNGDmHkpqd5xCJmV3Q9QVpI3302xjpR8K8zWxIzIzI1GfBV1t00UAvTLEY7"
@@ -100,10 +101,13 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
       );
       console.log("Micheal okadu kaadu iddaru");
       const userId = { userId: sessionStorage.getItem("sessionUserId") };
-      const response = await axios.post("https://api.darbaarkitchen.com/orders", {
-        ...Order,
-        ...userId,
-      });
+      const response = await axios.post(
+        "https://api.darbaarkitchen.com/orders",
+        {
+          ...Order,
+          ...userId,
+        }
+      );
 
       console.log("Order created:", {
         orderData: Order,
@@ -113,10 +117,11 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       if (response.status === 201) {
         console.log("Order created successfully");
-        for (const item of ((Order as unknown) as { orderItems: any[] }).orderItems) {
+        for (const item of (Order as unknown as { orderItems: any[] })
+          .orderItems) {
           const cartItemId = item.cartItemId;
           console.log("Cart Item ID:", cartItemId);
-          
+
           const response = await axios.delete(
             `https://api.darbaarkitchen.com/cart/${cartItemId}`
           );
@@ -130,11 +135,21 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
     }
   };
 
+  function handleGoback(): void {
+    history.goBack();
+  }
+
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar className="Ion-Toolbar-Checkout" color="danger">
-          <h2>Checkout</h2>
+        <IonToolbar className="" color="danger">
+          <div>
+            <h2>
+              {" "}
+              <MoveLeft onClick={handleGoback} style={{ marginRight: "30%" }} />
+              Checkout
+            </h2>
+          </div>
         </IonToolbar>
       </IonHeader>
 
