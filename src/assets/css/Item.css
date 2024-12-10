@@ -99,13 +99,14 @@
 .footer {
     display: flex;
     width: 430px;
-    height: 126px;
+    height: 100px;
     flex-shrink: 0;
     background: var(--Primary-Base, #C01D2E);
     color: #fff;
     padding-top: 10px;
     align-items: center;
     justify-content: space-between;
+    padding-left: 30px;
 }
 
 .counter button {

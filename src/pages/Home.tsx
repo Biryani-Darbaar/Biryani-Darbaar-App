@@ -34,11 +34,18 @@ const Home: React.FC = () => {
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [isGameOpen, setGameOpen] = useState(false);
   const [special, setSpecial] = useState<
-    { dishName: string; price: string; image: string }[]
+    {
+      dishName: string;
+      price: number;
+      image: string;
+      dishId: string;
+      addons: object[];
+      description: string;
+    }[]
   >([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategoryDishes, setSelectedCategoryDishes] = useState<
-    { dishName: string; price: string; image: string; name: string }[]
+    { dishName: string; price: number; image: string; name: string, description: string, dishId: string, addons: object[] }[]
   >([]);
   const [locations, setLocations] = useState<
     { locationId: string; name: string; address: string; image: string }[]
@@ -76,7 +83,10 @@ const Home: React.FC = () => {
         const specialResponse = await axios.get(
           "https://api.darbaarkitchen.com/specialOffers"
         );
+        console.log("Kojja lan", specialResponse.data);
+
         setSpecial(specialResponse.data);
+        console.log("Kojja lan", special);
       } catch (error) {
         console.error("Error fetching special dishes:", error);
       }
@@ -108,7 +118,11 @@ const Home: React.FC = () => {
     };
 
     const fetchData = async () => {
-      await Promise.all([fetchSpecialDishes(), fetchCategories(), fetchLocations()]);
+      await Promise.all([
+        fetchSpecialDishes(),
+        fetchCategories(),
+        fetchLocations(),
+      ]);
       setTimeout(() => {
         setLoading(false);
       }, 2500); // Delay of 5 seconds
@@ -119,7 +133,7 @@ const Home: React.FC = () => {
 
   const fetchDishesByCategory = async (name: string) => {
     try {
-      console.log("Lanja muindaa kuna",name);
+      console.log("Lanja muindaa kuna", name);
       const response = await axios.get(
         `https://api.darbaarkitchen.com/dishes/category/${name}`
       );
@@ -152,7 +166,7 @@ const Home: React.FC = () => {
       <IonContent fullscreen className="content">
         <div className="content-custom">
           {/* Carousel */}
-          
+
           <Swiper
             spaceBetween={10}
             slidesPerView={1}
@@ -162,9 +176,6 @@ const Home: React.FC = () => {
             autoplay={{
               delay: 2500,
               disableOnInteraction: false,
-            }}
-            pagination={{
-              clickable: true,
             }}
             navigation={true}
             modules={[Autoplay, Pagination, Navigation]}
@@ -183,11 +194,11 @@ const Home: React.FC = () => {
           {/* Category Section */}
           <IonGrid className="game-grid">
             <IonRow>
-              <IonCol>
+              <IonCol className="icon-col">
                 <IonImg src={sale} alt="" className="icon-grid"></IonImg>
                 <div className="text">Flash deals</div>
               </IonCol>
-              <IonCol>
+              <IonCol className="icon-col">
                 <IonImg
                   src={wheel}
                   alt=""
@@ -196,11 +207,11 @@ const Home: React.FC = () => {
                 ></IonImg>
                 <div className="text mini">Mini game</div>
               </IonCol>
-              <IonCol>
+              <IonCol className="icon-col">
                 <IonImg src={vip} alt="" className="icon-grid"></IonImg>
                 <div className="text">Member</div>
               </IonCol>
-              <IonCol>
+              <IonCol className="icon-col">
                 <IonImg src={call} alt="" className="icon-grid"></IonImg>
                 <div className="text">Boxchat</div>
               </IonCol>
@@ -213,8 +224,11 @@ const Home: React.FC = () => {
           <HoriScroll
             items={special.map((dish) => ({
               image: dish.image,
-              title: dish.dishName || "Chicken Biryani",
-              price: `$${dish.price}`,
+              name: dish.dishName || "Chicken Biryani",
+              price: dish.price.toString(),
+              description: dish.description,
+              dishId: dish.dishId,
+              addons: dish.addons,
             }))}
           />
 
@@ -226,8 +240,11 @@ const Home: React.FC = () => {
             <RoundScroll
               items={selectedCategoryDishes.map((dish) => ({
                 image: dish.image,
-                title: dish.dishName || dish.name,
-                price: `$${dish.price}`,
+                name: dish.dishName || dish.name,
+                price: dish.price,
+                description: dish.description,
+                dishId: dish.dishId,
+                addons: dish.addons,
               }))}
             />
           </div>
@@ -241,7 +258,7 @@ const Home: React.FC = () => {
           <HoriScroll
             items={locations.map((location) => ({
               image: location.image,
-              title: location.name,
+              name: location.name,
               location: location.address,
             }))}
           />

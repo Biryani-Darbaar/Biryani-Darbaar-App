@@ -46,7 +46,12 @@
     cursor: pointer;
 }
 .round-scroll-price{
-    color:red
+    color:red;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 .round-scroll-title:hover::after,
 .round-scroll-price:hover::after {

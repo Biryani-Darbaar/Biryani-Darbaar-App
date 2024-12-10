@@ -48,3 +48,14 @@
     margin: 0;
     color: #333;
 }
+
+.hori-price-plus{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.hori-scroll-icon{
+    cursor: pointer;
+}
