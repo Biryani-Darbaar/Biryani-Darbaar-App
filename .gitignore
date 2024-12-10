@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-
+/android/*
+/ios/*
 # testing
 /coverage
 
@@ -29,3 +30,5 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+./ios/*
+./android/*
