@@ -8,16 +8,20 @@ import CustomButton from "./Button";
 
 interface IconSliderProps {
   items: { name: string }[];
-  onCategoryClick: (name: string) => void; // New prop
+  onCategoryClick: (name: string) => void;
+  activeCategory?: string; // New prop
 }
 
-const IconScroll: React.FC<IconSliderProps> = ({ items, onCategoryClick }) => {
+const IconScroll: React.FC<IconSliderProps> = ({ items, onCategoryClick, activeCategory }) => {
 
   return (
     <div className="icon-scroll-container">
       {items.map((item, index) => (
         <div key={index} className="icon-scroll-item">
-          <CustomButton colorType="secondary" onClick={() => onCategoryClick(item.name)}>
+          <CustomButton
+            colorType={item.name === activeCategory ? "primary" : "secondary"} // Change colorType based on activeCategory
+            onClick={() => onCategoryClick(item.name)}
+          >
             <img
               src={[cream, grill, momo, spoon][index % 4]}
               alt={item.name}

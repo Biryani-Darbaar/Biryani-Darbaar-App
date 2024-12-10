@@ -10,6 +10,7 @@ import {
   IonIcon,
   IonBadge,
   IonContent,
+  IonFooter,
 } from "@ionic/react";
 import "../assets/css/Item.css";
 import biryani from "../assets/images/biryani.png";
@@ -56,17 +57,6 @@ const Item = () => {
     if (response.status === 201) {
       history.push("/Order");
     }
-
-    // const response  = await axios.post("https://api.darbaarkitchen.com/cart", {
-    //     "userId": userId,
-    //     "dishId": dishId,
-    //     "name": name,
-    //     "addons": addons,
-    //     "price": price * count,
-    //     "image": image,
-    //     "description": description,
-    //     "quantity": count
-    // });
   };
   return (
     <IonPage>
@@ -111,25 +101,25 @@ const Item = () => {
             <img src={biryani} alt="" />
           </div>
         </div>
-        <div className="footer">
-          <div>
-            <h6>Quantity</h6>
-            <div className="counter">
-              <button onClick={() => setCount(count > 1 ? count - 1 : 1)}>
-                <MinusCircle />
-              </button>
-              <div>{count.toString().padStart(2, "0")}</div>
-              <button onClick={() => setCount(count < 10 ? count + 1 : 10)}>
-                <PlusCircle />
-              </button>
-            </div>
-          </div>
-          <button className="shop-cart-container" onClick={cartClicked}>
-            <ShoppingCart />
-            Add to Cart
-          </button>
-        </div>
       </IonContent>
+      <IonFooter className="footer">
+        <div>
+          <h6>Quantity</h6>
+          <div className="counter">
+            <button onClick={() => setCount(count > 1 ? count - 1 : 1)}>
+              <MinusCircle />
+            </button>
+            <div>{count.toString().padStart(2, "0")}</div>
+            <button onClick={() => setCount(count < 10 ? count + 1 : 10)}>
+              <PlusCircle />
+            </button>
+          </div>
+        </div>
+        <button className="shop-cart-container" onClick={cartClicked}>
+          <ShoppingCart />
+          Add to Cart
+        </button>
+      </IonFooter>
     </IonPage>
   );
 };

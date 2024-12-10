@@ -47,6 +47,7 @@ import CheckoutPage from "./pages/Checkout";
 import Settings from "./pages/Settings";
 import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
+import Loading from './components/Loading';
 
 setupIonicReact();
 
@@ -58,14 +59,16 @@ const App: React.FC = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2500); // Ensure loading page is shown for at least 5 seconds
     });
 
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

@@ -5,10 +5,6 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardContent,
   IonImg,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -32,6 +28,7 @@ import GameModal from "../components/GameModal";
 import RoundScroll from "../components/RoundScroll";
 import IconScroll from "../components/iconSlider";
 import "swiper/css";
+import Loading from "../components/Loading";
 
 const Home: React.FC = () => {
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
@@ -43,9 +40,12 @@ const Home: React.FC = () => {
   const [selectedCategoryDishes, setSelectedCategoryDishes] = useState<
     { dishName: string; price: string; image: string; name: string }[]
   >([]);
+  const [locations, setLocations] = useState<
+    { locationId: string; name: string; address: string; image: string }[]
+  >([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
     const imager = [
       {
         name: "images/1729369562701-IMG-20241020-WA0001.jpg",
@@ -74,7 +74,7 @@ const Home: React.FC = () => {
     const fetchSpecialDishes = async () => {
       try {
         const specialResponse = await axios.get(
-          "https://api.darbaarkitchen.com/specialOffers"
+          "http://13.55.199.5:3000/specialOffers"
         );
         setSpecial(specialResponse.data);
       } catch (error) {
@@ -85,7 +85,7 @@ const Home: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://api.darbaarkitchen.com/categories"
+          "http://13.55.199.5:3000/categories"
         );
         setCategories(response.data);
         if (response.data.length > 0) {
@@ -96,19 +96,10 @@ const Home: React.FC = () => {
       }
     };
 
-    fetchSpecialDishes();
-    fetchCategories();
-    console.log("Mundaa", categories);
-  }, []);
-  const [locations, setLocations] = useState<
-    { locationId: string; name: string; address: string; image: string }[]
-  >([]);
-
-  useEffect(() => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "https://api.darbaarkitchen.com/locations"
+          "http://13.55.199.5:3000/locations"
         );
         setLocations(response.data);
       } catch (error) {
@@ -116,14 +107,21 @@ const Home: React.FC = () => {
       }
     };
 
-    fetchLocations();
+    const fetchData = async () => {
+      await Promise.all([fetchSpecialDishes(), fetchCategories(), fetchLocations()]);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2500); // Delay of 5 seconds
+    };
+
+    fetchData();
   }, []);
 
   const fetchDishesByCategory = async (name: string) => {
     try {
       console.log("Lanja muindaa kuna",name);
       const response = await axios.get(
-        `https://api.darbaarkitchen.com/dishes/category/${name}`
+        `http://13.55.199.5:3000/dishes/category/${name}`
       );
       console.log(response.data);
 
@@ -139,6 +137,10 @@ const Home: React.FC = () => {
 
   function closeGame(): void {
     setGameOpen(false);
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (

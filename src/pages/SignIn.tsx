@@ -179,7 +179,7 @@ const SignIn: React.FC = () => {
           isOpen={showErrorToast}
           onDidDismiss={() => setShowErrorToast(false)}
           message={errorMessage}
-          duration={3000}
+          duration={1000}
           color="danger"
         />
       </IonContent>
