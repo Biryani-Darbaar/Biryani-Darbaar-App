@@ -23,6 +23,7 @@ import {
   Tags,
   ChevronRight,
   Pencil,
+  Coins,
 } from "lucide-react";
 import "../assets/css/Profile.css";
 import { useHistory } from "react-router";
@@ -32,6 +33,7 @@ import axios from "axios";
 const Profile: React.FC = () => {
   const history = useHistory();
   const [userName, setUserName] = useState("User");
+  const [userReward, setUserReward] = useState(0);
   const [userImage, setUserImage] = useState("");
   useEffect(() => {
     const fetchUserName = async () => {
@@ -39,6 +41,7 @@ const Profile: React.FC = () => {
       const response = await axios.get(`https://api.darbaarkitchen.com/user/${userId}`);
       setUserName(response.data.userName);
       setUserImage(response.data.imageUrl);
+      setUserReward(response.data.rewards);
     };
     fetchUserName();
   }, []);
@@ -117,6 +120,11 @@ const Profile: React.FC = () => {
               className="profile-edit-icon"
               onClick={() => history.push("/Personal")}
             />
+          </div>
+          <div className="profile-reward-points">
+            
+            <Coins size={28} color="#f1c40f" />
+            <span>{userReward}</span>
           </div>
         </div>
 
