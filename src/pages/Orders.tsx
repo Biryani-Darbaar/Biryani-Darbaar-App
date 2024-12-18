@@ -5,6 +5,7 @@ import { Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
 import "../assets/css/Orders.css";
 import { Check, CheckCheck } from "lucide-react";
+import Navbar from "../components/Navbar/Navbar";
 
 const Orders = () => {
   interface OrderItem {
@@ -34,7 +35,7 @@ const Orders = () => {
       if (userId) {
       try {
         const response = await axios.get(
-        `https://api.darbaarkitchen.com/ordersByUser/${userId}`
+        `${import.meta.env.VITE_API_ENDPOINT}/ordersByUser/${userId}`
         );
         const sortedOrders = response.data.sort(
         (a: Order, b: Order) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
@@ -52,15 +53,7 @@ const Orders = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="danger">
-          <IonTitle className="justify text-center">Orders</IonTitle>
-          <IonButtons slot="start">
-            <div className="icon-left">
-              <Bell className="bell" size={24} onClick={() => history.push("/Profile")} />
-              <ShoppingCart size={24} onClick={() => history.push("/Order")} />
-            </div>
-          </IonButtons>
-        </IonToolbar>
+        <Navbar name="Orders" />
       </IonHeader>
     <IonContent fullscreen>
       <div>

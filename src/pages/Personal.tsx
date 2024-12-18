@@ -1,21 +1,19 @@
 import {
-  IonButtons,
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonDatetime,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Bell, Pencil, ShoppingCart } from "lucide-react";
+import { Pencil } from "lucide-react";
 import "./../assets/css/Settings.css";
 import { useHistory } from "react-router";
+import Navbar from "../components/Navbar/Navbar";
 
 interface User {
   fullName: string;
-  phone: string;
+  phoneNumber: number;
   dateOfBirth: string;
   email: string;
   address: string;
@@ -32,12 +30,12 @@ const Personal = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(
-          `https://api.darbaarkitchen.com/user/${sessionUserId}`
+          `${import.meta.env.VITE_API_ENDPOINT}/user/${sessionUserId}`
         );
         const userData = response.data;
         const mappedUser: User = {
           fullName: userData.userName,
-          phone: userData.phoneNumber,
+          phoneNumber: userData.phoneNumber,
           dateOfBirth: userData.dateOfBirth,
           email: userData.email,
           address: userData.address || "", // Assuming address is not provided in the response
@@ -65,7 +63,7 @@ const Personal = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`https://api.darbaarkitchen.com/user/${sessionUserId}`, user);
+      await axios.put(`${import.meta.env.VITE_API_ENDPOINT}/user/${sessionUserId}`, user);
       setEditingField(null);
       setShowSaveButton(false);
     } catch (error) {
@@ -126,24 +124,12 @@ const Personal = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="danger">
-          <IonTitle className="justify text-center">Personal Page</IonTitle>
-          <IonButtons slot="start">
-            <div className="icon-left">
-              <Bell
-                className="bell"
-                size={24}
-                onClick={() => history.push("/Profile")}
-              />
-              <ShoppingCart size={24} onClick={() => history.push("/Order")} />
-            </div>
-          </IonButtons>
-        </IonToolbar>
+        <Navbar name="Personal" />
       </IonHeader>
       <IonContent fullscreen className="settings-content">
         <div className="settings-body">
           {renderField({ field: "fullName", label: "Full Name" })}
-          {renderField({ field: "phone", label: "Phone" })}
+          {renderField({ field: "phoneNumber", label: "Phone" })}
           {renderField({ field: "dateOfBirth", label: "Date of Birth" })}
           {renderField({ field: "email", label: "Email" })}
           {renderField({ field: "address", label: "Address" })}

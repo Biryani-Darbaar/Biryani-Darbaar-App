@@ -61,7 +61,14 @@ const AddressAndSpecifications: React.FC<AddressAndSpecificationsProps> = ({
     if (missingFields.length > 0) {
       setError(`Please fill out: ${missingFields.join(", ")}`);
     } else {
-      sessionStorage.setItem("addressData", JSON.stringify(formData));
+      const addressData = [
+        formData.streetAddress1,
+        formData.city,
+        formData.state,
+        formData.postalCode,
+        formData.country,
+      ].join(", ");
+      sessionStorage.setItem("addressData", addressData);
       onClose();
     }
   };

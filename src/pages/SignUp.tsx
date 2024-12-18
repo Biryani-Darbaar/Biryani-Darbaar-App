@@ -85,7 +85,7 @@ const SignUp: React.FC = () => {
     console.log("Payload", payload);
     
     // Implement sign-up logic
-    const response = await axios.post("https://api.darbaarkitchen.com/signup", payload);
+    const response = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/signup`, payload);
 
     if(response.status === 201){
       history.push("/SignIn");

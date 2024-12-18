@@ -12,7 +12,7 @@
 
 .round-scroll-item {
     min-width: 40%;
-    max-width: 70%; /* Two items visible at once */
+    max-width: 50%; /* Two items visible at once */
     height: 150px;
     margin-right: 20px; /* Space between cards */
     border-radius: 10px;

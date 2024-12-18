@@ -59,7 +59,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       // Create payment intent on backend
       const response = await axios.post(
-        "https://api.darbaarkitchen.com/create-payment-intent",
+        `${import.meta.env.VITE_API_ENDPOINT}/create-payment-intent`,
         {
           amount,
           currency: "AUD",
@@ -85,13 +85,14 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
         setToastState(true);
         // Proceed with order creation after successful payment
         const orderResponse = await axios.post(
-          "https://api.darbaarkitchen.com/create-order",
+          `${import.meta.env.VITE_API_ENDPOINT}/create-order`,
           {
             amount,
             currency: "AUD",
           }
         );
         console.log("Order created:", orderResponse);
+         // Destroy the total value in session storage
         history.push("/Order");
       }
     } catch (error) {
@@ -102,7 +103,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
       console.log("Micheal okadu kaadu iddaru");
       const userId = { userId: sessionStorage.getItem("sessionUserId") };
       const response = await axios.post(
-        "https://api.darbaarkitchen.com/orders",
+        `${import.meta.env.VITE_API_ENDPOINT}/orders`,
         {
           ...Order,
           ...userId,
@@ -123,10 +124,18 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
           console.log("Cart Item ID:", cartItemId);
 
           const response = await axios.delete(
-            `https://api.darbaarkitchen.com/cart/${cartItemId}`
+            `${import.meta.env.VITE_API_ENDPOINT}/cart/${cartItemId}`
           );
           console.log("Cart Item deleted:", response);
         }
+
+        if ((history.location.state as { discountChecked: boolean }).discountChecked) {
+          const userId = sessionStorage.getItem("sessionUserId");
+          await axios.put(`${import.meta.env.VITE_API_ENDPOINT}/user/${userId}`, {
+            discount: 0,
+          });
+        }
+        sessionStorage.removeItem("total");
 
         history.push("/Orders");
       }

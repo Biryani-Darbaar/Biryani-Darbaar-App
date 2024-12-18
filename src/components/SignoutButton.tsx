@@ -9,7 +9,7 @@ const SignOutButton = () => {
   const handleSignOut = async () => {
     const auth = getAuth();
     await signOut(auth);
-    const res = await axios.post("https://api.darbaarkitchen.com/logout");
+    const res = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/logout`);
     console.log("Sign out response:", res);
     sessionStorage.clear();
     history.push("/");

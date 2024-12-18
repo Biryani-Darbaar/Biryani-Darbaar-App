@@ -1,17 +1,27 @@
 .price-segment {
-    background-color: var(--red-color);
-    margin-top: -10px;
+    background-color: var(--ion-color-danger);
+    /* Ionic predefined color variable */
+    height: 25vh;
+    margin-top: 10px;
     color: #fff;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
     z-index: 1;
     position: relative;
-    top: -110px;
+    top: -8rem;
     padding-left: 20px;
+
+    /* Responsive styles for Ionic */
+
+    @media screen and (max-width: 480px) {
+        height: 15vh;
+        
+    }
+  
 }
 
 .image {
-    max-height: 300px;
+    max-height: 400px;
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -136,5 +146,9 @@
 }
 
 .toolbar-item{
-    max-height: 37vh;
+    max-height: 45vh;
+}
+
+.white{
+    color: #fff;
 }

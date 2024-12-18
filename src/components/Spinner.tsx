@@ -4,6 +4,8 @@ import axios from "axios";
 interface MiniGame {
   gameId: string;
   name: string;
+  type: string;
+  value: string;
 }
 
 const Spinner: React.FC = () => {
@@ -16,7 +18,7 @@ const Spinner: React.FC = () => {
   useEffect(() => {
     const fetchMiniGames = async () => {
       try {
-        const response = await axios.get("https://api.darbaarkitchen.com/miniGames");
+        const response = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/miniGames`);
         setOffers(response.data);
       } catch (error) {
         console.error("Error fetching miniGames data:", error);
@@ -25,6 +27,19 @@ const Spinner: React.FC = () => {
 
     fetchMiniGames();
   }, []);
+
+  const updateUserReward = async (type:string, reward: string) => {
+    const userId = sessionStorage.getItem("sessionUserId");
+    if (userId) {
+      try {
+        await axios.put(`${import.meta.env.VITE_API_ENDPOINT}/user/${userId}`, {
+          [type]: reward,
+        });
+      } catch (error) {
+        console.error("Error updating user reward:", error);
+      }
+    }
+  };
 
   const spinWheel = () => {
     if (!isSpinning && offers.length > 0) {
@@ -43,6 +58,7 @@ const Spinner: React.FC = () => {
           1 -
           Math.floor((totalRotation % 360) / (360 / offers.length));
         setSelectedOffer(offers[winningIndex].name);
+        updateUserReward(offers[winningIndex].type, offers[winningIndex].value);
       }, 5000);
     }
   };
@@ -129,7 +145,7 @@ const Spinner: React.FC = () => {
 
       {/* Selected Offer */}
       {selectedOffer && (
-        <div className="mt-4 text-xl font-bold text-green-600">
+        <div className="mt-4 text-xl font-bold text-white" style={{color: 'white'}}>
           You won: {selectedOffer}!
         </div>
       )}

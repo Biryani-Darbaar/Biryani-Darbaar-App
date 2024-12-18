@@ -63,7 +63,7 @@ const SignIn: React.FC = () => {
       console.log(res.user);
       const accessToken = await res.user.getIdToken();
       console.log("Access Token:", accessToken);
-      const endres = await axios.post("https://api.darbaarkitchen.com/login", {
+      const endres = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/login`, {
         idToken: accessToken
       });
       console.log("Endres:", endres);

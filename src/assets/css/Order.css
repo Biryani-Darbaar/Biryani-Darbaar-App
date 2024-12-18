@@ -3,11 +3,9 @@
 }
 
 .cart-no-items {
-    display: felx;
     flex-direction: column;
     gap: 1rem;
-    padding-left: 1.3rem;
-    padding-top: 5rem;
+    padding: 7.5vh 9.5vw;
 }
 
 .internal-container {
@@ -130,7 +128,8 @@
     background: #FFF;
     margin-left: 5px;
     width: 80vw;
-    height: 21.08vh;
+    height: auto; /* Adjust height to auto to fit content */
+    padding-bottom: 1rem; /* Add padding to the bottom */
     flex-shrink: 0;
     border-radius: 10px;
     border: 1px solid var(--Primary-Base, #C01D2E);
@@ -173,6 +172,8 @@
     font-style: normal;
     font-weight: 400;
     line-height: 150%;
+    align-items: center;
+    
     /* 21px */
 }
 
@@ -190,3 +191,45 @@
     color: #C01D2E;
     cursor: pointer;
 }
+
+.order-discount-checkbox{
+    margin-left: 1vw;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #C01D2E;
+    border-radius: 4px;
+    background-color: #FFF;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.order-discount-checkbox:checked {
+    background-color: #C01D2E;
+    border: 3px solid #C01D2E;
+}
+
+.order-discount-checkbox:checked::after {
+    content: '✔';
+    color: #FFF;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dyna-price-reward{
+    margin-left: 42vw;
+    align-items: center;
+}
+
+.reward-content{
+    color: #C01D2E;
+    text-decoration: underline;
+    cursor: pointer;
+}
+

@@ -61,10 +61,24 @@ const App: React.FC = () => {
       setIsAuthenticated(!!user);
       setTimeout(() => {
         setLoading(false);
-      }, 2500); // Ensure loading page is shown for at least 5 seconds
+      }, 1500); // Ensure loading page is shown for at least 5 seconds
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    const intervalId = setInterval(() => {
+      // Check if session variables are available
+      const sessionVariablesAvailable = sessionStorage.getItem("sessionUserId");
+      if (!sessionVariablesAvailable) {
+        setIsAuthenticated(false);
+      }
+      else{
+        setIsAuthenticated(true);
+      }
+    }, 5000); // Check every 5 seconds
+
+    return () => {
+      unsubscribe(); // Cleanup subscription on unmount
+      clearInterval(intervalId); // Clear interval on unmount
+    };
   }, []);
 
   if (loading) {
@@ -119,6 +133,9 @@ const App: React.FC = () => {
               <Route path="/Personal">
                 {isAuthenticated ? <Personal /> : <Redirect to="/HomePage" />}
               </Route>
+              {/* <Route path="/VerifyPhoneNumber">
+                <VerifyPhoneNumber />
+              </Route> */}
               <Redirect from="/" to="/HomePage" />
             </Switch>
           </IonRouterOutlet>

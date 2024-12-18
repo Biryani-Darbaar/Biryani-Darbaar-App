@@ -3,23 +3,15 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonIcon,
   IonItem,
   IonLabel,
 } from "@ionic/react";
 import {
-  Bell,
   IdCard,
   Power,
   ReceiptText,
-  ScanQrCode,
   Settings,
   ShieldCheck,
-  ShoppingCart,
   Tags,
   ChevronRight,
   Pencil,
@@ -29,6 +21,7 @@ import "../assets/css/Profile.css";
 import { useHistory } from "react-router";
 import { getAuth, signOut } from "firebase/auth";
 import axios from "axios";
+import Navbar from "../components/Navbar/Navbar";
 
 const Profile: React.FC = () => {
   const history = useHistory();
@@ -38,10 +31,10 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchUserName = async () => {
       const userId = sessionStorage.getItem("sessionUserId");
-      const response = await axios.get(`https://api.darbaarkitchen.com/user/${userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/user/${userId}`);
       setUserName(response.data.userName);
       setUserImage(response.data.imageUrl);
-      setUserReward(response.data.rewards);
+      setUserReward(response.data.reward);
     };
     fetchUserName();
   }, []);
@@ -49,7 +42,7 @@ const Profile: React.FC = () => {
   const handleSignOut = async () => {
     const auth = getAuth();
     await signOut(auth);
-    const res = await axios.post("https://api.darbaarkitchen.com/logout");
+    const res = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/logout`);
     console.log("Sign out response:", res);
     sessionStorage.clear();
     history.push("/");
@@ -58,19 +51,7 @@ const Profile: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="danger">
-          <IonTitle className="justify text-center">Personal</IonTitle>
-          <IonButtons slot="start">
-            <div className="icon-left">
-              <Bell
-                className="bell"
-                size={24}
-                onClick={() => history.push("/Profile")}
-              />
-              <ShoppingCart size={24} onClick={() => history.push("/Order")} />
-            </div>
-          </IonButtons>
-        </IonToolbar>
+        <Navbar name="Profile" />
       </IonHeader>
       <IonContent fullscreen>
         {/* User profile picture and name */}
@@ -98,7 +79,7 @@ const Profile: React.FC = () => {
                     const formData = new FormData();
                     formData.append("image", e.target.files[0]);
                     const response = await axios.post(
-                      "https://api.darbaarkitchen.com/userImg",
+                      `${import.meta.env.VITE_API_ENDPOINT}/userImg`,
                       formData,
                       {
                         headers: {

@@ -43,7 +43,7 @@ const Item = () => {
     const userId = sessionStorage.getItem("sessionUserId");
     console.log(userId);
 
-    const response = await axios.post("https://api.darbaarkitchen.com/cart", {
+    const response = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/cart`, {
       userId: userId,
       dishId: dishId,
       name: name,

@@ -17,10 +17,10 @@ import Navbar from "../components/Navbar/Navbar";
 import CustomButton from "../components/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import sale from "../assets/images/sale.png";
-import call from "../assets/images/call.png";
-import wheel from "../assets/images/wheel.png";
-import vip from "../assets/images/vip.png";
+import sale from "../assets/images/icons/sale.png";
+import call from "../assets/images/icons/call.png";
+import wheel from "../assets/images/icons/wheel.png";
+import vip from "../assets/images/icons/vip.png";
 import food1 from "../assets/images/Image(3).png";
 import food2 from "../assets/images/Image(4).png";
 import HoriScroll from "../components/HoriScroll";
@@ -51,6 +51,7 @@ const Home: React.FC = () => {
     { locationId: string; name: string; address: string; image: string }[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<string>("");
 
   useEffect(() => {
     const imager = [
@@ -81,7 +82,7 @@ const Home: React.FC = () => {
     const fetchSpecialDishes = async () => {
       try {
         const specialResponse = await axios.get(
-          "https://api.darbaarkitchen.com/specialOffers"
+          `${import.meta.env.VITE_API_ENDPOINT}/specialOffers`
         );
         console.log("Kojja lan", specialResponse.data);
 
@@ -95,7 +96,7 @@ const Home: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://api.darbaarkitchen.com/categories"
+          `${import.meta.env.VITE_API_ENDPOINT}/categories`
         );
         setCategories(response.data);
         if (response.data.length > 0) {
@@ -109,7 +110,7 @@ const Home: React.FC = () => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "https://api.darbaarkitchen.com/locations"
+          `${import.meta.env.VITE_API_ENDPOINT}/locations`
         );
         setLocations(response.data);
       } catch (error) {
@@ -135,11 +136,12 @@ const Home: React.FC = () => {
     try {
       console.log("Lanja muindaa kuna", name);
       const response = await axios.get(
-        `https://api.darbaarkitchen.com/dishes/category/${name}`
+        `${import.meta.env.VITE_API_ENDPOINT}/dishes/category/${name}`
       );
       console.log(response.data);
 
       setSelectedCategoryDishes(response.data);
+      setActiveCategory(name);
     } catch (error) {
       console.error(`Error fetching dishes for category ${name}:`, error);
     }
@@ -236,6 +238,7 @@ const Home: React.FC = () => {
             <IconScroll
               items={categories.map((category) => ({ name: category }))}
               onCategoryClick={fetchDishesByCategory}
+              activeCategory={activeCategory} // Pass activeCategory
             />
             <RoundScroll
               items={selectedCategoryDishes.map((dish) => ({

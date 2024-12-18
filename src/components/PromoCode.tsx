@@ -22,7 +22,7 @@ const PromoCode: React.FC<PromoCodeProps> = ({  onClose }) => {
     try {
       console.log("Promo code:", promoCode);
       const response = await axios.post(
-        "https://api.darbaarkitchen.com/validate-promo",
+        `${import.meta.env.VITE_API_ENDPOINT}/validate-promo`,
         {
           promoCode,
         }

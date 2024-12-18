@@ -7,73 +7,55 @@ import {
   IonInput,
   IonButton,
   IonToast,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonToolbar,
   IonRouterOutlet,
   useIonRouter
 } from "@ionic/react";
 import OtpPage from "./OtpPage";
-import { Link, Route } from "react-router-dom";
-import "../assets/css/Verifcation.css"
-import { IonReactRouter } from "@ionic/react-router";
+import { Route } from "react-router-dom";
+import "../assets/css/Verifcation.css";
 import HomePage from "./HomePage";
+import { sendVerificationCode } from "../providers/auth/firebase";
 
 const VerifyPhoneNumber: React.FC = () => {
-  const router = useIonRouter()
+  const router = useIonRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setVerificationCode] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [verificationId, setVerificationId] = useState<string | null>(null);
 
   // Refs for IonInputs to manage focus
   const inputRefs = useRef<Array<HTMLIonInputElement | null>>([]);
 
   // Function to send verification code
-  const sendVerificationCode = () => {
-    console.log("Sending code to:", phoneNumber);
-    setShowVerificationInput(true);
-  };
-
-  // Function to handle code input change
-  const handleCodeChange = (index: number, value: string) => {
-    if (/^[0-9]$/.test(value) || value === "") {
-      const updatedCode = [...verificationCode];
-      updatedCode[index] = value;
-      setVerificationCode(updatedCode);
-
-      // Automatically focus the next input box if not the last one
-      if (value !== "" && index < verificationCode.length - 1) {
-        inputRefs.current[index + 1]?.setFocus(); // Use setFocus for IonInput
-      }
+  const sendVerificationCodeHandler = async () => {
+    try {
+      const confirmationResult = await sendVerificationCode(phoneNumber);
+      setVerificationId(confirmationResult.verificationId);
+      setShowVerificationInput(true);
+    } catch (error) {
+      setErrorMessage("Failed to send verification code. Please try again.");
     }
   };
 
-  // Function to verify the entered code
-  const verifyCode = () => {
-    alert()
-    router.push('/HomePage')
-    console.log("Mundaa moopi");
-    
-    // Add your verification logic here
+  // Function to handle successful verification
+  const handleSuccess = () => {
+    setSuccessMessage("Phone number verified successfully!");
+    router.push('/HomePage');
+  };
+
+  // Function to handle verification error
+  const handleError = (error: string) => {
+    setErrorMessage(error);
   };
 
   return (
     <IonPage>
-    
-        <IonRouterOutlet>
-          <Route path="/HomePage" component={HomePage} />
-          {/* Route for phone verification */}
-        </IonRouterOutlet>
+      <IonRouterOutlet>
+        <Route path="/HomePage" component={HomePage} />
+        {/* Route for phone verification */}
+      </IonRouterOutlet>
       
       <IonToolbar color="danger"></IonToolbar>
       <IonContent className="ion-padding">
@@ -90,7 +72,7 @@ const VerifyPhoneNumber: React.FC = () => {
         </IonItem>
 
         {/* Button to send verification code */}
-        <IonButton expand="block" color="danger" onClick={sendVerificationCode}>
+        <IonButton expand="block" color="danger" onClick={sendVerificationCodeHandler}>
           Send Verification Code
         </IonButton>
 
@@ -99,10 +81,15 @@ const VerifyPhoneNumber: React.FC = () => {
           <>
             <IonLabel className="mt-4">Enter Verification Code</IonLabel>
 
-            <OtpPage numberOfDigits={4} />
+            <OtpPage
+              numberOfDigits={4}
+              verificationId={verificationId}
+              onSuccess={handleSuccess}
+              onError={handleError}
+            />
 
             {/* Button to verify code */}
-            <div className="start-btn" onClick={verifyCode}>
+            <div className="start-btn" onClick={handleSuccess}>
               verify Code
             </div>
           </>

@@ -1,16 +1,21 @@
 import React, { useRef, useEffect, useState } from "react";
-
-const correctOTP = "1234"; // Validate from your server
+import { signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
+import { auth } from "../providers/auth/firebase";
 
 interface OtpInputWithValidationProps {
   numberOfDigits: number; // Prop to define the number of OTP digits
+  verificationId: string | null; // Prop to pass the verification ID
+  onSuccess: () => void; // Callback for successful verification
+  onError: (error: string) => void; // Callback for error handling
 }
 
 const OtpInputWithValidation: React.FC<OtpInputWithValidationProps> = ({
   numberOfDigits,
+  verificationId,
+  onSuccess,
+  onError
 }) => {
   const [otp, setOtp] = useState<string[]>(new Array(numberOfDigits).fill(""));
-  const [otpError, setOtpError] = useState<string | null>(null);
   const otpBoxReference = useRef<HTMLInputElement[]>([]);
 
   function handleChange(value: string, index: number) {
@@ -41,12 +46,19 @@ const OtpInputWithValidation: React.FC<OtpInputWithValidationProps> = ({
 
   useEffect(() => {
     const otpValue = otp.join("");
-    if (otpValue !== "" && otpValue !== correctOTP) {
-      setOtpError("❌ Wrong OTP Please Check Again");
-    } else {
-      setOtpError(null);
+    if (otpValue.length === numberOfDigits && verificationId) {
+      signInWithPhoneNumber(auth, verificationId)
+        .then((confirmationResult) => {
+          return confirmationResult.confirm(otpValue);
+        })
+        .then(() => {
+          onSuccess();
+        })
+        .catch((error) => {
+          onError("❌ Wrong OTP Please Check Again");
+        });
     }
-  }, [otp]);
+  }, [otp, verificationId, numberOfDigits, onSuccess, onError]);
 
   return (
     <article style={{ width: "50%", margin: "auto", paddingTop: "2rem" }}>
@@ -89,10 +101,6 @@ const OtpInputWithValidation: React.FC<OtpInputWithValidationProps> = ({
           />
         ))}
       </div>
-
-      <p className={`text-lg text-white mt-4 ${otpError ? "error-show" : ""}`}>
-        {otpError}
-      </p>
     </article>
   );
 };

@@ -21,6 +21,7 @@ import CustomButton from "../components/Button";
 import IconScroll from "../components/iconSlider";
 import { CirclePlus, Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
+import Navbar from "../components/Navbar/Navbar";
 interface Addon {
   addonName: string;
   price: number;
@@ -46,13 +47,13 @@ const Menu: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://api.darbaarkitchen.com/categories"
+          `${import.meta.env.VITE_API_ENDPOINT}/categories`
         );
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       } finally {
-        setTimeout(() => setLoading(false), 2500); // Ensure loading for at least 5 seconds
+        setTimeout(() => setLoading(false), 1500); // Ensure loading for at least 5 seconds
       }
     };
     fetchCategories();
@@ -64,7 +65,7 @@ const Menu: React.FC = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://api.darbaarkitchen.com/dishes/category/${activeCategory}`
+          `${import.meta.env.VITE_API_ENDPOINT}/dishes/category/${activeCategory}`
         );
         setDishes(response.data);
       } catch (error) {
@@ -111,7 +112,7 @@ const Menu: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-      <IonToolbar color="danger">
+      {/* <IonToolbar color="danger">
           <IonTitle className="justify text-center">Menu</IonTitle>
           <IonButtons slot="start">
             <div className="icon-left">
@@ -123,7 +124,8 @@ const Menu: React.FC = () => {
               <ShoppingCart size={24} onClick={() => history.push("/Order")} />
             </div>
           </IonButtons>
-        </IonToolbar>
+        </IonToolbar> */}
+        <Navbar name="Menu" />
       </IonHeader>
 
       <IonContent fullscreen>
@@ -138,6 +140,7 @@ const Menu: React.FC = () => {
                 marginTop: "10px",
                 marginRight: "10px",
                 marginLeft: "10px",
+                maxWidth: "90%"
               }}
               alt="Menu"
             />
