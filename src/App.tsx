@@ -47,7 +47,8 @@ import CheckoutPage from "./pages/Checkout";
 import Settings from "./pages/Settings";
 import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
-import Loading from './components/Loading';
+import Loading from "./components/Loading";
+import { setupPushNotifications } from "./providers/pushNotifications";
 
 setupIonicReact();
 
@@ -62,23 +63,23 @@ const App: React.FC = () => {
       setTimeout(() => {
         setLoading(false);
       }, 1500); // Ensure loading page is shown for at least 5 seconds
+      setupPushNotifications();
     });
 
-    const intervalId = setInterval(() => {
-      // Check if session variables are available
-      const sessionVariablesAvailable = sessionStorage.getItem("sessionUserId");
-      if (!sessionVariablesAvailable) {
-        setIsAuthenticated(false);
-      }
-      else{
-        setIsAuthenticated(true);
-      }
-    }, 5000); // Check every 5 seconds
+    // const intervalId = setInterval(() => {
+    //   // Check if session variables are available
+    //   const sessionVariablesAvailable = sessionStorage.getItem("sessionUserId");
+    //   if (!sessionVariablesAvailable) {
+    //     setIsAuthenticated(false);
+    //   } else {
+    //     setIsAuthenticated(true);
+    //   }
+    // }, 5000); // Check every 5 seconds
 
-    return () => {
-      unsubscribe(); // Cleanup subscription on unmount
-      clearInterval(intervalId); // Clear interval on unmount
-    };
+    // return () => {
+    //   unsubscribe(); // Cleanup subscription on unmount
+    //   clearInterval(intervalId); // Clear interval on unmount
+    // };
   }, []);
 
   if (loading) {
