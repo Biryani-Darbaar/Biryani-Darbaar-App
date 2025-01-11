@@ -12,14 +12,21 @@ export const setupPushNotifications = async () => {
 
   // Handle push notification events
   PushNotifications.addListener("registration", async (token) => {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_ENDPOINT}`,
-      token.value
-    );
-    if (response.status === 200) {
-      console.log("Device registered successfully");
+    console.log("Registration event triggered");
+    console.log("Device Token:", token.value);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/store-token`,
+        { token: token.value }
+      );
+      if (response.status === 200) {
+        console.log("Device registered successfully");
+      } else {
+        console.error("Failed to register device:", response.status, response.data);
+      }
+    } catch (error) {
+      console.error("Error registering device:", error);
     }
-    // Send this token to your backend
   });
 
   PushNotifications.addListener(
@@ -32,7 +39,6 @@ export const setupPushNotifications = async () => {
             body: notification.body || "You have a new notification",
             id: new Date().getTime(),
             schedule: { at: new Date(Date.now() + 1000) },
-
             actionTypeId: "",
             extra: null,
           },
@@ -40,4 +46,8 @@ export const setupPushNotifications = async () => {
       });
     }
   );
+
+  PushNotifications.addListener("pushNotificationActionPerformed", (notification) => {
+    console.log("Push notification action performed", notification.actionId, notification.inputValue);
+  });
 };

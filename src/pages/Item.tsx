@@ -83,7 +83,7 @@ const Item = () => {
           <h1 className="heading">{name}</h1>
           <h3 className="description">{description}</h3>
           <div className="addons">
-            {addons
+            {Array.isArray(addons)
               ? addons.map((addon, index) => (
                   <div key={index} className="addon">
                     <p>{addon.addonName}</p>

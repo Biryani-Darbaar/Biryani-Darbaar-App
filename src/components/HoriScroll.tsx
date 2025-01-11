@@ -81,7 +81,7 @@ const HoriScroll: React.FC<HoriScrollProps> = ({ items }) => {
     image,
     description,
   }: AddToCartParams): void => {
-    console.log("Kojja lanja munda dengutha ",name, dishId, addons, price, image, description);
+    console.log("Kojja lanja munda dengutha erriii puuka lanja",name, dishId, addons, price, image, description);
     history.push({
       pathname: "/Item",
       state: {

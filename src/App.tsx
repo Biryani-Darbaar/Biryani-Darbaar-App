@@ -66,20 +66,9 @@ const App: React.FC = () => {
       setupPushNotifications();
     });
 
-    // const intervalId = setInterval(() => {
-    //   // Check if session variables are available
-    //   const sessionVariablesAvailable = sessionStorage.getItem("sessionUserId");
-    //   if (!sessionVariablesAvailable) {
-    //     setIsAuthenticated(false);
-    //   } else {
-    //     setIsAuthenticated(true);
-    //   }
-    // }, 5000); // Check every 5 seconds
-
-    // return () => {
-    //   unsubscribe(); // Cleanup subscription on unmount
-    //   clearInterval(intervalId); // Clear interval on unmount
-    // };
+    return () => {
+      unsubscribe(); // Cleanup subscription on unmount
+    };
   }, []);
 
   if (loading) {

@@ -7,6 +7,11 @@ const config: CapacitorConfig = {
   server: {
     url: "http://192.168.29.143:5173/",
   },
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"],
+    },
+  },
 };
 
 export default config;
