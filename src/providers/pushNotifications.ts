@@ -7,8 +7,19 @@ export const setupPushNotifications = async () => {
   const permission = await PushNotifications.requestPermissions();
   if (permission.receive === "granted") {
     // Register device for push notifications
-    await PushNotifications.register();
+    console.log("Kojja lanja condom lekunda denguthaa")
+    try {
+    await PushNotifications.register(); 
+    console.log("Kojja lanja kodakan lekunda denguth")
+    } catch (error) {
+    console.error("Error registering device:", error);
   }
+    
+  }
+
+  PushNotifications.addListener("registrationError", (error) => {
+    console.log("Error registering device:", error);
+   })
 
   // Handle push notification events
   PushNotifications.addListener("registration", async (token) => {
