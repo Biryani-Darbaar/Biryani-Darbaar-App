@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "foodhut",
   webDir: "dist",
   server: {
-    url: "http://192.168.29.143:5173/",
+    url: "http://192.168.0.110:5173/",
   },
   plugins: {
     PushNotifications: {

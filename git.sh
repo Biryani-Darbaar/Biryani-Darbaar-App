@@ -1,3 +1,3 @@
 git add .
-git commit -m "notifications fixes attempt 1"
+git commit -m "location services for android"
 git push 

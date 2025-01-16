@@ -1,3 +1,4 @@
+import { Geolocation } from "@capacitor/geolocation";
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import {
@@ -64,6 +65,13 @@ const App: React.FC = () => {
         setLoading(false);
       }, 1500); // Ensure loading page is shown for at least 5 seconds
       setupPushNotifications();
+
+      const printCurrentPosition = async () => {
+        const coordinates = await Geolocation.getCurrentPosition();
+
+        console.log("Current position:", coordinates);
+      };
+      printCurrentPosition();
     });
 
     return () => {
