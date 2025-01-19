@@ -1,4 +1,4 @@
-import { Geolocation } from "@capacitor/geolocation";
+import { Geolocation } from "@ionic-native/geolocation";
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import {
