@@ -1,4 +1,4 @@
-import { Geolocation } from "@capacitor/geolocation";
+import { Geolocation } from "@ionic-native/geolocation";
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import {
@@ -49,7 +49,7 @@ import Settings from "./pages/Settings";
 import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
 import Loading from "./components/Loading";
-import { setupPushNotifications } from "./providers/pushNotifications";
+// import { setupPushNotifications } from "./providers/pushNotifications";
 
 setupIonicReact();
 
@@ -59,19 +59,28 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
+      Geolocation.getCurrentPosition()
+        .then((position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("Current position:", position);
+          // Convert latitude and longitude into a string
+          const locationString = `Latitude: ${latitude}, Longitude: ${longitude}`;
+          console.log("Location string:", locationString);
+          // Store in sessionStorage
+          sessionStorage.setItem("addressData", locationString);
+        })
+        .catch((error) => {
+          console.error("Error getting location", error);
+        });
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
       setTimeout(() => {
         setLoading(false);
       }, 1500); // Ensure loading page is shown for at least 5 seconds
-      setupPushNotifications();
+      // setupPushNotifications();
 
-      const printCurrentPosition = async () => {
-        const coordinates = await Geolocation.getCurrentPosition();
-
-        console.log("Current position:", coordinates);
-      };
-      printCurrentPosition();
+      
     });
 
     return () => {
