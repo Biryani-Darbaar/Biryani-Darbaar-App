@@ -49,7 +49,7 @@ import Settings from "./pages/Settings";
 import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
 import Loading from "./components/Loading";
-// import { setupPushNotifications } from "./providers/pushNotifications";
+import { getToken, addTokenReceivedListener } from "./providers/pushNotifications";
 
 setupIonicReact();
 
@@ -82,6 +82,25 @@ const App: React.FC = () => {
 
       
     });
+
+    const setupPushNotifications = async () => {
+      try {
+        const token = await getToken();
+        console.log("Push notification token:", token);
+        await fetch("/store-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token }),
+        });
+      } catch (error) {
+        console.error("Error setting up push notifications", error);
+      }
+    };
+
+    setupPushNotifications();
+    addTokenReceivedListener();
 
     return () => {
       unsubscribe(); // Cleanup subscription on unmount
