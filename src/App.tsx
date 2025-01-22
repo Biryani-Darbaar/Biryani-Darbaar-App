@@ -49,7 +49,11 @@ import Settings from "./pages/Settings";
 import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
 import Loading from "./components/Loading";
-import { getToken, addTokenReceivedListener } from "./providers/pushNotifications";
+import {
+  getToken,
+  addTokenReceivedListener,
+} from "./providers/pushNotifications";
+import axios from "axios";
 
 setupIonicReact();
 
@@ -59,41 +63,40 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
-      Geolocation.getCurrentPosition()
-        .then((position) => {
-          const { latitude, longitude } = position.coords;
-          console.log("Current position:", position);
-          // Convert latitude and longitude into a string
-          const locationString = `Latitude: ${latitude}, Longitude: ${longitude}`;
-          console.log("Location string:", locationString);
-          // Store in sessionStorage
-          sessionStorage.setItem("addressData", locationString);
-        })
-        .catch((error) => {
-          console.error("Error getting location", error);
-        });
+    Geolocation.getCurrentPosition()
+      .then((position) => {
+        const { latitude, longitude } = position.coords;
+        console.log("Current position:", position);
+        // Convert latitude and longitude into a string
+        const locationString = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        console.log("Location string:", locationString);
+        // Store in sessionStorage
+        sessionStorage.setItem("addressData", locationString);
+      })
+      .catch((error) => {
+        console.error("Error getting location", error);
+      });
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
       setTimeout(() => {
         setLoading(false);
       }, 1500); // Ensure loading page is shown for at least 5 seconds
       // setupPushNotifications();
-
-      
     });
 
     const setupPushNotifications = async () => {
       try {
         const token = await getToken();
         console.log("Push notification token:", token);
-        await fetch("/store-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token }),
-        });
+        await axios.post(
+          `${import.meta.env.VITE_API_ENDPOINT}/store-token`,
+          { token },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
       } catch (error) {
         console.error("Error setting up push notifications", error);
       }
