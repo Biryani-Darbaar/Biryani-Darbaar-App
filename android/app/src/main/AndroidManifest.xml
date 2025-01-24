@@ -36,7 +36,11 @@
                 android:resource="@xml/file_paths" />
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@mipmap/ic_launcher_round"/>
+                android:resource="@mipmap/ic_launcher_round"
+                />
+            <meta-data
+                android:name="firebase:debug_logging"
+                android:value="true" />
         </provider>
     </application>
 

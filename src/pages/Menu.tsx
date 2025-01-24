@@ -38,7 +38,7 @@ interface AddToCartParams {
 
 const Menu: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>("Chicken Curry");
+  const [activeCategory, setActiveCategory] = useState<string>("Biryani's");
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();

@@ -11,6 +11,8 @@ import {
   IonLabel,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 import Home from "./pages/Home";
 // import HomePage from './pages/HomePage'
@@ -51,7 +53,7 @@ import Personal from "./pages/Personal";
 import Loading from "./components/Loading";
 import {
   getToken,
-  addTokenReceivedListener,
+  addTokenReceivedListener
 } from "./providers/pushNotifications";
 import axios from "axios";
 
@@ -102,8 +104,30 @@ const App: React.FC = () => {
       }
     };
 
+    const listenForMessages = () => {
+      FirebaseMessaging.addListener('notificationReceived', async (message) => {
+        console.log('Message received:', message);
+        // Push the notification using LocalNotifications
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: message.notification.title || "No Title",
+              body: message.notification.body,
+              id: new Date().getTime(),
+              schedule: { at: new Date(Date.now() + 1000) },
+              sound: null,
+              attachments: null,
+              actionTypeId: "",
+              extra: null,
+            },
+          ],
+        });
+      });
+    };
+
     setupPushNotifications();
     addTokenReceivedListener();
+    listenForMessages();
 
     return () => {
       unsubscribe(); // Cleanup subscription on unmount
