@@ -1,3 +1,3 @@
 git add .
-git commit -m "location services for android"
+git commit -m "Complete push notifications completed"
 git push 

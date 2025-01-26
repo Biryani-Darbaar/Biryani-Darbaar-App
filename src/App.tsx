@@ -11,8 +11,8 @@ import {
   IonLabel,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { FirebaseMessaging } from '@capacitor-firebase/messaging';
-import { LocalNotifications } from '@capacitor/local-notifications';
+// import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+// import { LocalNotifications } from '@capacitor/local-notifications';
 
 import Home from "./pages/Home";
 // import HomePage from './pages/HomePage'
@@ -51,11 +51,8 @@ import Settings from "./pages/Settings";
 import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
 import Loading from "./components/Loading";
-import {
-  getToken,
-  addTokenReceivedListener
-} from "./providers/pushNotifications";
-import axios from "axios";
+import usePushNotifications from "./providers/pushNotifications";
+// import axios from "axios";
 
 setupIonicReact();
 
@@ -63,6 +60,8 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Home");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  usePushNotifications();
 
   useEffect(() => {
     Geolocation.getCurrentPosition()
@@ -83,51 +82,30 @@ const App: React.FC = () => {
       setTimeout(() => {
         setLoading(false);
       }, 1500); // Ensure loading page is shown for at least 5 seconds
-      // setupPushNotifications();
     });
 
-    const setupPushNotifications = async () => {
-      try {
-        const token = await getToken();
-        console.log("Push notification token:", token);
-        await axios.post(
-          `${import.meta.env.VITE_API_ENDPOINT}/store-token`,
-          { token },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-      } catch (error) {
-        console.error("Error setting up push notifications", error);
-      }
-    };
+    // const listenForMessages = () => {
+    //   FirebaseMessaging.addListener('notificationReceived', async (message) => {
+    //     console.log('Message received:', message);
+    //     // Push the notification using LocalNotifications
+    //     await LocalNotifications.schedule({
+    //       notifications: [
+    //         {
+    //           title: message.notification.title || "No Title",
+    //           body: message.notification.body,
+    //           id: new Date().getTime(),
+    //           schedule: { at: new Date(Date.now() + 1000) },
+    //           sound: null,
+    //           attachments: null,
+    //           actionTypeId: "",
+    //           extra: null,
+    //         },
+    //       ],
+    //     });
+    //   });
+    // };
 
-    const listenForMessages = () => {
-      FirebaseMessaging.addListener('notificationReceived', async (message) => {
-        console.log('Message received:', message);
-        // Push the notification using LocalNotifications
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: message.notification.title || "No Title",
-              body: message.notification.body,
-              id: new Date().getTime(),
-              schedule: { at: new Date(Date.now() + 1000) },
-              sound: null,
-              attachments: null,
-              actionTypeId: "",
-              extra: null,
-            },
-          ],
-        });
-      });
-    };
-
-    setupPushNotifications();
-    addTokenReceivedListener();
-    listenForMessages();
+    // listenForMessages();
 
     return () => {
       unsubscribe(); // Cleanup subscription on unmount
