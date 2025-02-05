@@ -4,6 +4,10 @@ const config: CapacitorConfig = {
   appId: "com.biryani.app",
   appName: "foodhut",
   webDir: "dist",
+  server: {
+    cleartext: true,
+    allowNavigation: ["*"],
+  },
   // server: {
   //   url: "http://13.239.77.189:5173/",
   // },
