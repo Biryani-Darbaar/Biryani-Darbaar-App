@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "app": "ionic serve",
-    "prebuild": "npm run build && npx cap sync",
-    "build": "tsc && vite build",
+    "build": "ionic build",
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
