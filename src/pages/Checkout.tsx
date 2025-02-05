@@ -1,22 +1,17 @@
-// pages/Checkout.tsx
 import React, { useState } from "react";
 import {
   IonContent,
   IonPage,
   IonButton,
-  IonInput,
-  IonLabel,
-  IonItem,
-  IonToast,
   IonLoading,
   IonHeader,
   IonToolbar,
+  IonToast,
 } from "@ionic/react";
-import { useStripe, useElements, Elements } from "@stripe/react-stripe-js";
+import { useStripe, useElements, Elements, CardElement } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import CardElement from "../components/Card";
 import "../assets/css/Checkout.css";
 import { MoveLeft } from "lucide-react";
 // Load Stripe instance with your public key
@@ -29,17 +24,6 @@ interface CheckoutProps {
   Order: any[];
 }
 
-interface CardDetails {
-  cardNumber: string;
-  expiryDate: string;
-  cvc: string;
-}
-
-const handleCardSubmit = (cardDetails: CardDetails) => {
-  // Handle card details submission
-  console.log("Card details submitted:", cardDetails);
-};
-
 const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -48,7 +32,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
   const [toastState, setToastState] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const history = useHistory();
-  console.log("Order mundaa:", Order);
+  console.log("Order:", Order);
 
   const handlePayment = async () => {
     if (!stripe || !elements) return;
@@ -79,7 +63,6 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       if (result.error) {
         setPaymentError(result.error.message || "An unknown error occurred.");
-        console.log("Micheal okadu");
       } else if (result.paymentIntent?.status === "succeeded") {
         console.log("Payment successful!");
         setToastState(true);
@@ -92,7 +75,6 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
           }
         );
         console.log("Order created:", orderResponse);
-         // Destroy the total value in session storage
         history.push("/Order");
       }
     } catch (error) {
@@ -100,7 +82,6 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
       setPaymentError(
         "An error occurred while processing your payment. Please try again."
       );
-      console.log("Micheal okadu kaadu iddaru");
       const userId = { userId: sessionStorage.getItem("sessionUserId") };
       const response = await axios.post(
         `${import.meta.env.VITE_API_ENDPOINT}/orders`,
@@ -118,8 +99,7 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       if (response.status === 201) {
         console.log("Order created successfully");
-        for (const item of (Order as unknown as { orderItems: any[] })
-          .orderItems) {
+        for (const item of Order) {
           const cartItemId = item.cartItemId;
           console.log("Cart Item ID:", cartItemId);
 
@@ -151,10 +131,9 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar className="" color="danger">
+        <IonToolbar color="danger">
           <div>
             <h2>
-              {" "}
               <MoveLeft onClick={handleGoback} style={{ marginRight: "30%" }} />
               Checkout
             </h2>
@@ -164,9 +143,8 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 
       <IonContent className="ion-padding">
         <div style={{ margin: "20px 0" }}>
-          <CardElement onSubmit={handleCardSubmit} />
+          <CardElement />
         </div>
-        {/* jugaad for video */}
         <div className="check-btn-container">
           <IonButton
             color={"danger"}
@@ -177,7 +155,6 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
             {loading ? "Processing..." : "Pay Now"}
           </IonButton>
         </div>
-        {/* Loading Spinner */}
         <IonLoading
           isOpen={loading}
           message="Processing payment..."
@@ -187,14 +164,24 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
           <IonToast
             className="toast-checkout"
             isOpen={!toastState}
-            message="Payment successful!"
+            message={paymentError}
             duration={2000}
-            color="success"
+            color="danger"
             onDidDismiss={() => setToastState(false)}
             position="bottom"
             cssClass="custom-toast"
           />
         )}
+        <IonToast
+          className="toast-checkout"
+          isOpen={toastState}
+          message="Payment successful!"
+          duration={2000}
+          color="success"
+          onDidDismiss={() => setToastState(false)}
+          position="bottom"
+          cssClass="custom-toast"
+        />
       </IonContent>
     </IonPage>
   );
@@ -203,20 +190,19 @@ const Checkout: React.FC<CheckoutProps> = ({ amount, Order }) => {
 // Wrap Checkout with Elements provider
 const CheckoutPage: React.FC = () => {
   const history = useHistory();
-  const { amount, order } = (history.location.state as {
+  const { amount, orderItems } = (history.location.state as {
     amount: number;
     orderItems: any[];
   }) || {
     amount: 100,
     orderItems: [],
-    user: {}, // Ensure user is initialized
   };
   console.log("Amount:", amount);
-  console.log("Order Items:", order);
+  console.log("Order Items:", orderItems);
 
   return (
     <Elements stripe={stripePromise}>
-      <Checkout amount={amount} Order={order} />
+      <Checkout amount={amount} Order={orderItems} />
     </Elements>
   );
 };

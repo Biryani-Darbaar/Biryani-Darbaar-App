@@ -298,7 +298,7 @@ const Order: React.FC = () => {
                       history.push({
                         pathname: "/Checkout",
                         state: {
-                          order: OrderData,
+                          orderItems: OrderData,
                           discountChecked: applyDiscount, // Pass discountChecked flag
                         },
                       });
