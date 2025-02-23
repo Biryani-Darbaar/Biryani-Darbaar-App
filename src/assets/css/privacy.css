@@ -1,0 +1,40 @@
+.privacy-content {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.privacy-content .intro {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 2em;
+}
+
+.policy-section {
+  margin-bottom: 2em;
+}
+
+.policy-section h2 {
+  color: #333;
+  margin-bottom: 1em;
+  font-size: 1.4em;
+}
+
+.policy-section ul {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.policy-section li {
+  margin-bottom: 0.5em;
+}
+
+.policy-section address {
+  font-style: normal;
+  margin-top: 1em;
+  color: #666;
+}
+
+.policy-section strong {
+  color: #333;
+}

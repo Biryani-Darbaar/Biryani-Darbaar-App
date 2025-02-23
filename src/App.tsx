@@ -1,6 +1,6 @@
 import { Geolocation } from "@ionic-native/geolocation";
 import React, { useState, useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import {
   IonApp,
   IonRouterOutlet,
@@ -21,7 +21,6 @@ import Order from "./pages/Order";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import VerifyPhoneNumber from "./pages/VerifyPhoneNumber";
 import Orders from "./pages/Orders";
 import Splash from "./pages/Splash";
 import "./assets/css/App.css";
@@ -52,6 +51,11 @@ import Offers from "./pages/Offers";
 import Personal from "./pages/Personal";
 import Loading from "./components/Loading";
 import usePushNotifications from "./providers/pushNotifications";
+import Notifications from "./pages/Notifications";
+import Languages from "./pages/Languages";
+import DishDash from "./pages/DishDash";
+import Privacy from "./pages/Privacy";
+import TermsOfUse from "./pages/TermsOfUse";
 // import axios from "axios";
 
 setupIonicReact();
@@ -60,6 +64,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Home");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   usePushNotifications();
 
@@ -116,18 +121,15 @@ const App: React.FC = () => {
     return <Loading />;
   }
 
+  const noTabsRoutes = ['/Splash', '/HomePage', '/SignIn', '/SignUp'];
+  const shouldShowTabs = !noTabsRoutes.includes(location.pathname);
+
   return (
     <IonApp>
-      <IonReactRouter>
+      {shouldShowTabs ? (
         <IonTabs>
           <IonRouterOutlet>
             <Switch>
-              <Route exact path="/Splash">
-                <Splash />
-              </Route>
-              <Route exact path="/HomePage">
-                {isAuthenticated ? <Redirect to="/Home" /> : <HomePage />}
-              </Route>
               <Route exact path="/Home">
                 {isAuthenticated ? <Home /> : <Redirect to="/HomePage" />}
               </Route>
@@ -136,6 +138,15 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/Item">
                 {isAuthenticated ? <Item /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/notification">
+                {isAuthenticated ? <Notifications/> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path = "/languages">
+                {isAuthenticated ? <Languages/> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/dishdash">
+                {isAuthenticated ? <DishDash/>: <Redirect to="/HomePage" />}
               </Route>
               <Route path="/Checkout">
                 <CheckoutPage />
@@ -152,24 +163,22 @@ const App: React.FC = () => {
               <Route path="/Profile">
                 {isAuthenticated ? <Profile /> : <Redirect to="/HomePage" />}
               </Route>
-              <Route path="/SignIn">
-                {isAuthenticated ? <Redirect to="/Home" /> : <SignIn />}
-              </Route>
-              <Route path="/SignUp">
-                {isAuthenticated ? <Redirect to="/Home" /> : <SignUp />}
-              </Route>
               <Route path="/Offer">
                 {isAuthenticated ? <Offers /> : <Redirect to="/HomePage" />}
               </Route>
               <Route path="/Personal">
                 {isAuthenticated ? <Personal /> : <Redirect to="/HomePage" />}
               </Route>
-              {/* <Route path="/VerifyPhoneNumber">
-                <VerifyPhoneNumber />
-              </Route> */}
-              <Redirect from="/" to="/HomePage" />
+              <Route path="/privacy">
+                {isAuthenticated ? <Privacy /> : <Redirect to="/HomePage" />}
+              </Route>
+              <Route path="/termsOfUse">
+                {isAuthenticated ? <TermsOfUse/> : <Redirect to="/HomePage" />}
+              </Route>
+              <Redirect exact path="/" to="/HomePage" />
             </Switch>
           </IonRouterOutlet>
+
           <IonTabBar slot="bottom" className="custom-tab-bar">
             <IonTabButton
               tab="Home"
@@ -241,9 +250,33 @@ const App: React.FC = () => {
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
-      </IonReactRouter>
+      ) : (
+        <IonRouterOutlet>
+          <Switch>
+            <Route exact path="/Splash" component={Splash} />
+            <Route exact path="/HomePage">
+              {isAuthenticated ? <Redirect to="/Home" /> : <HomePage />}
+            </Route>
+            <Route exact path="/SignIn">
+              {isAuthenticated ? <Redirect to="/Home" /> : <SignIn />}
+            </Route>
+            <Route exact path="/SignUp">
+              {isAuthenticated ? <Redirect to="/Home" /> : <SignUp />}
+            </Route>
+            <Redirect exact from="/" to="/HomePage" />
+          </Switch>
+        </IonRouterOutlet>
+      )}
     </IonApp>
   );
 };
 
-export default App;
+const AppWrapper: React.FC = () => {
+  return (
+    <IonReactRouter>
+      <App />
+    </IonReactRouter>
+  );
+};
+
+export default AppWrapper;

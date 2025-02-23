@@ -10,7 +10,7 @@ const SplashScreen: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       history.push("/signin");
-    }, 2000); // 2 seconds delay
+    }, 5000); // 2 seconds delay
 
     return () => clearTimeout(timer); // Cleanup the timer
   }, [history]);

@@ -162,7 +162,7 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="header-custom">
-        <Navbar />
+        <Navbar name="Home" />
       </IonHeader>
 
       <IonContent fullscreen className="content">

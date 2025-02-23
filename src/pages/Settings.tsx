@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   IonButtons,
   IonHeader,
@@ -12,6 +12,7 @@ import {
 } from "@ionic/react";
 import { Bell, ShoppingCart, Tags, ChevronRight } from "lucide-react";
 import { useHistory } from "react-router";
+import "./../assets/css/Settings.css";
 
 const Settings = () => {
   const history = useHistory();
@@ -35,31 +36,38 @@ const Settings = () => {
       <IonContent fullscreen>
         <IonList>
           <IonItem>
-            <IonLabel><strong>Account settings</strong></IonLabel>
+            <IonLabel>
+              <strong>Account settings</strong>
+            </IonLabel>
           </IonItem>
           <IonItem button onClick={() => history.push("/PasswordSecurity")}>
             <IonLabel>Password & Security</IonLabel>
-            <ChevronRight color="#252525"/>
+            <ChevronRight color="#252525" />
           </IonItem>
           <IonItem>
-            <IonLabel>Application version</IonLabel>
+            <IonLabel onClick={() => history.push("/app-version")}>
+              Application version
+            </IonLabel>
+            <ChevronRight color="#252525" />
           </IonItem>
         </IonList>
         <IonList>
           <IonItem>
-            <IonLabel><strong>General Information</strong></IonLabel>
+            <IonLabel>
+              <strong>General Information</strong>
+            </IonLabel>
           </IonItem>
-          <IonItem>
+          <IonItem button onClick={() => history.push("/languages")}>
             <IonLabel>Languages</IonLabel>
-            <ChevronRight color="#252525"/>
+            <ChevronRight color="#252525" />
           </IonItem>
-          <IonItem>
+          <IonItem button onClick={() => history.push("/notification")}>
             <IonLabel>Notification settings</IonLabel>
-            <ChevronRight color="#252525"/>
+            <ChevronRight color="#252525" />
           </IonItem>
-          <IonItem>
+          <IonItem button onClick={() => history.push("/dishdash")}>
             <IonLabel>Introducing DishDash</IonLabel>
-            <ChevronRight color="#252525"/>
+            <ChevronRight color="#252525" />
           </IonItem>
         </IonList>
       </IonContent>

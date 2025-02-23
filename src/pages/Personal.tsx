@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Pencil } from "lucide-react";
-import "./../assets/css/Settings.css";
+import "./../assets/css/Personal.css";
 import { useHistory } from "react-router";
 import Navbar from "../components/Navbar/Navbar";
 

@@ -24,7 +24,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import { Link, Route, useHistory } from "react-router-dom";
 import SignUp from "./SignUp";
-import VerifyPhoneNumber from "./VerifyPhoneNumber"; // Import the VerifyPhoneNumber page
+// import VerifyPhoneNumber from "./VerifyPhoneNumber"; // Import the VerifyPhoneNumber page
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import axios from "axios";
 const SignIn: React.FC = () => {
@@ -73,7 +73,8 @@ const SignIn: React.FC = () => {
       // Set session ID and session user ID
       sessionStorage.setItem("sessionId", sessionId);
       sessionStorage.setItem("sessionUserId", sessionUserId);
-      history.push("/VerifyPhoneNumber");
+      // history.push("/VerifyPhoneNumber");
+      history.push("/Home");
     } catch (error) {
       setErrorMessage((error as any).message);
       setShowErrorToast(true);
@@ -95,10 +96,10 @@ const SignIn: React.FC = () => {
         <IonReactRouter>
           <IonRouterOutlet>
             <Route path="/SignUp" component={SignUp} />
-            <Route
+            {/* <Route
               path="/VerifyPhoneNumber"
               component={VerifyPhoneNumber}
-            />{" "}
+            />{" "} */}
             {/* Route for phone verification */}
           </IonRouterOutlet>
         </IonReactRouter>

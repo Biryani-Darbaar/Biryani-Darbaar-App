@@ -156,7 +156,7 @@ const Order: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <Navbar />
+        <Navbar name="Cart" />
       </IonHeader>
       <IonContent fullscreen>
         <div className="content-fullscreen">

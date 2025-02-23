@@ -5,12 +5,11 @@ const config: CapacitorConfig = {
   appName: "foodhut",
   webDir: "dist",
   server: {
+    url: "http://52.64.104.221/",
     cleartext: true,
-    allowNavigation: ["*"],
+    allowNavigation: ["52.64.104.221"],
   },
-  // server: {
-  //   url: "http://13.239.77.189:5173/",
-  // },
+  
   // plugins: {
   //   FirebaseMessaging: {
   //     presentationOptions: ["badge", "sound", "alert"],
