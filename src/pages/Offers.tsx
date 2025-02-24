@@ -22,6 +22,7 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import "../assets/css/Offers.css";
 import axios from "axios";
+import Navbar from "../components/Navbar/Navbar";
 const Offers = () => {
   const history = useHistory();
 
@@ -52,17 +53,7 @@ const Offers = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="menu-header" color="danger">
-          <IonTitle className="justify text-center ">My Offer </IonTitle>
-          <IonButtons slot="start">
-            <div className="icon-left">
-              <Bell
-                className="bell"
-                size={24}
-                onClick={() => history.push("/Profile")}
-              />
-              <ShoppingCart size={24} onClick={() => history.push("/Order")} />
-            </div>
-          </IonButtons>
+          <Navbar name="My Offers" />
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -75,7 +66,7 @@ const Offers = () => {
               )
               .map((offer) => (
                 <IonCol size="12" size-md="6" key={offer.id}>
-                  <IonCard>
+                  <IonCard onClick={() => history.push(`/Menu`)}>
                     <IonGrid>
                       <IonRow>
                         <IonCol size="4">

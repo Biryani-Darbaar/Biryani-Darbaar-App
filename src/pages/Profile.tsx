@@ -130,12 +130,12 @@ const Profile: React.FC = () => {
           <IonLabel>Setting</IonLabel>
           <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem button onClick={() => history.push("/Terms")}>
+        <IonItem button onClick={() => history.push("/termsOfUse")}>
           <ShieldCheck color="#EA1F27" className="icon-profile" />
           <IonLabel>Terms of use</IonLabel>
           <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem button onClick={() => history.push("/Privacy")}>
+        <IonItem button onClick={() => history.push("/privacy")}>
           <ShieldCheck color="#EA1F27" className="icon-profile" />
           <IonLabel>Privacy policy</IonLabel>
           <ChevronRight color="#252525" />
