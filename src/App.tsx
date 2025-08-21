@@ -11,7 +11,7 @@ import {
   IonLabel,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-// import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
 // import { LocalNotifications } from '@capacitor/local-notifications';
 
 import Home from "./pages/Home";
@@ -56,6 +56,7 @@ import Languages from "./pages/Languages";
 import DishDash from "./pages/DishDash";
 import Privacy from "./pages/Privacy";
 import TermsOfUse from "./pages/TermsOfUse";
+import { LocalNotifications } from "@capacitor/local-notifications";
 // import axios from "axios";
 
 setupIonicReact();
@@ -85,28 +86,28 @@ const App: React.FC = () => {
       }, 1500); // Ensure loading page is shown for at least 5 seconds
     });
 
-    // const listenForMessages = () => {
-    //   FirebaseMessaging.addListener('notificationReceived', async (message) => {
-    //     console.log('Message received:', message);
-    //     // Push the notification using LocalNotifications
-    //     await LocalNotifications.schedule({
-    //       notifications: [
-    //         {
-    //           title: message.notification.title || "No Title",
-    //           body: message.notification.body,
-    //           id: new Date().getTime(),
-    //           schedule: { at: new Date(Date.now() + 1000) },
-    //           sound: null,
-    //           attachments: null,
-    //           actionTypeId: "",
-    //           extra: null,
-    //         },
-    //       ],
-    //     });
-    //   });
-    // };
+    const listenForMessages = () => {
+      FirebaseMessaging.addListener('notificationReceived', async (message) => {
+        console.log('Message received:', message);
+        // Push the notification using LocalNotifications
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: message.notification.title || "No Title",
+              body: message.notification.body,
+              id: new Date().getTime(),
+              schedule: { at: new Date(Date.now() + 1000) },
+              sound: null,
+              attachments: null,
+              actionTypeId: "",
+              extra: null,
+            },
+          ],
+        });
+      });
+    };
 
-    // listenForMessages();
+    listenForMessages();
 
     return () => {
       unsubscribe(); // Cleanup subscription on unmount
@@ -123,7 +124,7 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <div>HELLO</div>
-      {/* {shouldShowTabs ? (
+      {shouldShowTabs ? (
         <IonTabs>
           <IonRouterOutlet>
             <Switch>
@@ -255,7 +256,7 @@ const App: React.FC = () => {
             <Redirect exact from="/" to="/HomePage" />
           </Switch>
         </IonRouterOutlet>
-      )} */}
+      )}
     </IonApp>
   );
 };

@@ -1,7 +1,7 @@
 {
-  "name": "foodhut",
+  "name": "Biryani Darbaar",
   "integrations": {
     "capacitor": {}
   },
-  "type": "react-vite"
+  "type": "react"
 }
