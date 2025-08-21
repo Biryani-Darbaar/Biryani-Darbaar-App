@@ -13,7 +13,7 @@ import {
 } from "@ionic/react";
 import OtpPage from "./OtpPage";
 import { Route } from "react-router-dom";
-import "../assets/css/Verifcation.css";
+import "../assets/css/Verification.css";
 import HomePage from "./HomePage";
 import { sendVerificationCode } from "../providers/auth/firebase";
 
@@ -56,7 +56,7 @@ const VerifyPhoneNumber: React.FC = () => {
         <Route path="/HomePage" component={HomePage} />
         {/* Route for phone verification */}
       </IonRouterOutlet>
-      
+
       <IonToolbar color="danger"></IonToolbar>
       <IonContent className="ion-padding">
         <h1 className="text-2xl font-bold mb-4">Phone Verification</h1>

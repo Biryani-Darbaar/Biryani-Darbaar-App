@@ -50,13 +50,13 @@ const SignUp: React.FC = () => {
       setShowErrorToast(true);
       return;
     }
-    
-    if(!phNumber || phNumber.length < 10){
+
+    if (!phNumber || phNumber.length < 10) {
       setErrorMessage("Please enter a valid phone number.");
       setShowErrorToast(true);
       return;
     }
-    
+
     if (!email || !isValidEmail(email)) {
       setErrorMessage("Please enter a valid email address.");
       setShowErrorToast(true);
@@ -83,17 +83,17 @@ const SignUp: React.FC = () => {
       "phoneNumber": phNumber
     }
     console.log("Payload", payload);
-    
+
     // Implement sign-up logic
     const response = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/signup`, payload);
 
-    if(response.status === 201){
+    if (response.status === 201) {
       history.push("/SignIn");
       return;
     }
     setErrorMessage("An error occurred. Please try again.");
     setShowErrorToast(true);
-    
+
     console.log("Sign up with:", firstName, lastName, email, password, phNumber, fullName, response);
   };
 

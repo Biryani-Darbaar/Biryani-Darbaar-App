@@ -81,7 +81,7 @@ const SignIn: React.FC = () => {
     }
     console.log("Sign in with:", email, password);
 
-    
+
   };
 
   const togglePasswordVisibility = () => {
@@ -161,7 +161,7 @@ const SignIn: React.FC = () => {
                 <Route path="/SignUp" component={SignUp} />
               </IonRouterOutlet>
             </IonReactRouter>
-         
+
           </IonButton>
           <Link to="/SignUp">Sign up</Link>
         </p>

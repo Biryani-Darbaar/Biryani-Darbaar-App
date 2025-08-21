@@ -2,17 +2,17 @@
 import "../assets/css/Splash.css";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import logo from  "../assets/images/logo-cen.png"
+import logo from "../assets/images/logo-cen.png"
 
 const SplashScreen: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      history.push("/signin");
-    }, 5000); // 2 seconds delay
+      history.push("/SignIn");
+    }, 5000);
 
-    return () => clearTimeout(timer); // Cleanup the timer
+    return () => clearTimeout(timer);
   }, [history]);
 
   return (

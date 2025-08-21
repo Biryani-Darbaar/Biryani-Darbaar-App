@@ -1,4 +1,4 @@
-import { Geolocation } from "@ionic-native/geolocation";
+import { Geolocation } from "@capacitor/geolocation";
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import {
@@ -72,11 +72,7 @@ const App: React.FC = () => {
     Geolocation.getCurrentPosition()
       .then((position) => {
         const { latitude, longitude } = position.coords;
-        console.log("Current position:", position);
-        // Convert latitude and longitude into a string
         const locationString = `Latitude: ${latitude}, Longitude: ${longitude}`;
-        console.log("Location string:", locationString);
-        // Store in sessionStorage
         sessionStorage.setItem("addressData", locationString);
       })
       .catch((error) => {
@@ -126,7 +122,8 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      {shouldShowTabs ? (
+      <div>HELLO</div>
+      {/* {shouldShowTabs ? (
         <IonTabs>
           <IonRouterOutlet>
             <Switch>
@@ -139,14 +136,14 @@ const App: React.FC = () => {
               <Route exact path="/Item">
                 {isAuthenticated ? <Item /> : <Redirect to="/HomePage" />}
               </Route>
-              <Route path="/notification">
-                {isAuthenticated ? <Notifications/> : <Redirect to="/HomePage" />}
+              <Route path="/Notifications">
+                {isAuthenticated ? <Notifications /> : <Redirect to="/HomePage" />}
               </Route>
-              <Route path = "/languages">
-                {isAuthenticated ? <Languages/> : <Redirect to="/HomePage" />}
+              <Route path="/Languages">
+                {isAuthenticated ? <Languages /> : <Redirect to="/HomePage" />}
               </Route>
-              <Route path="/dishdash">
-                {isAuthenticated ? <DishDash/>: <Redirect to="/HomePage" />}
+              <Route path="/DishDash">
+                {isAuthenticated ? <DishDash /> : <Redirect to="/HomePage" />}
               </Route>
               <Route path="/Checkout">
                 <CheckoutPage />
@@ -173,7 +170,7 @@ const App: React.FC = () => {
                 {isAuthenticated ? <Privacy /> : <Redirect to="/HomePage" />}
               </Route>
               <Route path="/termsOfUse">
-                {isAuthenticated ? <TermsOfUse/> : <Redirect to="/HomePage" />}
+                {isAuthenticated ? <TermsOfUse /> : <Redirect to="/HomePage" />}
               </Route>
               <Redirect exact path="/" to="/HomePage" />
             </Switch>
@@ -183,16 +180,14 @@ const App: React.FC = () => {
             <IonTabButton
               tab="Home"
               href="/Home"
-              className={`custom-tab-button ${
-                activeTab === "Home" ? "active" : ""
-              }`}
+              className={`custom-tab-button ${activeTab === "Home" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("Home")}
             >
               <House className="tab-icon" />
               <IonLabel
-                className={`tab-label ${
-                  activeTab === "Home" ? "active-tab" : ""
-                }`}
+                className={`tab-label ${activeTab === "Home" ? "active-tab" : ""
+                  }`}
               >
                 Home
               </IonLabel>
@@ -200,16 +195,14 @@ const App: React.FC = () => {
             <IonTabButton
               tab="Menu"
               href="/Menu"
-              className={`custom-tab-button ${
-                activeTab === "Menu" ? "active" : ""
-              }`}
+              className={`custom-tab-button ${activeTab === "Menu" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("Menu")}
             >
               <BookOpenText className="tab-icon" />
               <IonLabel
-                className={`tab-label ${
-                  activeTab === "Menu" ? "active-tab" : ""
-                }`}
+                className={`tab-label ${activeTab === "Menu" ? "active-tab" : ""
+                  }`}
               >
                 Menu
               </IonLabel>
@@ -217,16 +210,14 @@ const App: React.FC = () => {
             <IonTabButton
               tab="Order"
               href="/Order"
-              className={`custom-tab-button ${
-                activeTab === "Order" ? "active" : ""
-              }`}
+              className={`custom-tab-button ${activeTab === "Order" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("Order")}
             >
               <NotebookText className="tab-icon" />
               <IonLabel
-                className={`tab-label ${
-                  activeTab === "Order" ? "active-tab" : ""
-                }`}
+                className={`tab-label ${activeTab === "Order" ? "active-tab" : ""
+                  }`}
               >
                 Order
               </IonLabel>
@@ -234,16 +225,14 @@ const App: React.FC = () => {
             <IonTabButton
               tab="Profile"
               href="/Profile"
-              className={`custom-tab-button ${
-                activeTab === "Profile" ? "active" : ""
-              }`}
+              className={`custom-tab-button ${activeTab === "Profile" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("Profile")}
             >
               <User className="tab-icon" />
               <IonLabel
-                className={`tab-label ${
-                  activeTab === "Profile" ? "active-tab" : ""
-                }`}
+                className={`tab-label ${activeTab === "Profile" ? "active-tab" : ""
+                  }`}
               >
                 Profile
               </IonLabel>
@@ -266,7 +255,7 @@ const App: React.FC = () => {
             <Redirect exact from="/" to="/HomePage" />
           </Switch>
         </IonRouterOutlet>
-      )}
+      )} */}
     </IonApp>
   );
 };

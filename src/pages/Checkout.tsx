@@ -15,9 +15,7 @@ import { useHistory } from "react-router-dom";
 import "../assets/css/Checkout.css";
 import { MoveLeft } from "lucide-react";
 // Load Stripe instance with your public key
-const stripePromise = loadStripe(
-  "pk_test_51QI9zGP1mrjxuTnQyyTUejvj7utgaGHnYp3BAB4VNGDmHkpqd5xCJmV3Q9QVpI3302xjpR8K8zWxIzIzI1GfBV1t00UAvTLEY7"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 interface CheckoutProps {
   amount: number;

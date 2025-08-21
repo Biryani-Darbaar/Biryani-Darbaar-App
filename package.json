@@ -1,5 +1,5 @@
 {
-  "name": "foodhut",
+  "name": "biryani-darbar",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -23,7 +23,6 @@
     "@capacitor/keyboard": "^7.0.0",
     "@capacitor/local-notifications": "^7.0.0",
     "@capacitor/status-bar": "^7.0.0",
-    "@ionic-native/geolocation": "^5.36.0",
     "@ionic/react": "^8.5.2",
     "@ionic/react-router": "^8.5.2",
     "@stripe/react-stripe-js": "^2.9.0",
