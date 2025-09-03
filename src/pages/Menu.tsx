@@ -21,7 +21,7 @@ import CustomButton from "../components/Button";
 // import IconScroll from "../components/iconSlider";
 import { CirclePlus, Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 interface Addon {
   addonName: string;
   price: number;

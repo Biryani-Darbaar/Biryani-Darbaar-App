@@ -1,7 +1,7 @@
 import React from "react";
 import "../assets/css/TermsOfUse.css";
 import { IonContent, IonHeader, IonPage } from "@ionic/react";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 
 const TermsOfUse = () => {
   return (

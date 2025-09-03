@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import "../assets/css/Notifications.css";
 import axios from "axios";

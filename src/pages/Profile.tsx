@@ -21,7 +21,7 @@ import "../assets/css/Profile.css";
 import { useHistory } from "react-router";
 import { getAuth, signOut } from "firebase/auth";
 import axios from "axios";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 
 const Profile: React.FC = () => {
   const history = useHistory();

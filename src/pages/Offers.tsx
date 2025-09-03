@@ -22,7 +22,7 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import "../assets/css/Offers.css";
 import axios from "axios";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 const Offers = () => {
   const history = useHistory();
 

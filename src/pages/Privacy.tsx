@@ -8,7 +8,7 @@ import {
   IonButtons,
 } from "@ionic/react";
 import React from "react";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 import "../assets/css/privacy.css";
 
 const Privacy: React.FC = () => {

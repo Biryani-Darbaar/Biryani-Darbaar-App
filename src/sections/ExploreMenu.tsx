@@ -2,15 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IonImg } from '@ionic/react';
 import { Dish } from '../types';
-
-const iconMap = [
-    { icon: '/assets/icons/spoon.png', active: '/assets/icons/white-spoon.png' },
-    { icon: '/assets/icons/momo.png', active: '/assets/icons/white-momo.png' },
-    { icon: '/assets/icons/grill.png', active: '/assets/icons/white-grill.png' },
-    { icon: '/assets/icons/cream.png', active: '/assets/icons/white-cream.png' },
-    { icon: '/assets/icons/mini-grill.png', active: '/assets/icons/white-mini-grill.png' },
-    { icon: '/assets/icons/pot.png', active: '/assets/icons/white-pot.png' },
-];
+import { exploreMenuIcons } from '../constants/Home';
 
 const ExploreMenuSection = ({ categories }: { categories: string[] }) => {
     const [activeCategory, setActiveCategory] = useState<string>('');
@@ -48,7 +40,7 @@ const ExploreMenuSection = ({ categories }: { categories: string[] }) => {
                 <div className="flex flex-row gap-4 items-start py-4 overflow-x-auto px-6 pb-3">
                     {categories.map((category, idx) => {
                         const isActive = category === activeCategory;
-                        const iconIdx = idx % iconMap.length;
+                        const iconIdx = idx % exploreMenuIcons.length;
                         return (
                             <button
                                 key={category}
@@ -57,7 +49,7 @@ const ExploreMenuSection = ({ categories }: { categories: string[] }) => {
                                 onClick={() => fetchDishesByCategory(category)}
                             >
                                 <img
-                                    src={isActive ? iconMap[iconIdx].active : iconMap[iconIdx].icon}
+                                    src={isActive ? exploreMenuIcons[iconIdx].active : exploreMenuIcons[iconIdx].icon}
                                     alt={category}
                                     className={`${isActive
                                         ? 'bg-red-700 text-white border border-red-600 shadow'

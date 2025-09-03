@@ -102,7 +102,7 @@ const App: React.FC = () => {
     listenForMessages();
 
     return () => {
-      unsubscribe(); // Cleanup subscription on unmount
+      unsubscribe();
     };
   }, []);
 
@@ -169,17 +169,17 @@ const App: React.FC = () => {
               </Switch>
             </IonRouterOutlet>
 
-            <IonTabBar slot="bottom" className="custom-tab-bar">
+            <IonTabBar slot="bottom" className="h-20">
               <IonTabButton
                 tab="Home"
                 href="/Home"
-                className={`custom-tab-button ${activeTab === "Home" ? "active" : ""
+                className={`custom-tab-button ${activeTab === "Home" ? "text-red-700" : ""
                   }`}
                 onClick={() => setActiveTab("Home")}
               >
                 <House className="tab-icon" />
                 <IonLabel
-                  className={`tab-label ${activeTab === "Home" ? "active-tab" : ""
+                  className={`tab-label ${activeTab === "Home" ? "text-red-800" : ""
                     }`}
                 >
                   Home
@@ -188,13 +188,13 @@ const App: React.FC = () => {
               <IonTabButton
                 tab="Menu"
                 href="/Menu"
-                className={`custom-tab-button ${activeTab === "Menu" ? "active" : ""
+                className={`custom-tab-button ${activeTab === "Menu" ? "text-red-800" : ""
                   }`}
                 onClick={() => setActiveTab("Menu")}
               >
                 <BookOpenText className="tab-icon" />
                 <IonLabel
-                  className={`tab-label ${activeTab === "Menu" ? "active-tab" : ""
+                  className={`tab-label ${activeTab === "Menu" ? "text-red-800" : ""
                     }`}
                 >
                   Menu

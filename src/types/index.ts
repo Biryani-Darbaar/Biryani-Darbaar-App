@@ -29,6 +29,7 @@ export interface Addon {
 
 export interface Dish {
   dishName: string;
+  name: string; //TODO: Remove this field later
   dishId: string;
   addons: Addon[];
   price: number;

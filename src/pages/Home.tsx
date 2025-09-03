@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import GameModal from "../components/GameModal";

@@ -9,7 +9,7 @@ import axios from "axios";
 import { Pencil } from "lucide-react";
 import "./../assets/css/Personal.css";
 import { useHistory } from "react-router";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 
 interface User {
   fullName: string;

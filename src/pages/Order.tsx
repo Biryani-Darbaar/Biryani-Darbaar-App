@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { IonContent, IonHeader, IonPage, IonToast } from "@ionic/react";
 import { ChevronRight, Coins, Minus, Plus, Trash2 } from "lucide-react"; // Import icons
 import "../assets/css/Order.css";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/navigation/NavBar";
 import axios from "axios";
 import cart from "../assets/icons/cart.png";
 import CustomButton from "../components/Button";
