@@ -1,5 +1,4 @@
 import { IonImg } from '@ionic/react'
-import React from 'react'
 
 const quickAccess = [
     {
@@ -13,7 +12,7 @@ const quickAccess = [
         // onClick: (handleMiniGame as (() => void) | undefined),
     },
     {
-        label: "VIP Member",
+        label: "VIP Zone",
         icon: "/assets/icons/vip.png",
         onClick: undefined,
     },
@@ -26,20 +25,20 @@ const quickAccess = [
 
 const QuickAccessSection = () => {
     return (
-        <div className="flex flex-row items-center w-full justify-between">
+        <div className="flex flex-row items-center gap-2 w-full justify-between">
             {quickAccess.map((item) => (
                 <div
                     key={item.label}
-                    className="flex flex-col w-full gap-2 items-center justify-center font-semibold text-neutral-800"
+                    className="border py-4 flex flex-col rounded-lg px-4 w-full gap-2 items-center justify-center font-semibold text-neutral-800"
                 >
                     <IonImg
                         src={item.icon}
                         alt=""
-                        className="w-1/3"
+                        className="w-1/2"
                         onClick={item.onClick}
                         style={item.onClick ? { cursor: "pointer" } : undefined}
                     />
-                    <div className="w-full text-center text-titleColor font-medium">{item.label}</div>
+                    <div className="w-full text-center leading-tight text-titleColor font-medium">{item.label}</div>
                 </div>
             ))}
         </div>

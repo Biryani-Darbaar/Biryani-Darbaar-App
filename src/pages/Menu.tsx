@@ -18,7 +18,7 @@ import "../assets/css/Menu.css";
 import menusp1 from "../assets/images/menusp1.png";
 import menusp2 from "../assets/images/menusp2.png";
 import CustomButton from "../components/Button";
-import IconScroll from "../components/iconSlider";
+// import IconScroll from "../components/iconSlider";
 import { CirclePlus, Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
 import Navbar from "../components/Navbar/Navbar";
@@ -167,11 +167,11 @@ const Menu: React.FC = () => {
               marginLeft: "1.25rem",
             }}
           >
-            <IconScroll
+            {/* <IconScroll
               items={categories.map((category) => ({ name: category }))}
               onCategoryClick={setActiveCategory}
               activeCategory={activeCategory} // Pass activeCategory
-            />
+            /> */}
           </div>
 
           <div style={{ marginTop: "10px" }}>

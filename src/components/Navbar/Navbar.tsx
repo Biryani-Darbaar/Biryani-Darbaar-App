@@ -1,13 +1,13 @@
 import { Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
 
-import { IonToolbar } from "@ionic/react";
+import { IonHeader } from "@ionic/react";
 import InputSearch from "../Search";
 const Navbar = () => {
   const history = useHistory();
   return (
-    <IonToolbar color="danger">
-      <nav className="h-16 flex justify-between items-center gap-6 w-full px-6">
+    <IonHeader className="sticky top-0 z-50">
+      <nav className="h-20 flex bg-red-800 justify-between items-center gap-6 w-full px-6">
         <InputSearch placeholder="Search" />
 
         <div className="icons flex items-center gap-4">
@@ -20,7 +20,7 @@ const Navbar = () => {
 
         </div>
       </nav>
-    </IonToolbar>
+    </IonHeader>
   );
 };
 

@@ -27,11 +27,18 @@ export interface Addon {
   price: number;
 }
 
-export type Dish = {
+export interface Dish {
   dishName: string;
+  dishId: string;
+  addons: Addon[];
   price: number;
   image: string;
-  dishId: string;
-  addons: object[];
-  description: string;
-};
+  description?: string;
+  discount: number;
+}
+
+export interface Location {
+  image: string;
+  name: string;
+  address: string;
+}
