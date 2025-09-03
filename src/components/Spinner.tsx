@@ -8,17 +8,22 @@ interface MiniGame {
   value: string;
 }
 
-const Spinner: React.FC = () => {
+interface SpinnerProps {
+  onFinish: (winner: string) => void; // 👈 add callback prop
+}
+
+const Spinner: React.FC<SpinnerProps> = ({ onFinish }) => {
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
   const wheelRef = useRef<SVGSVGElement>(null);
   const [offers, setOffers] = useState<MiniGame[]>([]);
 
   useEffect(() => {
     const fetchMiniGames = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/miniGames`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/miniGames`
+        );
         setOffers(response.data);
       } catch (error) {
         console.error("Error fetching miniGames data:", error);
@@ -44,7 +49,6 @@ const Spinner: React.FC = () => {
   const spinWheel = () => {
     if (!isSpinning && offers.length > 0) {
       setIsSpinning(true);
-      setSelectedOffer(null);
 
       const totalRotation =
         (Math.floor(Math.random() * 3) + 2) * 360 +
@@ -57,8 +61,10 @@ const Spinner: React.FC = () => {
           offers.length -
           1 -
           Math.floor((totalRotation % 360) / (360 / offers.length));
-        setSelectedOffer(offers[winningIndex].name);
-        updateUserReward(offers[winningIndex].type, offers[winningIndex].value);
+
+        const winner = offers[winningIndex];
+        updateUserReward(winner.type, winner.value);
+        onFinish(winner.name); // 👈 call parent callback
       }, 5000);
     }
   };
@@ -99,8 +105,16 @@ const Spinner: React.FC = () => {
                   strokeWidth="0.5"
                 />
                 <text
-                  x={50 + 35 * Math.cos(((angle + endAngle) / 2) * (Math.PI / 180))}
-                  y={50 + 35 * Math.sin(((angle + endAngle) / 2) * (Math.PI / 180))}
+                  x={
+                    50 +
+                    35 *
+                    Math.cos(((angle + endAngle) / 2) * (Math.PI / 180))
+                  }
+                  y={
+                    50 +
+                    35 *
+                    Math.sin(((angle + endAngle) / 2) * (Math.PI / 180))
+                  }
                   fill="black"
                   fontSize="3"
                   textAnchor="middle"
@@ -122,6 +136,7 @@ const Spinner: React.FC = () => {
             fill="white"
             fontWeight="bold"
             onClick={spinWheel}
+            style={{ cursor: "pointer" }}
           >
             {isSpinning ? "Spinning..." : "Spin"}
           </text>
@@ -133,22 +148,6 @@ const Spinner: React.FC = () => {
           style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }}
         ></div>
       </div>
-
-      {/* Spin Button */}
-      {/* <button
-        onClick={spinWheel}
-        disabled={isSpinning}
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-neutral-400"
-      >
-        {isSpinning ? "Spinning..." : "Spin for an Offer!"}
-      </button> */}
-
-      {/* Selected Offer */}
-      {selectedOffer && (
-        <div className="mt-4 text-xl font-bold text-white" style={{ color: 'white' }}>
-          You won: {selectedOffer}!
-        </div>
-      )}
     </div>
   );
 };

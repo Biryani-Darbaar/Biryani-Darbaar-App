@@ -27,7 +27,7 @@ export const userOptions = [
   {
     label: "My Offers",
     icon: Tags,
-    path: "/Offer",
+    path: "/Offers",
   },
   {
     label: "VIP Member",

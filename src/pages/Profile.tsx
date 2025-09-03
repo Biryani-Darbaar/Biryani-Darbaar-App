@@ -48,7 +48,7 @@ const Profile: React.FC = () => {
     <IonPage className="bg-white overflow-y-auto">
       <Navbar />
       <div className="flex flex-col gap-8 items-center w-full justify-center py-8 px-6">
-        <div className="flex flex-col items-center bg-white py-6">
+        <div className="flex flex-col items-center bg-white">
 
           {userImage ? (
             <img
@@ -102,7 +102,7 @@ const Profile: React.FC = () => {
             </span>
           </div>
         </div>
-
+          
         <div className="w-full border rounded-lg">
           <div className="bg-white divide-y">
             {userOptions.map(({ label, icon: Icon, path }, index) => (

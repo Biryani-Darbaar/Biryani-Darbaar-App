@@ -40,7 +40,7 @@ export const routes = [
   { path: "/Settings", component: Settings, auth: true },
   { path: "/Orders", component: Orders, auth: true },
   { path: "/Profile", component: Profile, auth: true },
-  { path: "/Offer", component: Offers, auth: true },
+  { path: "/Offers", component: Offers, auth: true },
   { path: "/EditProfile", component: EditProfile, auth: true },
   { path: "/Privacy", component: Privacy, auth: true },
   { path: "/TermsOfUse", component: TermsOfUse, auth: true },

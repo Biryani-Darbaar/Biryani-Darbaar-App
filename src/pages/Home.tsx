@@ -10,7 +10,6 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import Navbar from "../components/navigation/NavBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import GameModal from "../components/GameModal";
 import "swiper/css";
 import Loading from "../components/Loading";
 import { carouselImages } from "../constants/Home";
@@ -21,7 +20,6 @@ import { Dish } from "../types";
 import ShowBranchesSection from "../sections/ShowBranches";
 
 const Home: React.FC = () => {
-  const [isGameOpen, setGameOpen] = useState(false);
   const [specialDishes, setSpecialDishes] = useState<Dish[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [locations, setLocations] = useState<
@@ -80,10 +78,6 @@ const Home: React.FC = () => {
   }, []);
 
 
-  function closeGame(): void {
-    setGameOpen(false);
-  }
-
   if (loading) {
     return <Loading />;
   }
@@ -114,20 +108,10 @@ const Home: React.FC = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-
         <QuickAccessSection />
         <SpecialItemsSection dishes={specialDishes} />
         <ExploreMenuSection categories={categories} />
         <ShowBranchesSection locations={locations} />
-        {/* Mini-Game Modal */}
-        <GameModal isOpen={isGameOpen} onClose={closeGame} />
-        <div className="locations">
-          <h4>The dish is available at branch stores</h4>
-          <br />
-        </div>
-        <br />
-        <br />
-
       </div>
     </IonPage>
   );
