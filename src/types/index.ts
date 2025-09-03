@@ -43,3 +43,11 @@ export interface Location {
   name: string;
   address: string;
 }
+
+export interface User {
+  fullName: string;
+  phoneNumber: number;
+  dateOfBirth: string;
+  email: string;
+  address: string;
+}

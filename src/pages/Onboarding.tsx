@@ -12,8 +12,10 @@ const Onboarding: React.FC = () => {
 
   const handleGetStarted = () => {
     localStorage.setItem("onboardingComplete", "true");
+    window.dispatchEvent(new Event("onboardingComplete"));
     history.push("/SignIn");
   };
+
 
   return (
     <IonPage>

@@ -4,27 +4,22 @@ import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import {
   IonApp,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
   IonTabs,
   setupIonicReact,
-  IonLabel,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+import { FirebaseMessaging } from "@capacitor-firebase/messaging";
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { onAuthStateChanged } from "firebase/auth";
 
-import Home from "./pages/Home";
-import Menu from "./pages/Menu";
-import Order from "./pages/Order";
-import Profile from "./pages/Profile";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Orders from "./pages/Orders";
-import Splash from "./pages/Splash";
-
+import { auth } from "./providers/auth/firebase";
+import usePushNotifications from "./providers/pushNotifications";
+import TabBar from "./components/navigation/TabBar";
+import Loading from "./components/Loading";
+import PrivateRoute from "./lib/PrivateRoute";
+import { routes } from "./constants/Global";
 
 import "./global.css";
-
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
@@ -36,81 +31,72 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
-import { BookOpenText, House, NotebookText, User } from "lucide-react";
-import HomePage from "./pages/HomePage";
-import { auth } from "./providers/auth/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import Item from "./pages/Item";
-import CheckoutPage from "./pages/Checkout";
-import Settings from "./pages/Settings";
-import Offers from "./pages/Offers";
-import Personal from "./pages/Personal";
-import Loading from "./components/Loading";
-import usePushNotifications from "./providers/pushNotifications";
-import Notifications from "./pages/Notifications";
-import Languages from "./pages/Languages";
-import DishDash from "./pages/DishDash";
-import Privacy from "./pages/Privacy";
-import TermsOfUse from "./pages/TermsOfUse";
-import { LocalNotifications } from "@capacitor/local-notifications";
-
 setupIonicReact();
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Home");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+  const [onboardingComplete, setOnboardingComplete] = useState(false);
   const location = useLocation();
 
   usePushNotifications();
 
+  // Handle splash + onboarding
   useEffect(() => {
-    Geolocation.getCurrentPosition()
-      .then((position) => {
-        const { latitude, longitude } = position.coords;
-        const locationString = `Latitude: ${latitude}, Longitude: ${longitude}`;
-        sessionStorage.setItem("addressData", locationString);
-      })
-      .catch((error) => {
-        console.error("Error getting location", error);
-      });
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500); // Ensure loading page is shown for at least 5 seconds
-    });
+    setTimeout(() => setShowSplash(false), 1000);
 
-    const listenForMessages = () => {
-      FirebaseMessaging.addListener('notificationReceived', async (message) => {
-        console.log('Message received:', message);
-        // Push the notification using LocalNotifications
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: message.notification.title || "No Title",
-              body: message.notification.body || '',
-              id: new Date().getTime(),
-              schedule: { at: new Date(Date.now() + 1000) },
-              actionTypeId: "",
-            },
-          ],
-        });
-      });
-    };
+    const onboarding = localStorage.getItem("onboardingComplete");
+    if (onboarding) setOnboardingComplete(true);
 
-    listenForMessages();
+    // 👇 listen for onboardingComplete event
+    const handleOnboardingComplete = () => setOnboardingComplete(true);
+    window.addEventListener("onboardingComplete", handleOnboardingComplete);
 
     return () => {
-      unsubscribe();
+      window.removeEventListener("onboardingComplete", handleOnboardingComplete);
     };
   }, []);
 
-  if (loading) {
-    return <Loading />;
+  // Handle auth + geolocation
+  useEffect(() => {
+    Geolocation.getCurrentPosition()
+      .then((pos) => {
+        const { latitude, longitude } = pos.coords;
+        sessionStorage.setItem("addressData", `Lat:${latitude}, Lng:${longitude}`);
+      })
+      .catch((err) => console.error("Location error:", err));
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      setTimeout(() => setLoading(false), 1500);
+    });
+
+    FirebaseMessaging.addListener("notificationReceived", async (msg) => {
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: msg.notification.title || "No Title",
+            body: msg.notification.body || "",
+            id: Date.now(),
+            schedule: { at: new Date(Date.now() + 1000) },
+          },
+        ],
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading || showSplash) return <Loading />;
+
+  // If onboarding not complete → force show onboarding
+  if (!onboardingComplete && location.pathname !== "/Onboarding") {
+    return <Redirect to="/Onboarding" />;
   }
 
-  const noTabsRoutes = ['/Splash', '/HomePage', '/SignIn', '/SignUp'];
+  const noTabsRoutes = ["/Splash", "/Onboarding", "/SignIn", "/SignUp"];
   const shouldShowTabs = !noTabsRoutes.includes(location.pathname);
 
   return (
@@ -120,132 +106,51 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Switch>
-                <Route exact path="/Home">
-                  {isAuthenticated ? <Home /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route exact path="/Menu">
-                  {isAuthenticated ? <Menu /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route exact path="/Item">
-                  {isAuthenticated ? <Item /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Notifications">
-                  {isAuthenticated ? <Notifications /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Languages">
-                  {isAuthenticated ? <Languages /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/DishDash">
-                  {isAuthenticated ? <DishDash /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Checkout">
-                  <CheckoutPage />
-                </Route>
-                <Route path="/Order">
-                  {isAuthenticated ? <Order /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Settings">
-                  {isAuthenticated ? <Settings /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Orders">
-                  {isAuthenticated ? <Orders /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Profile">
-                  {isAuthenticated ? <Profile /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Offer">
-                  {isAuthenticated ? <Offers /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/Personal">
-                  {isAuthenticated ? <Personal /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/privacy">
-                  {isAuthenticated ? <Privacy /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Route path="/termsOfUse">
-                  {isAuthenticated ? <TermsOfUse /> : <Redirect to="/HomePage" />}
-                </Route>
-                <Redirect exact path="/" to="/HomePage" />
+                {routes.map(({ path, exact, component, auth }, idx) =>
+                  auth ? (
+                    <PrivateRoute
+                      key={idx}
+                      path={path}
+                      exact={exact}
+                      component={component}
+                      isAuthenticated={isAuthenticated}
+                    />
+                  ) : (
+                    <Route
+                      key={idx}
+                      path={path}
+                      exact={exact}
+                      component={component}
+                    />
+                  )
+                )}
+                <Redirect exact from="/" to={isAuthenticated ? "/Home" : "/SignIn"} />
               </Switch>
             </IonRouterOutlet>
-
-            <IonTabBar slot="bottom" className="h-20">
-              <IonTabButton
-                tab="Home"
-                href="/Home"
-                className={`custom-tab-button ${activeTab === "Home" ? "text-red-700" : ""
-                  }`}
-                onClick={() => setActiveTab("Home")}
-              >
-                <House className="tab-icon" />
-                <IonLabel
-                  className={`tab-label ${activeTab === "Home" ? "text-red-800" : ""
-                    }`}
-                >
-                  Home
-                </IonLabel>
-              </IonTabButton>
-              <IonTabButton
-                tab="Menu"
-                href="/Menu"
-                className={`custom-tab-button ${activeTab === "Menu" ? "text-red-800" : ""
-                  }`}
-                onClick={() => setActiveTab("Menu")}
-              >
-                <BookOpenText className="tab-icon" />
-                <IonLabel
-                  className={`tab-label ${activeTab === "Menu" ? "text-red-800" : ""
-                    }`}
-                >
-                  Menu
-                </IonLabel>
-              </IonTabButton>
-              <IonTabButton
-                tab="Order"
-                href="/Order"
-                className={`custom-tab-button ${activeTab === "Order" ? "active" : ""
-                  }`}
-                onClick={() => setActiveTab("Order")}
-              >
-                <NotebookText className="tab-icon" />
-                <IonLabel
-                  className={`tab-label ${activeTab === "Order" ? "active-tab" : ""
-                    }`}
-                >
-                  Order
-                </IonLabel>
-              </IonTabButton>
-              <IonTabButton
-                tab="Profile"
-                href="/Profile"
-                className={`custom-tab-button ${activeTab === "Profile" ? "active" : ""
-                  }`}
-                onClick={() => setActiveTab("Profile")}
-              >
-                <User className="tab-icon" />
-                <IonLabel
-                  className={`tab-label ${activeTab === "Profile" ? "active-tab" : ""
-                    }`}
-                >
-                  Profile
-                </IonLabel>
-              </IonTabButton>
-            </IonTabBar>
+            <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
           </IonTabs>
         ) : (
           <IonRouterOutlet>
             <Switch>
-              <Route exact path="/Splash" component={Splash} />
-              <Route exact path="/HomePage">
-                {isAuthenticated ? <Redirect to="/Home" /> : <HomePage />}
-              </Route>
-              <Route exact path="/SignIn">
-                {isAuthenticated ? <Redirect to="/Home" /> : <SignIn />}
-              </Route>
-              <Route exact path="/SignUp">
-                {isAuthenticated ? <Redirect to="/Home" /> : <SignUp />}
-              </Route>
-              <Redirect exact from="/" to="/HomePage" />
+              {routes.map(({ path, exact, component, auth }, idx) =>
+                auth ? (
+                  <PrivateRoute
+                    key={idx}
+                    path={path}
+                    exact={exact}
+                    component={component}
+                    isAuthenticated={isAuthenticated}
+                  />
+                ) : (
+                  <Route
+                    key={idx}
+                    path={path}
+                    exact={exact}
+                    component={component}
+                  />
+                )
+              )}
+              <Redirect exact from="/" to={isAuthenticated ? "/Home" : "/SignIn"} />
             </Switch>
           </IonRouterOutlet>
         )}
@@ -254,12 +159,10 @@ const App: React.FC = () => {
   );
 };
 
-const AppWrapper: React.FC = () => {
-  return (
-    <IonReactRouter>
-      <App />
-    </IonReactRouter>
-  );
-};
+const AppWrapper: React.FC = () => (
+  <IonReactRouter>
+    <App />
+  </IonReactRouter>
+);
 
 export default AppWrapper;

@@ -1,37 +1,34 @@
 import { useState, useEffect } from "react";
 import {
-  IonContent,
-  IonHeader,
   IonPage,
-  IonItem,
   IonLabel,
 } from "@ionic/react";
 import {
-  IdCard,
   Power,
-  ReceiptText,
-  Settings,
-  ShieldCheck,
-  Tags,
   ChevronRight,
   Pencil,
   Coins,
+  Camera,
 } from "lucide-react";
-import "../assets/css/Profile.css";
 import { useHistory } from "react-router";
 import { getAuth, signOut } from "firebase/auth";
 import axios from "axios";
 import Navbar from "../components/navigation/NavBar";
+import { menuOptions, userOptions } from "../constants/Profile";
+
 
 const Profile: React.FC = () => {
   const history = useHistory();
   const [userName, setUserName] = useState("User");
   const [userReward, setUserReward] = useState(0);
   const [userImage, setUserImage] = useState("");
+
   useEffect(() => {
     const fetchUserName = async () => {
       const userId = sessionStorage.getItem("sessionUserId");
-      const response = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/user/${userId}`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/user/${userId}`
+      );
       setUserName(response.data.userName);
       setUserImage(response.data.imageUrl);
       setUserReward(response.data.reward);
@@ -42,37 +39,35 @@ const Profile: React.FC = () => {
   const handleSignOut = async () => {
     const auth = getAuth();
     await signOut(auth);
-    const res = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/logout`);
-    console.log("Sign out response:", res);
+    await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/logout`);
     sessionStorage.clear();
     history.push("/SignIn");
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <Navbar name="Profile" />
-      </IonHeader>
-      <IonContent fullscreen>
-        {/* User profile picture and name */}
-        <div className="profile-header">
+    <IonPage className="bg-white overflow-y-auto">
+      <Navbar />
+      <div className="flex flex-col gap-8 items-center w-full justify-center py-8 px-6">
+        <div className="flex flex-col items-center bg-white py-6">
+
           {userImage ? (
-            <img src={userImage} alt="Profile" className="profile-image" />
+            <img
+              src={userImage}
+              alt="Profile"
+              className="w-24 h-24 rounded-full object-cover border-4 border-red-500"
+            />
           ) : (
-            <div className="profile-image-placeholder">
-              <div className="profile-container">
-                <h4>Please upload profile picture &#128073;</h4>
-                <Pencil
-                  size={16}
-                  color="red"
-                  onClick={() => document.getElementById("imageInput")?.click()}
-                  className="profile-edit-icon"
-                />
+            <div className="w-24 h-24 rounded-full border-2 border-dashed border-gray-400 flex items-center justify-center relative cursor-pointer hover:bg-gray-100 transition"
+              onClick={() => document.getElementById("imageInput")?.click()}>
+              <div className="flex flex-col items-center text-gray-500">
+                <Camera size={24} />
+                <span className="text-xs mt-1">Upload</span>
               </div>
+
               <input
                 type="file"
                 id="imageInput"
-                style={{ display: "none" }}
+                className="hidden"
                 accept="image/*"
                 onChange={async (e) => {
                   if (e.target.files && e.target.files[0]) {
@@ -81,73 +76,87 @@ const Profile: React.FC = () => {
                     const response = await axios.post(
                       `${import.meta.env.VITE_API_ENDPOINT}/userImg`,
                       formData,
-                      {
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                        },
-                      }
+                      { headers: { "Content-Type": "multipart/form-data" } }
                     );
                     setUserImage(response.data.imageUrl);
                   }
                 }}
               />
             </div>
+
           )}
-          <div className="profile-name">
-            <h2>{userName}</h2>
+
+          <div className="flex items-center justify-center gap-2 my-4">
+            <span className="text-2xl font-semibold text-gray-900">{userName}</span>
             <Pencil
-              size={16}
-              color="red"
-              className="profile-edit-icon"
-              onClick={() => history.push("/Personal")}
+              size={20}
+              className="text-red-600 cursor-pointer"
+              onClick={() => history.push("/EditProfile")}
             />
           </div>
-          <div className="profile-reward-points">
 
-            <Coins size={28} color="#f1c40f" />
-            <span>{userReward}</span>
+          <div className="flex items-center gap-2 py-2 px-4 bg-gray-100 rounded-xl shadow-sm">
+            <Coins size={20} className="text-yellow-500" />
+            <span className="text-base font-medium text-gray-800">
+              {userReward} pts
+            </span>
           </div>
         </div>
 
-        {/* Menu items */}
-        <IonItem button onClick={() => history.push("/Orders")}>
-          <ReceiptText color="#EA1F27" className="icon-profile" />
-          <IonLabel>My order</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
-        <IonItem button onClick={() => history.push("/Offer")}>
-          <Tags color="#EA1F27" className="icon-profile" />
-          <IonLabel>My offer</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
-        <IonItem button onClick={() => history.push("/Member")}>
-          <IdCard color="#EA1F27" className="icon-profile" />
-          <IonLabel>Member</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
-        <IonItem button onClick={() => history.push("/Settings")}>
-          <Settings color="#EA1F27" className="icon-profile" />
-          <IonLabel>Setting</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
-        <IonItem button onClick={() => history.push("/TermsOfUse")}>
-          <ShieldCheck color="#EA1F27" className="icon-profile" />
-          <IonLabel>Terms of use</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
-        <IonItem button onClick={() => history.push("/Privacy")}>
-          <ShieldCheck color="#EA1F27" className="icon-profile" />
-          <IonLabel>Privacy policy</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
+        <div className="w-full border rounded-lg">
+          <div className="bg-white divide-y">
+            {userOptions.map(({ label, icon: Icon, path }, index) => (
+              <div
+                key={index}
+                onClick={() => history.push(path)}
+                className="w-full flex items-center px-4 py-4 hover:bg-gray-50 transition"
+              >
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 mr-3">
+                  <Icon className="text-red-600 w-5 h-5" />
+                </div>
+                <IonLabel className="text-gray-900 font-medium text-base">
+                  {label}
+                </IonLabel>
+                <ChevronRight className="ml-auto text-gray-400" />
+              </div>
+            ))}
+          </div>
+        </div>
 
-        {/* Sign out */}
-        <IonItem button onClick={handleSignOut}>
-          <Power color="#EA1F27" className="icon-profile" />
-          <IonLabel>Sign out</IonLabel>
-          <ChevronRight color="#252525" />
-        </IonItem>
-      </IonContent>
+        <div className="w-full border rounded-lg">
+          <div className="bg-white divide-y">
+            {menuOptions.map(({ label, icon: Icon, path }, index) => (
+              <div
+                key={index}
+                onClick={() => history.push(path)}
+                className="w-full flex items-center px-4 py-4 hover:bg-gray-50 transition"
+              >
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 mr-3">
+                  <Icon className="text-red-600 w-5 h-5" />
+                </div>
+                <IonLabel className="text-gray-900 font-medium text-base">
+                  {label}
+                </IonLabel>
+                <ChevronRight className="ml-auto text-gray-400" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-2 bg-white w-full border rounded-lg">
+          <div
+            onClick={handleSignOut}
+            className="w-full flex items-center px-4 py-4 hover:bg-gray-50 transition"
+          >
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50 mr-3">
+              <Power className="text-red-600 w-5 h-5" />
+            </div>
+            <IonLabel className="text-gray-900 font-medium text-base">
+              Sign out
+            </IonLabel>
+            <ChevronRight className="ml-auto text-gray-400" />
+          </div>
+        </div>
+      </div>
     </IonPage>
   );
 };
