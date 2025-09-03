@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import {
-  IonContent,
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonInput,
-  IonItem,
-  IonLabel,
   IonButton,
-  IonCheckbox,
   IonIcon,
   IonToast,
-  IonRouterOutlet,
+  IonHeader,
 } from "@ionic/react";
 import {
   mailOutline,
@@ -20,13 +13,13 @@ import {
   eyeOffOutline,
   logoFacebook,
   logoGoogle,
+  arrowBackOutline,
+  checkmarkOutline,
 } from "ionicons/icons";
-import { IonReactRouter } from "@ionic/react-router";
-import { Link, Route, useHistory } from "react-router-dom";
-import SignUp from "./SignUp";
-// import VerifyPhoneNumber from "./VerifyPhoneNumber"; // Import the VerifyPhoneNumber page
+import { Link, useHistory } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import axios from "axios";
+
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +28,7 @@ const SignIn: React.FC = () => {
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const history = useHistory(); // useHistory for navigation
+  const history = useHistory();
 
   // Validate email format
   const isValidEmail = (email: string) => {
@@ -56,32 +49,21 @@ const SignIn: React.FC = () => {
       return;
     }
 
-    // Simulate successful sign-in
     const auth = getAuth();
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log(res.user);
       const accessToken = await res.user.getIdToken();
-      console.log("Access Token:", accessToken);
       const endres = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/login`, {
         idToken: accessToken
       });
-      console.log("Endres:", endres);
       const { sessionId, sessionUserId } = endres.data;
-      console.log("Session ID:", sessionId);
-      console.log("Session User ID:", sessionUserId);
-      // Set session ID and session user ID
       sessionStorage.setItem("sessionId", sessionId);
       sessionStorage.setItem("sessionUserId", sessionUserId);
-      // history.push("/VerifyPhoneNumber");
       history.push("/Home");
     } catch (error) {
       setErrorMessage((error as any).message);
       setShowErrorToast(true);
     }
-    console.log("Sign in with:", email, password);
-
-
   };
 
   const togglePasswordVisibility = () => {
@@ -90,100 +72,113 @@ const SignIn: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="danger"></IonToolbar>
-
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route path="/SignUp" component={SignUp} />
-            {/* <Route
-              path="/VerifyPhoneNumber"
-              component={VerifyPhoneNumber}
-            />{" "} */}
-            {/* Route for phone verification */}
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </IonHeader>
-
-      <IonContent className="ion-padding">
-        <h1 className="text-2xl font-bold mb-2">Welcome Back!</h1>
-        <p className="text-gray-500 mb-6">Sign in to continue</p>
-
-        <IonItem className="mb-4">
-          <IonIcon icon={mailOutline} slot="start" color="danger" />
-          <IonInput
-            type="email"
-            value={email}
-            onIonChange={(e) => setEmail(e.detail.value!)}
-            placeholder="Email"
-          />
-        </IonItem>
-
-        <IonItem className="mb-6">
-          <IonIcon icon={lockClosedOutline} slot="start" color="danger" />
-          <IonInput
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value!)}
-            placeholder="Password"
-          />
-          <IonIcon
-            icon={showPassword ? eyeOffOutline : eyeOutline}
-            slot="end"
-            color="medium"
-            onClick={togglePasswordVisibility}
-            style={{ cursor: "pointer" }}
-          />
-        </IonItem>
-
-        <div className="flex justify-between items-center mb-6">
-          <IonItem lines="none">
-            <IonCheckbox
-              checked={rememberMe}
-              onIonChange={(e) => setRememberMe(e.detail.checked)}
-            />
-            <IonLabel className="ml-2">Remember me</IonLabel>
-          </IonItem>
-          <IonButton fill="clear" color="danger" size="small">
-            Forgot password?
-          </IonButton>
-        </div>
-
-        <IonButton expand="block" color="danger" onClick={handleSignIn}>
-          Sign in
+      {/* Red header bar with back arrow */}
+      <IonHeader className="bg-primary min-h-16 flex items-center px-1">
+        <IonButton fill="clear" size="large" className="p-0 m-0" onClick={() => history.goBack()}>
+          <IonIcon icon={arrowBackOutline} slot="icon-only" color="light" />
         </IonButton>
+      </IonHeader>
+      <div className="flex flex-col h-full justify-center items-center px-6">
+        {/* Centered card */}
+        <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-8 gap-6">
+          <span className="text-3xl font-bold text-titleColor w-full text-left">Welcome Back!</span>
+          <p className="text-textColor w-full text-left">Sign in to continue</p>
 
-        <p className="text-center mt-6">
-          <span className="text-gray-500">Don't have an account? </span>
-          <IonButton fill="clear" color="danger" size="small">
-            <IonReactRouter>
-              <IonRouterOutlet>
-                <Route path="/SignUp" component={SignUp} />
-              </IonRouterOutlet>
-            </IonReactRouter>
+          {/* Email input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <IonIcon icon={mailOutline} className="text-primary text-xl mr-2" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="fahad@1234567809"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="email"
+              />
+              {isValidEmail(email) && (
+                <IonIcon icon={checkmarkOutline} className="text-primary text-xl ml-2" />
+              )}
+            </div>
+          </div>
 
-          </IonButton>
-          <Link to="/SignUp">Sign up</Link>
-        </p>
+          {/* Password input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="current-password"
+              />
+              <IonIcon
+                icon={showPassword ? eyeOffOutline : eyeOutline}
+                className="text-gray-400 text-xl ml-2 cursor-pointer"
+                onClick={togglePasswordVisibility}
+              />
+            </div>
+          </div>
 
-        <div className="flex justify-center space-x-4 py-4">
-          <IonButton fill="clear">
-            <IonIcon slot="icon-only" icon={logoFacebook} />
-          </IonButton>
-          <IonButton fill="clear">
-            <IonIcon slot="icon-only" icon={logoGoogle} />
-          </IonButton>
+          {/* Remember me and Forgot password */}
+          <div className="flex items-center justify-between w-full">
+            <label className="flex items-center space-x-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="form-checkbox accent-primary w-4 h-4 rounded"
+              />
+              <span className="text-textColor text-sm">Remember me</span>
+            </label>
+            <button
+              type="button"
+              className="text-primary text-sm font-medium hover:underline focus:outline-none"
+              onClick={() => {/* handle forgot password */ }}
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          {/* Sign In button */}
+          <button
+            className="w-full bg-primary text-white rounded-lg py-3 font-semibold text-lg shadow-none hover:bg-primary/90 transition"
+            onClick={handleSignIn}
+          >
+            Sign In
+          </button>
+
+          {/* Sign up link */}
+          <div className="w-full text-center">
+            <span className="text-textColor text-sm">Don't have an account? </span>
+            <Link to="/SignUp" className="text-primary text-sm font-semibold hover:underline">
+              Sign up.
+            </Link>
+          </div>
         </div>
 
-        {/* Toast for error messages */}
-        <IonToast
-          isOpen={showErrorToast}
-          onDidDismiss={() => setShowErrorToast(false)}
-          message={errorMessage}
-          duration={1000}
-          color="danger"
-        />
-      </IonContent>
+        {/* Social login buttons */}
+
+        <div className="flex justify-center gap-4 mt-6 w-full">
+          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-gray-200 hover:bg-gray-50 transition">
+            <IonIcon icon={logoFacebook} className="text-blue-600 text-2xl" />
+          </button>
+          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-gray-200 hover:bg-gray-50 transition">
+            <IonIcon icon={logoGoogle} className="text-red-500 text-2xl" />
+          </button>
+        </div>
+      </div>
+
+      {/* Toast for error messages */}
+      <IonToast
+        isOpen={showErrorToast}
+        onDidDismiss={() => setShowErrorToast(false)}
+        message={errorMessage}
+        duration={1000}
+        color="danger"
+      />
     </IonPage>
   );
 };

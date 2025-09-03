@@ -1,8 +1,5 @@
-// export default SplashScreen;
-import "../assets/css/Splash.css";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import logo from "../assets/images/logo-cen.png"
 
 const SplashScreen: React.FC = () => {
   const history = useHistory();
@@ -16,12 +13,15 @@ const SplashScreen: React.FC = () => {
   }, [history]);
 
   return (
-    <div className="splash-screen">
-      <div className="splash-content">
-        <div className="splashImage">
-          <img src={logo} alt="App Logo" className="splash-logo" />
+    <div className="bg-primary h-screen flex items-center justify-center">
+      <div className="flex flex-col items-center w-full">
+        <div className="rounded-full border-4 border-white py-4 px-1 flex items-center justify-center">
+          <img
+            src="/assets/images/logo.png"
+            alt="App Logo"
+            className="w-40 m-4"
+          />
         </div>
-        <h1 className="splash-title">Biryani Darbaar</h1>
       </div>
     </div>
   );

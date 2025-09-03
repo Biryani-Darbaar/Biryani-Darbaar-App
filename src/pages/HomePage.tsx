@@ -60,7 +60,6 @@ const HomePage: React.FC = () => {
   if (showSplash) {
     return (
       <div className="splash-screen">
-        {/* Add any splash screen content or logo */}
         <Splash />
       </div>
     );

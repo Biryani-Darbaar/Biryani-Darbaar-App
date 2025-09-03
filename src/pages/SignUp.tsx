@@ -1,30 +1,23 @@
 import React, { useState } from "react";
 import {
-  IonContent,
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonInput,
-  IonItem,
-  IonLabel,
   IonButton,
   IonIcon,
   IonToast,
-  IonRouterOutlet,
+  IonHeader,
 } from "@ionic/react";
 import {
   mailOutline,
   lockClosedOutline,
   eyeOutline,
   eyeOffOutline,
+  arrowBackOutline,
+  checkmarkOutline,
 } from "ionicons/icons";
-import "../assets/css/Signup.css";
-import { IonReactRouter } from "@ionic/react-router";
-import { Route } from "react-router";
-import { Link } from "react-router-dom";
-import SignIn from "./SignIn";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import "../assets/css/Signup.css";
+
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -37,6 +30,7 @@ const SignUp: React.FC = () => {
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+
   // Validate email format
   const isValidEmail = (email: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -107,107 +101,144 @@ const SignUp: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="danger"></IonToolbar>
-      </IonHeader>
-
-      <IonContent className="ion-padding">
-        <h1 className="text-2xl font-bold mb-2">Create an Account</h1>
-        <p className="text-gray-500 mb-6">Sign up to get started</p>
-
-        <IonItem className="mb-4">
-          <IonInput
-            type="text"
-            value={firstName}
-            onIonChange={(e) => setFirstName(e.detail.value!)}
-            placeholder="First Name"
-          />
-        </IonItem>
-
-        <IonItem className="mb-4">
-          <IonInput
-            type="text"
-            value={lastName}
-            onIonChange={(e) => setLastName(e.detail.value!)}
-            placeholder="Last Name"
-          />
-        </IonItem>
-        <IonItem className="mb-4">
-          <IonInput
-            value={phNumber}
-            onIonChange={(e) => setPhNumber(e.detail.value!)}
-            placeholder="Phone Number"
-          />
-        </IonItem>
-        <IonItem className="mb-4">
-          <IonIcon icon={mailOutline} slot="start" color="danger" />
-          <IonInput
-            type="email"
-            value={email}
-            onIonChange={(e) => setEmail(e.detail.value!)}
-            placeholder="Email"
-          />
-        </IonItem>
-
-        <IonItem className="mb-4">
-          <IonIcon icon={lockClosedOutline} slot="start" color="danger" />
-          <IonInput
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value!)}
-            placeholder="Password"
-          />
-          <IonIcon
-            icon={showPassword ? eyeOffOutline : eyeOutline}
-            slot="end"
-            color="medium"
-            onClick={togglePasswordVisibility}
-            style={{ cursor: "pointer" }}
-          />
-        </IonItem>
-
-        <IonItem className="mb-6">
-          <IonIcon icon={lockClosedOutline} slot="start" color="danger" />
-          <IonInput
-            type={showConfirmPassword ? "text" : "password"}
-            value={confirmPassword}
-            onIonChange={(e) => setConfirmPassword(e.detail.value!)}
-            placeholder="Confirm Password"
-          />
-          <IonIcon
-            icon={showConfirmPassword ? eyeOffOutline : eyeOutline}
-            slot="end"
-            color="medium"
-            onClick={toggleConfirmPasswordVisibility}
-            style={{ cursor: "pointer" }}
-          />
-        </IonItem>
-
-        <IonButton expand="block" color="danger" onClick={handleSignUp}>
-          Sign up
+      {/* Red header bar with back arrow */}
+      <IonHeader className="bg-primary min-h-16 flex items-center px-1">
+        <IonButton fill="clear" size="large" className="p-0 m-0" onClick={() => history.goBack()}>
+          <IonIcon icon={arrowBackOutline} slot="icon-only" color="light" />
         </IonButton>
+      </IonHeader>
+      <div className="flex flex-col h-full justify-center items-center px-6">
+        {/* Centered card */}
+        <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-8 gap-6">
+          <span className="text-3xl font-bold text-titleColor w-full text-left">Create an Account</span>
+          <p className="text-textColor w-full text-left">Sign up to get started</p>
 
-        <p className="text-center mt-6">
-          <span className="text-gray-500">Already have an account? </span>
-          <IonButton fill="clear" color="danger" size="small">
-            <IonReactRouter>
-              <IonRouterOutlet>
-                <Route path="/SignIn" component={SignIn} />
-              </IonRouterOutlet>
-            </IonReactRouter>
-          </IonButton>
-          <Link to="/SignIn">Sign In</Link>
-        </p>
+          {/* First Name input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="given-name"
+              />
+            </div>
+          </div>
 
-        {/* Toast for error messages */}
-        <IonToast
-          isOpen={showErrorToast}
-          onDidDismiss={() => setShowErrorToast(false)}
-          message={errorMessage}
-          duration={3000}
-          color="danger"
-        />
-      </IonContent>
+          {/* Last Name input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="family-name"
+              />
+            </div>
+          </div>
+
+          {/* Phone Number input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <input
+                type="tel"
+                value={phNumber}
+                onChange={(e) => setPhNumber(e.target.value)}
+                placeholder="Phone Number"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="tel"
+              />
+            </div>
+          </div>
+
+          {/* Email input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <IonIcon icon={mailOutline} className="text-primary text-xl mr-2" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="email"
+              />
+              {isValidEmail(email) && (
+                <IonIcon icon={checkmarkOutline} className="text-primary text-xl ml-2" />
+              )}
+            </div>
+          </div>
+
+          {/* Password input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="new-password"
+              />
+              <IonIcon
+                icon={showPassword ? eyeOffOutline : eyeOutline}
+                className="text-gray-400 text-xl ml-2 cursor-pointer"
+                onClick={togglePasswordVisibility}
+              />
+            </div>
+          </div>
+
+          {/* Confirm Password input */}
+          <div className="w-full relative">
+            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+              <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                autoComplete="new-password"
+              />
+              <IonIcon
+                icon={showConfirmPassword ? eyeOffOutline : eyeOutline}
+                className="text-gray-400 text-xl ml-2 cursor-pointer"
+                onClick={toggleConfirmPasswordVisibility}
+              />
+            </div>
+          </div>
+
+          {/* Sign Up button */}
+          <button
+            className="w-full bg-primary text-white rounded-lg py-3 font-semibold text-lg shadow-none hover:bg-primary/90 transition"
+            onClick={handleSignUp}
+          >
+            Sign up
+          </button>
+
+          {/* Sign in link */}
+          <div className="w-full text-center">
+            <span className="text-textColor text-sm">Already have an account? </span>
+            <Link to="/SignIn" className="text-primary text-sm font-semibold hover:underline">
+              Sign In
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Toast for error messages */}
+      <IonToast
+        isOpen={showErrorToast}
+        onDidDismiss={() => setShowErrorToast(false)}
+        message={errorMessage}
+        duration={2000}
+        color="danger"
+      />
     </IonPage>
   );
 };
