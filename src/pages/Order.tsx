@@ -275,9 +275,8 @@ const Order: React.FC = () => {
                   onClick={async () => {
                     if (sessionStorage.getItem("addressData") !== null) {
                       console.log("Checkout clicked");
-                      const url = `${
-                        import.meta.env.VITE_API_ENDPOINT
-                      }/user/${sessionStorage.getItem("sessionUserId")}`;
+                      const url = `${import.meta.env.VITE_API_ENDPOINT
+                        }/user/${sessionStorage.getItem("sessionUserId")}`;
                       console.log("URL:", url);
                       const user = await axios.get(url);
                       const OrderData = {

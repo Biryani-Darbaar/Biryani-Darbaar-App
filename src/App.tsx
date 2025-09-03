@@ -94,13 +94,10 @@ const App: React.FC = () => {
           notifications: [
             {
               title: message.notification.title || "No Title",
-              body: message.notification.body,
+              body: message.notification.body || '',
               id: new Date().getTime(),
               schedule: { at: new Date(Date.now() + 1000) },
-              sound: null,
-              attachments: null,
               actionTypeId: "",
-              extra: null,
             },
           ],
         });

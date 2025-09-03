@@ -31,20 +31,20 @@ const RoundScroll: React.FC<RoundScrollProps> = ({ items }) => {
         price,
         image,
         description,
-      }: AddToCartParams): void => {
+    }: AddToCartParams): void => {
         console.log(name, dishId, addons, price, image, description);
         history.push({
-          pathname: "/Item",
-          state: {
-            name,
-            dishId,
-            addons,
-            price,
-            image,
-            description,
-          },
+            pathname: "/Item", // No change needed, already PascalCase
+            state: {
+                name,
+                dishId,
+                addons,
+                price,
+                image,
+                description,
+            },
         });
-      };
+    };
     return (
         <div className="round-scroll-container">
             {items.map((item, index) => (
@@ -62,7 +62,7 @@ const RoundScroll: React.FC<RoundScrollProps> = ({ items }) => {
                             price: item.price,
                             image: item.image,
                             description: item.description || "",
-                        })}/>
+                        })} />
                     </p>
                 </div>
             ))}

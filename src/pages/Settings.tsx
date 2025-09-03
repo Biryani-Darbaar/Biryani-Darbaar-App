@@ -45,7 +45,7 @@ const Settings = () => {
             <ChevronRight color="#252525" />
           </IonItem>
           <IonItem>
-            <IonLabel onClick={() => history.push("/app-version")}>
+            <IonLabel onClick={() => history.push("/AppVersion")}>
               Application version
             </IonLabel>
             <ChevronRight color="#252525" />
@@ -53,19 +53,19 @@ const Settings = () => {
         </IonList>
         <IonList>
           <IonItem>
-            <IonLabel>
+            <IonLabel><kbd></kbd>
               <strong>General Information</strong>
             </IonLabel>
           </IonItem>
-          <IonItem button onClick={() => history.push("/languages")}>
+          <IonItem button onClick={() => history.push("/Languages")}>
             <IonLabel>Languages</IonLabel>
             <ChevronRight color="#252525" />
           </IonItem>
-          <IonItem button onClick={() => history.push("/notification")}>
+          <IonItem button onClick={() => history.push("/Notifications")}>
             <IonLabel>Notification settings</IonLabel>
             <ChevronRight color="#252525" />
           </IonItem>
-          <IonItem button onClick={() => history.push("/dishdash")}>
+          <IonItem button onClick={() => history.push("/DishDash")}>
             <IonLabel>Introducing DishDash</IonLabel>
             <ChevronRight color="#252525" />
           </IonItem>

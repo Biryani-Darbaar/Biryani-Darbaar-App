@@ -24,10 +24,10 @@ import Navbar from "../components/Navbar/Navbar";
 import CustomButton from "../components/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import sale from "../assets/images/sale.png";
-import call from "../assets/images/call.png";
-import wheel from "../assets/images/wheel.png";
-import vip from "../assets/images/vip.png";
+import sale from "../assets/icons/sale.png";
+import call from "../assets/icons/call.png";
+import wheel from "../assets/icons/wheel.png";
+import vip from "../assets/icons/vip.png";
 import food1 from "../assets/images/Image(3).png";
 import food2 from "../assets/images/Image(4).png";
 import HoriScroll from "../components/HoriScroll";
@@ -73,6 +73,6 @@ const HomePage: React.FC = () => {
       </div>
     );
   }
-  };
+};
 
 export default HomePage;

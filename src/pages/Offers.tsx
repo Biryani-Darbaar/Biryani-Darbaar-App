@@ -66,6 +66,7 @@ const Offers = () => {
               )
               .map((offer) => (
                 <IonCol size="12" size-md="6" key={offer.id}>
+                  {/* Navigation uses PascalCase: '/Menu' */}
                   <IonCard onClick={() => history.push(`/Menu`)}>
                     <IonGrid>
                       <IonRow>
@@ -85,7 +86,7 @@ const Offers = () => {
                                 ${offer.price}
                               </span>{" "}
                               $
-                                {(offer.price -
+                              {(offer.price -
                                 (offer.price * offer.discount) / 100).toFixed(2)}
                             </p>
                           </IonCardContent>

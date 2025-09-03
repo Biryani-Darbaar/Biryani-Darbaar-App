@@ -85,15 +85,15 @@ const Item = () => {
           <div className="addons">
             {Array.isArray(addons)
               ? addons.map((addon, index) => (
-                  <div key={index} className="addon">
-                    <p>{addon.addonName}</p>
-                    <p className="addon-price">
-                      {addon.price.toString().startsWith("$")
-                        ? addon.price
-                        : `$ ${addon.price}`}
-                    </p>
-                  </div>
-                ))
+                <div key={index} className="addon">
+                  <p>{addon.addonName}</p>
+                  <p className="addon-price">
+                    {addon.price.toString().startsWith("$")
+                      ? addon.price
+                      : `$ ${addon.price}`}
+                  </p>
+                </div>
+              ))
               : null}
           </div>
           <div className="images-content">

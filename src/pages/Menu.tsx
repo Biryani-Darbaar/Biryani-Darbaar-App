@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 import axios from "axios";
 import menu1 from "../assets/images/menu1.png";
-import vector from "../assets/svg/Vector.svg";
+import vector from "../assets/svg/starter.svg";
 import { cart, notifications } from "ionicons/icons";
 import "../assets/css/Menu.css";
 import menusp1 from "../assets/images/menusp1.png";
@@ -112,7 +112,7 @@ const Menu: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-      {/* <IonToolbar color="danger">
+        {/* <IonToolbar color="danger">
           <IonTitle className="justify text-center">Menu</IonTitle>
           <IonButtons slot="start">
             <div className="icon-left">
@@ -129,9 +129,9 @@ const Menu: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
-        
-          <div className="content-menu">
-          
+
+        <div className="content-menu">
+
           <div>
             <img
               src={menu1}

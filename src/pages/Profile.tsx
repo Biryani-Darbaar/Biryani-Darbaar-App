@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
     const res = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/logout`);
     console.log("Sign out response:", res);
     sessionStorage.clear();
-    history.push("/");
+    history.push("/SignIn");
   };
 
   return (
@@ -103,7 +103,7 @@ const Profile: React.FC = () => {
             />
           </div>
           <div className="profile-reward-points">
-            
+
             <Coins size={28} color="#f1c40f" />
             <span>{userReward}</span>
           </div>
@@ -130,12 +130,12 @@ const Profile: React.FC = () => {
           <IonLabel>Setting</IonLabel>
           <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem button onClick={() => history.push("/termsOfUse")}>
+        <IonItem button onClick={() => history.push("/TermsOfUse")}>
           <ShieldCheck color="#EA1F27" className="icon-profile" />
           <IonLabel>Terms of use</IonLabel>
           <ChevronRight color="#252525" />
         </IonItem>
-        <IonItem button onClick={() => history.push("/privacy")}>
+        <IonItem button onClick={() => history.push("/Privacy")}>
           <ShieldCheck color="#EA1F27" className="icon-profile" />
           <IonLabel>Privacy policy</IonLabel>
           <ChevronRight color="#252525" />

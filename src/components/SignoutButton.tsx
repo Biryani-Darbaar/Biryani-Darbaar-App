@@ -12,7 +12,7 @@ const SignOutButton = () => {
     const res = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/logout`);
     console.log("Sign out response:", res);
     sessionStorage.clear();
-    history.push("/");
+    history.push("/SignIn");
   };
 
   return <CustomButton colorType="primary" onClick={handleSignOut}>Sign Out</CustomButton>;
