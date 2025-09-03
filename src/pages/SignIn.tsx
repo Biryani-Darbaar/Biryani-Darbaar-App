@@ -61,7 +61,7 @@ const SignIn: React.FC = () => {
       sessionStorage.setItem("sessionUserId", sessionUserId);
       history.push("/Home");
     } catch (error) {
-      setErrorMessage((error as any).message);
+      setErrorMessage((error as Error).message);
       setShowErrorToast(true);
     }
   };
@@ -177,6 +177,7 @@ const SignIn: React.FC = () => {
         onDidDismiss={() => setShowErrorToast(false)}
         message={errorMessage}
         duration={1000}
+        className="font-sans"
         color="danger"
       />
     </IonPage>

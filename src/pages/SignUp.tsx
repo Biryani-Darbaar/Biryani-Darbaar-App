@@ -16,7 +16,6 @@ import {
 } from "ionicons/icons";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
-import "../assets/css/Signup.css";
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -237,6 +236,7 @@ const SignUp: React.FC = () => {
         onDidDismiss={() => setShowErrorToast(false)}
         message={errorMessage}
         duration={2000}
+        className="font-sans"
         color="danger"
       />
     </IonPage>

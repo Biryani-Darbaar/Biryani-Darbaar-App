@@ -6,6 +6,8 @@ import {
   IonRow,
   IonCol,
   IonImg,
+  IonButton,
+  IonIcon,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -29,9 +31,10 @@ import RoundScroll from "../components/RoundScroll";
 import IconScroll from "../components/iconSlider";
 import "swiper/css";
 import Loading from "../components/Loading";
+import { arrowBackOutline } from "ionicons/icons";
+import { carouselImages } from "../constants/Home";
 
 const Home: React.FC = () => {
-  const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [isGameOpen, setGameOpen] = useState(false);
   const [special, setSpecial] = useState<
     {
@@ -53,31 +56,30 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>("");
 
-  useEffect(() => {
-    const imager = [
-      {
-        name: "images/1729369562701-IMG-20241020-WA0001.jpg",
-        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369562701-IMG-20241020-WA0001.jpg",
-      },
-      {
-        name: "images/1729369563406-IMG-20241020-WA0004.jpg",
-        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369563406-IMG-20241020-WA0004.jpg",
-      },
-      {
-        name: "images/1729369563853-IMG-20241020-WA0006.jpg",
-        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369563853-IMG-20241020-WA0006.jpg",
-      },
-      {
-        name: "images/1729369564254-IMG-20241020-WA0008.jpg",
-        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369564254-IMG-20241020-WA0008.jpg",
-      },
-      {
-        name: "images/1729369564671-IMG-20241020-WA0012.jpg",
-        url: "https://storage.googleapis.com/biryani-darbar-770a5.appspot.com/images/1729369564671-IMG-20241020-WA0012.jpg",
-      },
-    ];
+  const quickAccess = [
+    {
+      label: "Flash Deals",
+      icon: "/assets/icons/sale.png",
+      onClick: undefined,
+    },
+    {
+      label: "Mini Game",
+      icon: "/assets/icons/wheel.png",
+      onClick: (handleMiniGame as (() => void) | undefined),
+    },
+    {
+      label: "Member",
+      icon: "/assets/icons/vip.png",
+      onClick: undefined,
+    },
+    {
+      label: "Boxchat",
+      icon: "/assets/icons/call.png",
+      onClick: undefined,
+    },
+  ];
 
-    setImages(imager);
+  useEffect(() => {
 
     const fetchSpecialDishes = async () => {
       try {
@@ -160,69 +162,53 @@ const Home: React.FC = () => {
   }
 
   return (
-    <IonPage>
-      <IonHeader className="header-custom">
-        <Navbar name="Home" />
+    <IonPage className="bg-white">
+      <IonHeader>
+        <Navbar />
       </IonHeader>
+      <div className="flex flex-col gap-8 items-center w-full justify-center p-6">
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={1}
+          loop={true}
+          className="w-full h-52 mb-2 rounded-lg mySwiper"
+          centeredSlides={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+        >
+          {carouselImages.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={image.url}
+                alt={`Biryani Darbar | Slide ${index + 1}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-      <IonContent fullscreen className="content">
-        <div className="content-custom">
-          {/* Carousel */}
-
-          <Swiper
-            spaceBetween={10}
-            slidesPerView={1}
-            loop={true}
-            className="carousel-container mySwiper"
-            centeredSlides={true}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            navigation={true}
-            modules={[Autoplay, Pagination, Navigation]}
-          >
-            {images.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image.url}
-                  alt={`Slide ${index + 1}`}
-                  className="carousel-image"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          {/* Category Section */}
-          <IonGrid className="game-grid">
-            <IonRow>
-              <IonCol className="icon-col">
-                <IonImg src={sale} alt="" className="icon-grid"></IonImg>
-                <div className="text">Flash deals</div>
-              </IonCol>
-              <IonCol className="icon-col">
-                <IonImg
-                  src={wheel}
-                  alt=""
-                  className="icon-grid"
-                  onClick={handleMiniGame}
-                ></IonImg>
-                <div className="text mini">Mini game</div>
-              </IonCol>
-              <IonCol className="icon-col">
-                <IonImg src={vip} alt="" className="icon-grid"></IonImg>
-                <div className="text">Member</div>
-              </IonCol>
-              <IonCol className="icon-col">
-                <IonImg src={call} alt="" className="icon-grid"></IonImg>
-                <div className="text">Boxchat</div>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-
-          {/* Horizontal Scroll Section */}
-          <h4>Discount delicious food</h4>
-          <br />
+        <div className="flex flex-row items-center w-full justify-between">
+          {quickAccess.map((item) => (
+            <div
+              key={item.label}
+              className="flex flex-col w-full gap-2 items-center justify-center font-semibold text-neutral-800"
+            >
+              <IonImg
+                src={item.icon}
+                alt=""
+                className="w-1/3"
+                onClick={item.onClick}
+                style={item.onClick ? { cursor: "pointer" } : undefined}
+              />
+              <div className="w-full text-center text-titleColor font-medium">{item.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="flex w-full flex-col items-start gap-4">
+          <span className="text-2xl text-titleColor font-semibold">Discount on Delicious Food</span>
           <HoriScroll
             items={special.map((dish) => ({
               image: dish.image,
@@ -233,28 +219,29 @@ const Home: React.FC = () => {
               addons: dish.addons,
             }))}
           />
-
-          <div className="round-grid-container">
-            <IconScroll
-              items={categories.map((category) => ({ name: category }))}
-              onCategoryClick={fetchDishesByCategory}
-              activeCategory={activeCategory} // Pass activeCategory
-            />
-            <RoundScroll
-              items={selectedCategoryDishes.map((dish) => ({
-                image: dish.image,
-                name: dish.dishName || dish.name,
-                price: dish.price,
-                description: dish.description,
-                dishId: dish.dishId,
-                addons: dish.addons,
-              }))}
-            />
-          </div>
-
-          {/* Mini-Game Modal */}
-          <GameModal isOpen={isGameOpen} onClose={closeGame} />
         </div>
+
+
+        <div className="round-grid-container">
+          <IconScroll
+            items={categories.map((category) => ({ name: category }))}
+            onCategoryClick={fetchDishesByCategory}
+            activeCategory={activeCategory} // Pass activeCategory
+          />
+          <RoundScroll
+            items={selectedCategoryDishes.map((dish) => ({
+              image: dish.image,
+              name: dish.dishName || dish.name,
+              price: dish.price,
+              description: dish.description,
+              dishId: dish.dishId,
+              addons: dish.addons,
+            }))}
+          />
+        </div>
+
+        {/* Mini-Game Modal */}
+        <GameModal isOpen={isGameOpen} onClose={closeGame} />
         <div className="locations">
           <h4>The dish is available at branch stores</h4>
           <br />
@@ -268,7 +255,8 @@ const Home: React.FC = () => {
         </div>
         <br />
         <br />
-      </IonContent>
+
+      </div>
     </IonPage>
   );
 };

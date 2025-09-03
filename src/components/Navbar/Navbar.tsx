@@ -1,36 +1,23 @@
-import { Bell, ShoppingCart, Ellipsis, X, ArrowLeft } from "lucide-react";
+import { Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
-import React from "react";
-import "./Navbar.css";
-import { IonButtons, IonSearchbar, IonTitle, IonToolbar } from "@ionic/react";
+
+import { IonToolbar } from "@ionic/react";
 import InputSearch from "../Search";
-const Navbar = ({ name }: { name?: string }) => {
+const Navbar = () => {
   const history = useHistory();
   return (
     <IonToolbar color="danger">
-      <nav>
-        {/* Left Icon */}
-        <div className="icon-left">
-          <ArrowLeft size={24} onClick={() => history.goBack()} />
-        </div>
+      <nav className="h-16 flex justify-between items-center gap-6 w-full px-6">
+        <InputSearch placeholder="Search" />
 
-        {/* Centered Name or Search */}
-        <div className="search">
-          {name ? (
-            <h3 className="nav-name">{name}</h3>
-          ) : (
-            <InputSearch placeholder="Search" />
-          )}
-        </div>
-
-        {/* Right Icons */}
-        <div className="icon-right">
-          <ShoppingCart size={24} onClick={() => history.push("/Order")} />
+        <div className="icons flex items-center gap-4">
           <Bell
             className="bell"
             size={24}
-            onClick={() => history.push("/Profile")}
+            onClick={() => history.push("/Notifications")}
           />
+          <ShoppingCart size={24} onClick={() => history.push("/Orders")} />
+
         </div>
       </nav>
     </IonToolbar>
