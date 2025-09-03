@@ -120,7 +120,7 @@ const SignUp: React.FC = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="First Name"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="given-name"
               />
             </div>
@@ -134,7 +134,7 @@ const SignUp: React.FC = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Last Name"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="family-name"
               />
             </div>
@@ -148,7 +148,7 @@ const SignUp: React.FC = () => {
                 value={phNumber}
                 onChange={(e) => setPhNumber(e.target.value)}
                 placeholder="Phone Number"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="tel"
               />
             </div>
@@ -163,7 +163,7 @@ const SignUp: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="email"
               />
               {isValidEmail(email) && (
@@ -181,12 +181,12 @@ const SignUp: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="new-password"
               />
               <IonIcon
                 icon={showPassword ? eyeOffOutline : eyeOutline}
-                className="text-gray-400 text-xl ml-2 cursor-pointer"
+                className="text-neutral-400 text-xl ml-2 cursor-pointer"
                 onClick={togglePasswordVisibility}
               />
             </div>
@@ -201,12 +201,12 @@ const SignUp: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm Password"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="new-password"
               />
               <IonIcon
                 icon={showConfirmPassword ? eyeOffOutline : eyeOutline}
-                className="text-gray-400 text-xl ml-2 cursor-pointer"
+                className="text-neutral-400 text-xl ml-2 cursor-pointer"
                 onClick={toggleConfirmPasswordVisibility}
               />
             </div>

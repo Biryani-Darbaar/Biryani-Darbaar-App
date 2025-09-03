@@ -1,42 +1,28 @@
 import {
-  IonContent,
   IonHeader,
   IonPage,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonImg,
-  IonButton,
-  IonIcon,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import "../assets/css/Home.css";
 import Navbar from "../components/Navbar/Navbar";
-import CustomButton from "../components/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import sale from "../assets/images/sale.png";
-import call from "../assets/images/call.png";
-import wheel from "../assets/images/wheel.png";
-import vip from "../assets/images/vip.png";
-import food1 from "../assets/images/Image(3).png";
-import food2 from "../assets/images/Image(4).png";
 import HoriScroll from "../components/HoriScroll";
 import GameModal from "../components/GameModal";
 import RoundScroll from "../components/RoundScroll";
 import IconScroll from "../components/iconSlider";
 import "swiper/css";
 import Loading from "../components/Loading";
-import { arrowBackOutline } from "ionicons/icons";
 import { carouselImages } from "../constants/Home";
+import QuickAccessSection from "../sections/QuickAccess";
+import SpecialItemsSection from "../sections/SpecialItems";
 
 const Home: React.FC = () => {
   const [isGameOpen, setGameOpen] = useState(false);
-  const [special, setSpecial] = useState<
+  const [specialDishes, setSpecialDishes] = useState<
     {
       dishName: string;
       price: number;
@@ -56,40 +42,15 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>("");
 
-  const quickAccess = [
-    {
-      label: "Flash Deals",
-      icon: "/assets/icons/sale.png",
-      onClick: undefined,
-    },
-    {
-      label: "Mini Game",
-      icon: "/assets/icons/wheel.png",
-      onClick: (handleMiniGame as (() => void) | undefined),
-    },
-    {
-      label: "Member",
-      icon: "/assets/icons/vip.png",
-      onClick: undefined,
-    },
-    {
-      label: "Boxchat",
-      icon: "/assets/icons/call.png",
-      onClick: undefined,
-    },
-  ];
 
   useEffect(() => {
 
     const fetchSpecialDishes = async () => {
       try {
-        const specialResponse = await axios.get(
+        const specialDishesResponse = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/specialOffers`
         );
-        console.log("Kojja lan", specialResponse.data);
-
-        setSpecial(specialResponse.data);
-        console.log("Kojja lan", special);
+        setSpecialDishes(specialDishesResponse.data);
       } catch (error) {
         console.error("Error fetching special dishes:", error);
       }
@@ -149,10 +110,6 @@ const Home: React.FC = () => {
     }
   };
 
-  function handleMiniGame(): void {
-    setGameOpen(true);
-  }
-
   function closeGame(): void {
     setGameOpen(false);
   }
@@ -190,37 +147,8 @@ const Home: React.FC = () => {
           ))}
         </Swiper>
 
-        <div className="flex flex-row items-center w-full justify-between">
-          {quickAccess.map((item) => (
-            <div
-              key={item.label}
-              className="flex flex-col w-full gap-2 items-center justify-center font-semibold text-neutral-800"
-            >
-              <IonImg
-                src={item.icon}
-                alt=""
-                className="w-1/3"
-                onClick={item.onClick}
-                style={item.onClick ? { cursor: "pointer" } : undefined}
-              />
-              <div className="w-full text-center text-titleColor font-medium">{item.label}</div>
-            </div>
-          ))}
-        </div>
-        <div className="flex w-full flex-col items-start gap-4">
-          <span className="text-2xl text-titleColor font-semibold">Discount on Delicious Food</span>
-          <HoriScroll
-            items={special.map((dish) => ({
-              image: dish.image,
-              name: dish.dishName || "Chicken Biryani",
-              price: dish.price.toString(),
-              description: dish.description,
-              dishId: dish.dishId,
-              addons: dish.addons,
-            }))}
-          />
-        </div>
-
+        <QuickAccessSection />
+        <SpecialItemsSection dishes={specialDishes} />
 
         <div className="round-grid-container">
           <IconScroll

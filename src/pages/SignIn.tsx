@@ -93,7 +93,7 @@ const SignIn: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="fahad@1234567809"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="email"
               />
               {isValidEmail(email) && (
@@ -111,12 +111,12 @@ const SignIn: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="bg-transparent outline-none flex-1 text-gray-900 text-base font-semibold"
+                className="bg-transparent outline-none flex-1 text-neutral-900 text-base font-semibold"
                 autoComplete="current-password"
               />
               <IonIcon
                 icon={showPassword ? eyeOffOutline : eyeOutline}
-                className="text-gray-400 text-xl ml-2 cursor-pointer"
+                className="text-neutral-400 text-xl ml-2 cursor-pointer"
                 onClick={togglePasswordVisibility}
               />
             </div>
@@ -162,10 +162,10 @@ const SignIn: React.FC = () => {
         {/* Social login buttons */}
 
         <div className="flex justify-center gap-4 mt-6 w-full">
-          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-gray-200 hover:bg-gray-50 transition">
+          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-neutral-200 hover:bg-neutral-50 transition">
             <IonIcon icon={logoFacebook} className="text-blue-600 text-2xl" />
           </button>
-          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-gray-200 hover:bg-gray-50 transition">
+          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-neutral-200 hover:bg-neutral-50 transition">
             <IonIcon icon={logoGoogle} className="text-red-500 text-2xl" />
           </button>
         </div>

@@ -28,7 +28,7 @@ const Spinner: React.FC = () => {
     fetchMiniGames();
   }, []);
 
-  const updateUserReward = async (type:string, reward: string) => {
+  const updateUserReward = async (type: string, reward: string) => {
     const userId = sessionStorage.getItem("sessionUserId");
     if (userId) {
       try {
@@ -114,7 +114,7 @@ const Spinner: React.FC = () => {
 
           {/* Center Circle */}
           <circle cx="50" cy="50" r="12" fill="red" />
-            <text
+          <text
             x="50"
             y="53"
             textAnchor="middle"
@@ -122,9 +122,9 @@ const Spinner: React.FC = () => {
             fill="white"
             fontWeight="bold"
             onClick={spinWheel}
-            >
+          >
             {isSpinning ? "Spinning..." : "Spin"}
-            </text>
+          </text>
         </svg>
 
         {/* Pointer */}
@@ -138,14 +138,14 @@ const Spinner: React.FC = () => {
       {/* <button
         onClick={spinWheel}
         disabled={isSpinning}
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
+        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-neutral-400"
       >
         {isSpinning ? "Spinning..." : "Spin for an Offer!"}
       </button> */}
 
       {/* Selected Offer */}
       {selectedOffer && (
-        <div className="mt-4 text-xl font-bold text-white" style={{color: 'white'}}>
+        <div className="mt-4 text-xl font-bold text-white" style={{ color: 'white' }}>
           You won: {selectedOffer}!
         </div>
       )}
