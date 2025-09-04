@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IonPage, IonImg } from "@ionic/react";
 import axios from "axios";
-import { useHistory } from "react-router";
 import Navbar from "../components/navigation/NavBar";
 import MainMenuSection from "../sections/MainMenu";
 import { carouselImages } from "../constants/Home";
@@ -10,7 +9,6 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 const Menu: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
-  const history = useHistory();
 
   useEffect(() => {
     const fetchCategories = async () => {

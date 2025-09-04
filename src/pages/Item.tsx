@@ -35,7 +35,6 @@ const Item = () => {
   const history = useHistory();
   const location = useLocation<LocationState>();
   const { name, dishId, addons, price, image, description } = location.state;
-  console.log(name, dishId, addons, price, image, description);
 
   const [count, setCount] = useState(1);
   console.log(count);

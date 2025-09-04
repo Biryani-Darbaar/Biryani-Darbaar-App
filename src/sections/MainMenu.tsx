@@ -2,16 +2,31 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Dish } from "../types";
 import { exploreMenuIcons } from "../constants/Home";
+import { useHistory } from "react-router-dom";
 
 const MainMenuSection = ({ categories }: { categories: string[] }) => {
     const [activeCategory, setActiveCategory] = useState<string>("");
     const [selectedCategoryDishes, setSelectedCategoryDishes] = useState<Dish[]>([]);
+    const history = useHistory();
 
     useEffect(() => {
         if (categories.length > 0) {
             fetchDishesByCategory(categories[0]);
         }
     }, [categories]);
+
+    const handleDishClick = (dish: Dish) => {
+        history.push(`/Item`, {
+            name: dish.dishName || dish.name,
+            dishId: dish.dishId,
+            addons: dish.addons,
+            price: dish.price,
+            image: dish.image,
+            description: dish.description,
+        });
+
+    };
+
 
     const fetchDishesByCategory = async (name: string) => {
         try {
@@ -73,6 +88,7 @@ const MainMenuSection = ({ categories }: { categories: string[] }) => {
                             <img
                                 src={item.image}
                                 alt={item.dishName}
+                                onClick={() => handleDishClick(item)}
                                 className="w-24 h-24 rounded-full object-cover border-4 border-primary"
                             />
                             <div className="flex-1">

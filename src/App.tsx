@@ -32,46 +32,44 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 setupIonicReact();
-
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Home");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [showSplash, setShowSplash] = useState(true);
-  const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // null = not checked yet
+  const [phase, setPhase] = useState<"splash" | "loading" | "ready">("splash");
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(null); // null = not checked yet
   const location = useLocation();
 
   usePushNotifications();
 
-  // Handle splash + onboarding
+  // Splash → Loading
   useEffect(() => {
-    setTimeout(() => setShowSplash(false), 1000);
+    const timer = setTimeout(() => setPhase("loading"), 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
+  // Handle onboarding + auth
+  useEffect(() => {
+    // ✅ Onboarding check
     const onboarding = localStorage.getItem("onboardingComplete");
-    if (onboarding) setOnboardingComplete(true);
+    setOnboardingComplete(!!onboarding);
 
-    // 👇 listen for onboardingComplete event
+    // Listen for onboarding completion
     const handleOnboardingComplete = () => setOnboardingComplete(true);
     window.addEventListener("onboardingComplete", handleOnboardingComplete);
 
-    return () => {
-      window.removeEventListener("onboardingComplete", handleOnboardingComplete);
-    };
-  }, []);
+    // ✅ Auth check
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+      setTimeout(() => setPhase("ready"), 1500);
+    });
 
-  // Handle auth + geolocation
-  useEffect(() => {
+    // Location
     Geolocation.getCurrentPosition()
       .then((pos) => {
         const { latitude, longitude } = pos.coords;
         sessionStorage.setItem("addressData", `Lat:${latitude}, Lng:${longitude}`);
       })
       .catch((err) => console.error("Location error:", err));
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-      setTimeout(() => setLoading(false), 1500);
-    });
 
     FirebaseMessaging.addListener("notificationReceived", async (msg) => {
       await LocalNotifications.schedule({
@@ -86,14 +84,30 @@ const App: React.FC = () => {
       });
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      window.removeEventListener("onboardingComplete", handleOnboardingComplete);
+    };
   }, []);
 
-  if (loading || showSplash) return <Loading />;
+  // Phase handling
+  if (phase === "splash") return <Loading type="splash" />;
+  if (phase === "loading") return <Loading type="loading" />;
 
-  // If onboarding not complete → force show onboarding
-  if (!onboardingComplete && location.pathname !== "/Onboarding") {
-    return <Redirect to="/Onboarding" />;
+  // Still waiting for checks
+  if (isAuthenticated === null || onboardingComplete === null) {
+    return <Loading type="loading" />;
+  }
+
+  // Entry logic for `/`
+  if (location.pathname === "/") {
+    if (!onboardingComplete) {
+      return <Redirect to="/Onboarding" />;
+    }
+    if (!isAuthenticated) {
+      return <Redirect to="/SignIn" />;
+    }
+    return <Redirect to="/Home" />;
   }
 
   const noTabsRoutes = ["/Splash", "/Onboarding", "/SignIn", "/SignUp"];
@@ -113,18 +127,12 @@ const App: React.FC = () => {
                       path={path}
                       exact={exact}
                       component={component}
-                      isAuthenticated={isAuthenticated}
+                      isAuthenticated={!!isAuthenticated}
                     />
                   ) : (
-                    <Route
-                      key={idx}
-                      path={path}
-                      exact={exact}
-                      component={component}
-                    />
+                    <Route key={idx} path={path} exact={exact} component={component} />
                   )
                 )}
-                <Redirect exact from="/" to={isAuthenticated ? "/Home" : "/SignIn"} />
               </Switch>
             </IonRouterOutlet>
             <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -139,18 +147,12 @@ const App: React.FC = () => {
                     path={path}
                     exact={exact}
                     component={component}
-                    isAuthenticated={isAuthenticated}
+                    isAuthenticated={!!isAuthenticated}
                   />
                 ) : (
-                  <Route
-                    key={idx}
-                    path={path}
-                    exact={exact}
-                    component={component}
-                  />
+                  <Route key={idx} path={path} exact={exact} component={component} />
                 )
               )}
-              <Redirect exact from="/" to={isAuthenticated ? "/Home" : "/SignIn"} />
             </Switch>
           </IonRouterOutlet>
         )}
