@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import {
   IonPage,
-  IonButton,
   IonIcon,
   IonToast,
-  IonHeader,
 } from "@ionic/react";
 import {
   mailOutline,
@@ -13,12 +11,12 @@ import {
   eyeOffOutline,
   logoFacebook,
   logoGoogle,
-  arrowBackOutline,
   checkmarkOutline,
 } from "ionicons/icons";
 import { Link, useHistory } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import axios from "axios";
+import Navbar from "../components/navigation/NavBar";
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -71,22 +69,17 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      {/* Red header bar with back arrow */}
-      <IonHeader className="bg-primary min-h-16 flex items-center px-1">
-        <IonButton fill="clear" size="large" className="p-0 m-0" onClick={() => history.goBack()}>
-          <IonIcon icon={arrowBackOutline} slot="icon-only" color="light" />
-        </IonButton>
-      </IonHeader>
+    <IonPage className="bg-white overflow-y-auto">
+      <Navbar publicNav={true} />
       <div className="flex flex-col h-full justify-center items-center px-6">
         {/* Centered card */}
-        <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-8 gap-6">
+        <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-6 gap-6">
           <span className="text-3xl font-bold text-titleColor w-full text-left">Welcome Back!</span>
           <p className="text-textColor w-full text-left">Sign in to continue</p>
 
           {/* Email input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <IonIcon icon={mailOutline} className="text-primary text-xl mr-2" />
               <input
                 type="email"
@@ -104,7 +97,7 @@ const SignIn: React.FC = () => {
 
           {/* Password input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
               <input
                 type={showPassword ? "text" : "password"}
@@ -159,19 +152,17 @@ const SignIn: React.FC = () => {
           </div>
         </div>
 
-        {/* Social login buttons */}
 
-        <div className="flex justify-center gap-4 mt-6 w-full">
-          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-neutral-200 hover:bg-neutral-50 transition">
+        <div className="flex justify-center gap-4 mt-6 w-full px-6">
+          <div className="flex-1 flex items-center justify-center rounded-lg py-3 border hover:bg-neutral-50 transition">
             <IonIcon icon={logoFacebook} className="text-blue-600 text-2xl" />
-          </button>
-          <button className="flex-1 flex items-center justify-center bg-white rounded-lg py-3 border-neutral-200 hover:bg-neutral-50 transition">
+          </div>
+          <div className="flex-1 flex items-center justify-center rounded-lg py-3 border hover:bg-neutral-50 transition">
             <IonIcon icon={logoGoogle} className="text-red-500 text-2xl" />
-          </button>
+          </div>
         </div>
       </div>
 
-      {/* Toast for error messages */}
       <IonToast
         isOpen={showErrorToast}
         onDidDismiss={() => setShowErrorToast(false)}

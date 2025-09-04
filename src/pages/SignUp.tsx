@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import {
   IonPage,
-  IonButton,
   IonIcon,
   IonToast,
-  IonHeader,
 } from "@ionic/react";
 import {
   mailOutline,
   lockClosedOutline,
   eyeOutline,
   eyeOffOutline,
-  arrowBackOutline,
   checkmarkOutline,
 } from "ionicons/icons";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../components/navigation/NavBar";
 
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -30,13 +28,11 @@ const SignUp: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
 
-  // Validate email format
   const isValidEmail = (email: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
 
-  // Handle sign-up action
   const handleSignUp = async () => {
     if (!firstName || !lastName) {
       setErrorMessage("Please enter both first and last names.");
@@ -75,9 +71,6 @@ const SignUp: React.FC = () => {
       "password": password,
       "phoneNumber": phNumber
     }
-    console.log("Payload", payload);
-
-    // Implement sign-up logic
     const response = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/signup`, payload);
 
     if (response.status === 201) {
@@ -86,8 +79,6 @@ const SignUp: React.FC = () => {
     }
     setErrorMessage("An error occurred. Please try again.");
     setShowErrorToast(true);
-
-    console.log("Sign up with:", firstName, lastName, email, password, phNumber, fullName, response);
   };
 
   const togglePasswordVisibility = () => {
@@ -99,22 +90,14 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      {/* Red header bar with back arrow */}
-      <IonHeader className="bg-primary min-h-16 flex items-center px-1">
-        <IonButton fill="clear" size="large" className="p-0 m-0" onClick={() => history.goBack()}>
-          <IonIcon icon={arrowBackOutline} slot="icon-only" color="light" />
-        </IonButton>
-      </IonHeader>
+    <IonPage className="bg-white overflow-y-auto">
+      <Navbar publicNav={true} />
       <div className="flex flex-col h-full justify-center items-center px-6">
-        {/* Centered card */}
-        <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-8 gap-6">
+        <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-6 gap-6">
           <span className="text-3xl font-bold text-titleColor w-full text-left">Create an Account</span>
           <p className="text-textColor w-full text-left">Sign up to get started</p>
-
-          {/* First Name input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <input
                 type="text"
                 value={firstName}
@@ -125,10 +108,8 @@ const SignUp: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Last Name input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <input
                 type="text"
                 value={lastName}
@@ -139,10 +120,8 @@ const SignUp: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Phone Number input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <input
                 type="tel"
                 value={phNumber}
@@ -153,10 +132,8 @@ const SignUp: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Email input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <IonIcon icon={mailOutline} className="text-primary text-xl mr-2" />
               <input
                 type="email"
@@ -171,10 +148,8 @@ const SignUp: React.FC = () => {
               )}
             </div>
           </div>
-
-          {/* Password input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
               <input
                 type={showPassword ? "text" : "password"}
@@ -191,10 +166,8 @@ const SignUp: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Confirm Password input */}
           <div className="w-full relative">
-            <div className="flex items-center bg-inputBg rounded-lg border-primary/20 focus-within:border-primary p-3">
+            <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -211,16 +184,12 @@ const SignUp: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Sign Up button */}
           <button
             className="w-full bg-primary text-white rounded-lg py-3 font-semibold text-lg shadow-none hover:bg-primary/90 transition"
             onClick={handleSignUp}
           >
             Sign up
           </button>
-
-          {/* Sign in link */}
           <div className="w-full text-center">
             <span className="text-textColor text-sm">Already have an account? </span>
             <Link to="/SignIn" className="text-primary text-sm font-semibold hover:underline">
@@ -229,8 +198,6 @@ const SignUp: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Toast for error messages */}
       <IonToast
         isOpen={showErrorToast}
         onDidDismiss={() => setShowErrorToast(false)}
