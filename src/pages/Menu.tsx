@@ -1,48 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonBadge,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonPage, IonImg } from "@ionic/react";
 import axios from "axios";
-import menu1 from "../assets/images/menu1.png";
-import vector from "../assets/svg/starter.svg";
-import { cart, notifications } from "ionicons/icons";
-import "../assets/css/Menu.css";
-import menusp1 from "../assets/images/menusp1.png";
-import menusp2 from "../assets/images/menusp2.png";
-import CustomButton from "../components/Button";
-// import IconScroll from "../components/iconSlider";
-import { CirclePlus, Bell, ShoppingCart } from "lucide-react";
 import { useHistory } from "react-router";
 import Navbar from "../components/navigation/NavBar";
-interface Addon {
-  addonName: string;
-  price: number;
-}
-
-interface AddToCartParams {
-  name: string;
-  addons: Addon[];
-  price: number;
-  dishId: number;
-  image: string;
-  description: string;
-}
+import MainMenuSection from "../sections/MainMenu";
+import { carouselImages } from "../constants/Home";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 const Menu: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>("Biryani's");
-  const [dishes, setDishes] = useState<Dish[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();
-  // Fetch categories on mount
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -52,178 +21,62 @@ const Menu: React.FC = () => {
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
-      } finally {
-        setTimeout(() => setLoading(false), 1500); // Ensure loading for at least 5 seconds
       }
     };
+
     fetchCategories();
   }, []);
 
-  // Fetch dishes when active category changes
-  useEffect(() => {
-    const fetchDishes = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/dishes/category/${activeCategory}`
-        );
-        setDishes(response.data);
-      } catch (error) {
-        console.error("Error fetching dishes:", error);
-      } finally {
-        setTimeout(() => setLoading(false), 2500); // Ensure loading for at least 5 seconds
-      }
-    };
-    fetchDishes();
-  }, [activeCategory]);
-
-  const handleAddToCart = ({
-    name,
-    dishId,
-    addons,
-    price,
-    image,
-    description,
-  }: AddToCartParams): void => {
-    console.log(name, dishId, addons, price, image, description);
-    history.push({
-      pathname: "/Item",
-      state: {
-        name,
-        dishId,
-        addons,
-        price,
-        image,
-        description,
-      },
-    });
-  };
-
-  interface Dish {
-    image: string;
-    dishName?: string;
-    name?: string;
-    description?: string;
-    price: number;
-    addons: { addonName: string; price: number }[];
-    dishId: number;
-  }
-
   return (
-    <IonPage>
-      <IonHeader>
-        {/* <IonToolbar color="danger">
-          <IonTitle className="justify text-center">Menu</IonTitle>
-          <IonButtons slot="start">
-            <div className="icon-left">
-              <Bell
-                className="bell"
-                size={24}
-                onClick={() => history.push("/Profile")}
+    <IonPage className="bg-red-800 overflow-y-auto">
+      <Navbar />
+      <div className="flex flex-col items-center w-full justify-start py-4 px-6">
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={1}
+          loop={true}
+          className="w-full h-52 mb-4 rounded-lg mySwiper"
+          centeredSlides={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+        >
+          {carouselImages.map((image, index) => (
+            <SwiperSlide key={index}>
+              <IonImg
+                src={image.url}
+                alt={`Biryani Darbar | Slide ${index + 1}`}
               />
-              <ShoppingCart size={24} onClick={() => history.push("/Order")} />
-            </div>
-          </IonButtons>
-        </IonToolbar> */}
-        <Navbar name="Menu" />
-      </IonHeader>
-
-      <IonContent fullscreen>
-
-        <div className="content-menu">
-
-          <div>
-            <img
-              src={menu1}
-              style={{
-                borderRadius: "8px",
-                marginTop: "10px",
-                marginRight: "10px",
-                marginLeft: "10px",
-                maxWidth: "90%"
-              }}
-              alt="Menu"
-            />
-            <p style={{ fontWeight: "bold", marginLeft: "15px" }}>Special Offers</p>
-            <div
-              style={{
-                display: "flex",
-                gap: "9px",
-                width: "45%",
-                marginLeft: "10px",
-              }}
-            >
-              <img src={menusp1} />
-              <img src={menusp2} />
-            </div>
-
-            <p style={{ fontWeight: "bold", marginLeft: "15px" }}>List of dishes</p>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              overflowX: "auto",
-              marginLeft: "1.25rem",
-            }}
-          >
-            {/* <IconScroll
-              items={categories.map((category) => ({ name: category }))}
-              onCategoryClick={setActiveCategory}
-              activeCategory={activeCategory} // Pass activeCategory
-            /> */}
-          </div>
-
-          <div style={{ marginTop: "10px" }}>
-            {dishes.map((dish, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  marginRight: "10px",
-                  marginLeft: "10px",
-                  marginBottom: "15px",
-                  border: "0px solid #ccc",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  gap: "8px",
-                  justifyContent: "space-between",
-                }}
-              >
-                <img
-                  src={dish.image}
-                  alt={dish.dishName || dish.name}
-                  style={{ width: "100px", height: "100px", borderRadius: "8px" }}
-                />
-                <div>
-                  <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                    {dish.dishName || dish.name}
-                  </h2>
-                  <p style={{ color: "#C01D2E" }}>
-                    <strong></strong> ${dish.price}
-                  </p>
-                </div>
-                <div className="add-to-cart">
-                  <CirclePlus
-                    color="#E50914"
-                    onClick={() => {
-                      handleAddToCart({
-                        name: dish.dishName || dish.name || "",
-                        dishId: dish.dishId,
-                        addons: dish.addons,
-                        price: dish.price,
-                        image: dish.image,
-                        description: dish.description || "",
-                      });
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </IonContent>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={1}
+          loop={true}
+          className="w-full h-52 mb-4 rounded-lg mySwiper"
+          centeredSlides={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+        >
+          {carouselImages.map((image, index) => (
+            <SwiperSlide key={index}>
+              <IonImg
+                src={image.url}
+                alt={`Biryani Darbar | Slide ${index + 1}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <MainMenuSection categories={categories} />
+      </div>
     </IonPage>
   );
 };

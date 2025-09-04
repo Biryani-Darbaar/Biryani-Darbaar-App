@@ -23,7 +23,7 @@ import EditProfile from "../pages/EditProfile";
 export const Tabs = [
   { key: "Home", href: "/Home", label: "Home", icon: <House /> },
   { key: "Menu", href: "/Menu", label: "Menu", icon: <BookOpenText /> },
-  { key: "Order", href: "/Order", label: "Order", icon: <NotebookText /> },
+  { key: "Order", href: "/Orders", label: "Orders", icon: <NotebookText /> },
   { key: "Profile", href: "/Profile", label: "Profile", icon: <User /> },
 ];
 

@@ -26,7 +26,7 @@ const Notifications = () => {
   return (
     <IonPage>
       <IonHeader>
-        <Navbar name="DishDash" />
+        <Navbar />
       </IonHeader>
       <IonContent>
         <div className="notifications-container">
