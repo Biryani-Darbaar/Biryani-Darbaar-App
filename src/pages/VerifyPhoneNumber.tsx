@@ -9,12 +9,11 @@ import {
   IonToast,
   IonToolbar,
   IonRouterOutlet,
-  useIonRouter
+  useIonRouter,
 } from "@ionic/react";
 import OtpPage from "./OtpPage";
 import { Route } from "react-router-dom";
 import "../assets/css/Verification.css";
-import HomePage from "./HomePage";
 import { sendVerificationCode } from "../providers/auth/firebase";
 
 const VerifyPhoneNumber: React.FC = () => {
@@ -42,7 +41,7 @@ const VerifyPhoneNumber: React.FC = () => {
   // Function to handle successful verification
   const handleSuccess = () => {
     setSuccessMessage("Phone number verified successfully!");
-    router.push('/HomePage');
+    router.push("/HomePage");
   };
 
   // Function to handle verification error
@@ -52,10 +51,7 @@ const VerifyPhoneNumber: React.FC = () => {
 
   return (
     <IonPage>
-      <IonRouterOutlet>
-        <Route path="/HomePage" component={HomePage} />
-        {/* Route for phone verification */}
-      </IonRouterOutlet>
+      <IonRouterOutlet>{/* Route for phone verification */}</IonRouterOutlet>
 
       <IonToolbar color="danger"></IonToolbar>
       <IonContent className="ion-padding">
@@ -72,7 +68,11 @@ const VerifyPhoneNumber: React.FC = () => {
         </IonItem>
 
         {/* Button to send verification code */}
-        <IonButton expand="block" color="danger" onClick={sendVerificationCodeHandler}>
+        <IonButton
+          expand="block"
+          color="danger"
+          onClick={sendVerificationCodeHandler}
+        >
           Send Verification Code
         </IonButton>
 

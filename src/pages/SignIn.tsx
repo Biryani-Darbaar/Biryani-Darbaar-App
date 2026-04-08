@@ -21,7 +21,6 @@ import Navbar from "../components/navigation/NavBar";
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -115,17 +114,7 @@ const SignIn: React.FC = () => {
             </div>
           </div>
 
-          {/* Remember me and Forgot password */}
           <div className="flex items-center justify-between w-full">
-            <label className="flex items-center space-x-2 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="form-checkbox accent-primary w-4 h-4 rounded"
-              />
-              <span className="text-textColor text-sm">Remember me</span>
-            </label>
             <button
               type="button"
               className="text-primary text-sm font-medium hover:underline focus:outline-none"
