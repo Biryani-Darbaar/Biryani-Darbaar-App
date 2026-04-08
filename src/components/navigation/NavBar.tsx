@@ -6,17 +6,21 @@ import InputSearch from "../Search";
 
 interface NavbarProps {
   publicNav?: boolean;
+  name?: string;
 }
 
-const Navbar = ({ publicNav }: NavbarProps) => {
+const Navbar = ({ publicNav, name }: NavbarProps) => {
   const history = useHistory();
   return (
     <IonHeader className="sticky top-0 z-50">
       <nav className="h-20 flex bg-red-800 justify-between items-center gap-6 w-full px-6">
         {publicNav ? (
-          <button onClick={() => history.goBack()} className="text-white">
-            <ArrowLeft />
-          </button>
+          <div className="flex items-center gap-4 text-white">
+            <button onClick={() => history.goBack()} className="text-white">
+              <ArrowLeft />
+            </button>
+            {name && <span className="text-lg font-semibold">{name}</span>}
+          </div>
         ) : (
           <>
             <InputSearch placeholder="Search" />
@@ -28,7 +32,6 @@ const Navbar = ({ publicNav }: NavbarProps) => {
                 onClick={() => history.push("/Notifications")}
               />
               <ShoppingCart size={24} onClick={() => history.push("/Orders")} />
-
             </div>
           </>
         )}
@@ -36,6 +39,5 @@ const Navbar = ({ publicNav }: NavbarProps) => {
     </IonHeader>
   );
 };
-
 
 export default Navbar;
