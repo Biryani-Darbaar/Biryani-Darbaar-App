@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  IonPage,
-  IonIcon,
-  IonToast,
-} from "@ionic/react";
+import { IonPage, IonIcon, IonToast } from "@ionic/react";
 import {
   mailOutline,
   lockClosedOutline,
@@ -66,12 +62,15 @@ const SignUp: React.FC = () => {
 
     const fullName = `${firstName}${lastName}`;
     const payload = {
-      "userName": fullName,
-      "email": email,
-      "password": password,
-      "phoneNumber": phNumber
-    }
-    const response = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/signup`, payload);
+      userName: fullName,
+      email: email,
+      password: password,
+      phoneNumber: phNumber,
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_ENDPOINT}/auth/signup`,
+      payload,
+    );
 
     if (response.status === 201) {
       history.push("/SignIn");
@@ -94,8 +93,12 @@ const SignUp: React.FC = () => {
       <Navbar publicNav={true} />
       <div className="flex flex-col h-full justify-center items-center px-6">
         <div className="bg-white w-full flex flex-col items-center rounded-lg py-8 px-6 gap-6">
-          <span className="text-3xl font-bold text-titleColor w-full text-left">Create an Account</span>
-          <p className="text-textColor w-full text-left">Sign up to get started</p>
+          <span className="text-3xl font-bold text-titleColor w-full text-left">
+            Create an Account
+          </span>
+          <p className="text-textColor w-full text-left">
+            Sign up to get started
+          </p>
           <div className="w-full relative">
             <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
               <input
@@ -134,7 +137,10 @@ const SignUp: React.FC = () => {
           </div>
           <div className="w-full relative">
             <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
-              <IonIcon icon={mailOutline} className="text-primary text-xl mr-2" />
+              <IonIcon
+                icon={mailOutline}
+                className="text-primary text-xl mr-2"
+              />
               <input
                 type="email"
                 value={email}
@@ -144,13 +150,19 @@ const SignUp: React.FC = () => {
                 autoComplete="email"
               />
               {isValidEmail(email) && (
-                <IonIcon icon={checkmarkOutline} className="text-primary text-xl ml-2" />
+                <IonIcon
+                  icon={checkmarkOutline}
+                  className="text-primary text-xl ml-2"
+                />
               )}
             </div>
           </div>
           <div className="w-full relative">
             <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
-              <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
+              <IonIcon
+                icon={lockClosedOutline}
+                className="text-primary text-xl mr-2"
+              />
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
@@ -168,7 +180,10 @@ const SignUp: React.FC = () => {
           </div>
           <div className="w-full relative">
             <div className="flex items-center border rounded-lg border-primary/20 focus-within:border-primary p-3">
-              <IonIcon icon={lockClosedOutline} className="text-primary text-xl mr-2" />
+              <IonIcon
+                icon={lockClosedOutline}
+                className="text-primary text-xl mr-2"
+              />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
@@ -191,8 +206,13 @@ const SignUp: React.FC = () => {
             Sign up
           </button>
           <div className="w-full text-center">
-            <span className="text-textColor text-sm">Already have an account? </span>
-            <Link to="/SignIn" className="text-primary text-sm font-semibold hover:underline">
+            <span className="text-textColor text-sm">
+              Already have an account?{" "}
+            </span>
+            <Link
+              to="/SignIn"
+              className="text-primary text-sm font-semibold hover:underline"
+            >
               Sign In
             </Link>
           </div>
